@@ -1,56 +1,28 @@
 module.exports = {
     watch: {
         compass: {
-            files: ['<%= paths.app %>/compass/**/*'],
-            tasks: ['compass:server']
-        },
-        test: {
-            files: ['<%= paths.app %>/javascripts/**/*.js'],
-            tasks: ['newer:jshint:test', 'karma:server:run'],
-            options: {
-                spawn: false
-            }
-        },
-        livereload: {
-            files: [
-                '<%= paths.app %>/**/*.html',
-                '<%= paths.app %>/javascripts/**/*.js',
-                '<%= paths.app %>/images/**/*',
-                '<%= paths.tmp %>/stylesheets/**/*.css',
-                '<%= paths.tmp %>/images/**/*'
-            ],
-            options: {
-                livereload: true,
-                spawn: false
-            }
-        },
-        configFiles: {
-            files: ['Gruntfile.js'],
-            options: {
-                reload: true
-            }
+            files: ['<%= paths.app %>/styles/**/*'],
+            tasks: ['compass:dev']
         }
     },
-    open: {
-        server: {
-            path: 'http://127.0.0.1:<%= connect.options.port %>',
-            app: 'Google Chrome Canary'
-        }
-    },
-    connect: {
+    compass: {
         options: {
-            port: 9999,
-            hostname: '0.0.0.0'
+            importPath: '<%= paths.app %>/components',
+            sassDir: '<%= paths.sass %>',
+            cssDir: '<%= paths.css %>',
+            imagesDir: '<%= paths.app %>/images',
+            generatedImagesDir: '<%= paths.tmp %>/images',
+            httpImagesPath: '../images',
+            httpGeneratedImagesPath: '../images',
         },
-        server: {
+        dev: {
             options: {
-                middleware: function(connect) {
-                    return [
-                        lrSnippet,
-                        mountFolder(connect, pathConfig.tmp),
-                        mountFolder(connect, pathConfig.app)
-                    ];
-                }
+                assetCacheBuster: true
+            }
+        },
+        dist: {
+            options: {
+                assetCacheBuster: false
             }
         }
     }

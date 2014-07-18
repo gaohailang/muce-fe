@@ -1,10 +1,8 @@
 module.exports = function(grunt) {
 
     grunt.registerTask('serve', [
-        'concurrent:server',
+        'configureProxies:server',
         'connect:server',
-        'karma:server',
-        'open',
         'watch'
     ]);
 

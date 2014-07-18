@@ -1,4 +1,9 @@
 module.exports = {
+    bowerInstall: {
+        target: {
+            src: ['app/index.html']
+        }
+    },
     concurrent: {
         server: {
             tasks: ['clean:server', 'compass:server'],
