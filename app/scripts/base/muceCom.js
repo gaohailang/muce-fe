@@ -6,6 +6,20 @@ define([
 
     var Com = {
         moduleList: ['report', 'analytics', 'channels', 'dashboard', 'events', 'metrics', 'mq', 'subscribe'],
+
+        getNameFromCookie: function() {
+            var cookie = document.cookie;
+            var arr = cookie.split('; ');
+            var name = "";
+            _.each(arr, function(item) {
+                if (item.indexOf('name=') != -1) {
+                    name = item.replace('name=', '');
+                }
+            });
+            // Todo
+            return name || 'gaohailang';
+        },
+
         format: function(s, arg0) {
             var args = arguments;
             return s.replace(/\{(\d+)\}/ig, function(a, b) {

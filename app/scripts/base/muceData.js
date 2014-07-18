@@ -1275,17 +1275,6 @@ define(['base/muceCom'], function(MuceCom) {
                 });
 
                 return deferrd.promise();
-            },
-
-            getNameFromCookie: function() {
-                var cookie = document.cookie;
-                var arr = cookie.split('; ');
-                var name = "";
-                _.each(arr, function(item) {
-                    if (item.indexOf('name=') != -1) {
-                        name = item.replace('name=', '');
-                    }
-                });
             }
         }
     }
