@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Muce 3.0 - Wandoulabs</title>
+        <meta charset="utf-8">
+
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="http://muce.corp.wandoujia.com/styles/9ca8c101.bootstrap.css">
+        <link rel="stylesheet" href="http://muce.corp.wandoujia.com/styles/b626be49.bootstrap-responsive.css">
+        <!-- bower:css -->
+        <link rel="stylesheet" href="components/ng-grid/ng-grid.css" />
+        <link rel="stylesheet" href="components/ngDialog/css/ngDialog.css" />
+        <link rel="stylesheet" href="components/ngDialog/css/ngDialog-theme-default.css" />
+        <!-- endbower -->
+
+        <link rel="stylesheet" href="styles/index.css">
+
+    </head>
+    <body>
+        <!-- alert global -->
+        <div class="alert alert-error global-error-msg">
+            <button type="button" class="close" >×</button>
+            <strong></strong>
+        </div>
+
+        <!-- top navbar -->
+        <div ng-include src="'templates/partials/navbar.html'"></div>
+
+        <!-- page container -->
+        <div class="container-fluid container-wrapper">
+            <!-- ng-view -> page -->
+            <div ui-view></div>
+        </div>
+
+        <!-- scroll arrow -->
+        <div class="scroll-key">
+            <span class="scroll-top">⬆</span>
+            <span class="scroll-bottom">⬇</span>
+        </div>
+
+        <!-- bower:js -->
+        <script src="components/jquery/dist/jquery.js"></script>
+        <script src="components/angular/angular.js"></script>
+        <script src="components/angular-ui-router/release/angular-ui-router.js"></script>
+        <script src="components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+        <script src="components/ng-grid/build/ng-grid.js"></script>
+        <script src="components/angular-validation/dist/angular-validation.js"></script>
+        <script src="components/ngDialog/js/ngDialog.js"></script>
+        <script src="components/angular-classy/angular-classy.js"></script>
+        <script src="components/underscore/underscore.js"></script>
+        <!-- endbower -->
+
+        <script src="components/requirejs/require.js" data-main="scripts/index"></script>
+    </body>
+</html>
