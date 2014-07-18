@@ -1,24 +1,20 @@
 require([
     './misc',
-    './subscribe',
-    'base/MuceCom'
-], function(misc, Subscribe, MuceCom) {
+    'old/analyze',
+    'old/subscribe',
+    'old/channels',
+    'old/dashboard',
+    'old/mq',
+    'base/MuceCom',
+    'directives',
+    'filters'
+], function(misc, Analyze, Subscribe, Channels, Dashboard, Mq, MuceCom) {
     'use strict';
 
-    var muceApp = angular.module('muceApp', ['classy', 'ui.router']);
-    var moduleList = ['analytics', 'channels', 'dashboard', 'events', 'metrics', 'mq', 'report', 'subscribe'];
-
-    // app.classy.controller(ctrl);
-    // var reportCtrl = {
-    //     name: '',
-    //     inject: [],
-    //     init: function() {
-
-    //     },
-    //     watch: {
-
-    //     }
-    // };
+    var muceApp = angular.module('muceApp', [
+        'classy', 'ui.router',
+        'muceApp.directives', 'muceApp.filters'
+    ]);
 
     function tongji() {
         $('<img/>').attr('src', '/images/tongji.png');
@@ -33,7 +29,7 @@ require([
             url: '/',
             templateUrl: 'templates/report.html'
         });
-        _.each(moduleList, function(module) {
+        _.each(MuceCom.moduleList, function(module) {
             $stateProvider.state(module, {
                 url: '/' + module,
                 templateUrl: 'templates/' + module + '.html',
@@ -43,15 +39,48 @@ require([
     });
 
     muceApp.run(function() {
-
+        // set window.userName which is required by ...
+        window.userName = MuceCom.getNameFromCookie();
     });
-    muceApp.controller('reportCtrl', function() {
 
+    // most complicated reportCtrl with(profile, group etc)
+    muceApp.controller('reportCtrl', function() {});
+
+    muceApp.controller('analyticsCtrl', function() {
+        // Todo: 'analyze/:profile/:metric' : 'analyze',
+        var profile = 1,
+            metric = 1;
+        Analyze.getInstance().updateSelectedProfile(profile, metric);
+
+        MuceCom.updateTitle('Analyze');
+        tongji();
     });
 
     muceApp.controller('subscribeCtrl', function() {
+        // Todo: less occupied resources, scroll aniamtely, scroll leave space etc
         Subscribe.getInstance();
+
         MuceCom.updateTitle('Subscribe');
+        tongji();
+    });
+
+    muceApp.controller('channelsCtrl', function() {
+        Channels.getInstance();
+
+        MuceCom.updateTitle('Channels');
+        tongji();
+    });
+
+    muceApp.controller('dashboardCtrl', function() {
+        Dashboard.getInstance().refresh();
+
+        MuceCom.updateTitle('Dashboard');
+        tongji();
+    });
+
+    muceApp.controller('mqCtrl', function() {
+        Mq.getInstance();
+        MuceCom.updateTitle('Query');
         tongji();
     });
 

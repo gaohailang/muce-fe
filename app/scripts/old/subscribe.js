@@ -1,4 +1,7 @@
-define(['base/muceData'], function(MuceData) {
+define([
+    'base/muceData',
+    'base/MuceCom'
+], function(MuceData, MuceCom) {
 
     var Subscribe = function() {
         function addCol2Row(row, metric, subscribe_metrics) {
@@ -111,7 +114,7 @@ define(['base/muceData'], function(MuceData) {
                 $('#form')[0].appendChild(bodyFrag);
             }
 
-            var name = MuceData.getNameFromCookie() || 'gaohailang';
+            var name = MuceCom.getNameFromCookie();
 
             MuceData.getSubscribeByUser(name).done(function(subscribe) {
                 if (subscribe === null) {
