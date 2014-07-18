@@ -5,6 +5,7 @@ define([
 ], function(Suggestion, FormModal, Const) {
 
     var Com = {
+        moduleList: ['report', 'analytics', 'channels', 'dashboard', 'events', 'metrics', 'mq', 'subscribe'],
         format: function(s, arg0) {
             var args = arguments;
             return s.replace(/\{(\d+)\}/ig, function(a, b) {
@@ -806,8 +807,7 @@ define([
             var arr = str.match(/(\d{2}).*(\d{2}).*(\d{4})/);
             return new Date(arr[3], arr[2] - 1, arr[1]);
         }
-
-    }
+    };
 
     return Com;
 });
