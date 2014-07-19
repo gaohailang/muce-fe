@@ -9,5 +9,5 @@ define(['base/muceCom'], function(muceCom) {
         }
     }
 
-    angular.module('muceApp.directives', []).directive('muceNavbar', navbarDef);
+    angular.module('muceApp.base.directives', []).directive('muceNavbar', navbarDef);
 });
