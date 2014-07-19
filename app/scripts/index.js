@@ -6,14 +6,13 @@ require([
     'old/dashboard',
     'old/mq',
     'base/MuceCom',
-    'directives',
-    'filters'
+    './base'
 ], function(misc, Analyze, Subscribe, Channels, Dashboard, Mq, MuceCom) {
     'use strict';
 
     var muceApp = angular.module('muceApp', [
         'classy', 'ui.router',
-        'muceApp.directives', 'muceApp.filters'
+        'muceApp.base'
     ]);
 
     function tongji() {
@@ -27,7 +26,8 @@ require([
 
         $stateProvider.state('index', {
             url: '/',
-            templateUrl: 'templates/report.html'
+            templateUrl: 'templates/report.html',
+            controller: 'reportCtrl'
         });
         _.each(MuceCom.moduleList, function(module) {
             $stateProvider.state(module, {
@@ -44,7 +44,14 @@ require([
     });
 
     // most complicated reportCtrl with(profile, group etc)
-    muceApp.controller('reportCtrl', function() {});
+    muceApp.controller('reportCtrl', function(apiHelper) {
+        apiHelper.config({
+            'getGroups': 'GET /meta/groups'
+        });
+        apiHelper('getGroups').then(function(data) {
+            console.log(data);
+        });
+    });
 
     muceApp.controller('analyticsCtrl', function() {
         // Todo: 'analyze/:profile/:metric' : 'analyze',

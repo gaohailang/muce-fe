@@ -81,6 +81,10 @@ module.exports = function(grunt) {
                     useAvailablePort: true
                 },
                 proxies: [{
+                    context: '/api/v1',
+                    host: 'muce3.apiary-mock.com',
+                    changeOrigin: true
+                }, {
                     context: '/muce-webapp/',
                     host: 'muce.corp.wandoujia.com',
                     changeOrigin: true,
