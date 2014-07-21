@@ -1,136 +1,20 @@
 <div id="report_container" class="row-fluid">
     <div class="span2">
-        <div class="nav-sidebar">
-            <!--Profile-->
-            <div class="btn-group" id="profile_view_model" rel="tooltip" data-placement="top" data-original-title="Double click view profiles">
-                <button class="btn btn-success btn-name" data-bind="event: {dblclick: showAllProfile}">
-                    <span class="text-tip">Profile: </span><span data-bind="text: currentProfileName">loading...</span>
-                </button>
-                <button class="btn btn-success dropdown-toggle btn-caret" data-toggle="dropdown">
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" data-bind="foreach: profileList">
-                    <li>
-                        <a data-bind="text: name, click: $parent.switchProfile"></a>
-                    </li>
-                </ul>
-            </div>
-            <!--Group-->
-            <div id="group_view_model">
-                <div class="btn-group group-model-container" id="group_model_container" rel="tooltip" data-placement="top"  data-original-title="Double click to edit group">
-                    <button class="btn btn-info btn-name" data-bind="event: {dblclick: editGroup}">
-                        <span class="text-tip">Group: </span><span data-bind="text: currentGroupName" >loading...</span>
-                    </button>
-                    <button class="btn btn-info dropdown-toggle btn-caret" data-toggle="dropdown">
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu group-list" data-bind="foreach: groupList">
-                        <li><a data-bind="text: name, click: $parent.switchGroup" ></a></li>
-                    </ul>
-                </div>
-                <!--Report-->
-                <ul class="nav nav-list sidebar-list" data-bind="foreach: reportList">
-                    <li data-bind="css: {active: $parent.currentReportId() == $data.id}, event: {mouseover: $parent.mouseoverReport, mouseleave: $parent.mouseoutReport}">
-                        <a data-bind="text: name, attr: {href: url}, event: {click: $parent.switchReport}"></a>
-                        <!--<i class="icon-undo rerun-report" data-bind="event: {click: $parent.reRunReport, mouseover: $parent.mouseoverReportReRun}"></i>-->
-                        <i class="icon-pencil edit-report" data-bind="event: {click : $parent.editReport, mouseover: $parent.mouseoverReportEdit}"></i>
-                        <i class="icon-trash delete-report" data-bind="event: {click: $parent.deleteReport, mouseover: $parent.mouseoverReportTrash}, clickBubble: false"></i>
-                        <!--<i class="icon-time realtime-report-icon" data-bind="css: {show : isRealTimeReport != -1}"></i>    -->
-                    </li>
-                </ul>
-            </div>
-
-            <table class="table table-bordered more-actions">
-                <tbody>
-                    <tr>
-                        <td colspan="2"><a href="#add_profile" data-toggle="modal" class="add-action">Add Profile</a></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2"><a href="#add_group" data-toggle="modal"  class="add-action">Add Group</a></td>
-                       <!--  <td><a href="#delete_report" data-toggle="modal" class="delete-action delete-group">Delete Group</a></td> -->
-                    </tr>
-                    <tr>
-                        <td colspan="2"><a href="#add_report" data-toggle="modal"  class="add-action">Add Report</a></td>
-                        <!-- <td><a href="#delete_report" data-toggle="modal" class="delete-action delete-report">Delete Report</a></td> -->
-                    </tr>
-                    <tr>
-                        <td><a href="#add_metric" data-toggle="modal"  class="add-action">Add Metric</a></td>
-                        <td><a href="#update_metric" data-toggle="modal"class="update-action">Search Metric</a><br/></td>
-                    </tr>
-                    <tr>
-                        <td><a href="#add_dimension" data-toggle="modal"  class="add-action">Add Dimen</a></td>
-                        <td><a href="#update_dimension" data-toggle="modal" class="update-action">Search Dimen</a></td>
-                    </tr>
-                    <tr>
-                        <td><a href="#add_UDF" data-toggle="modal"  class="add-action">Add UDF</a></td>
-                        <td><a href="#update_UDF" data-toggle="modal"  class="update-action">Search UDF</a><br/></td>
-                    </tr>
-                    <tr>
-                        <td><a href="#update_event" data-toggle="modal" class="update-event">Update Event</a></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2"><a href="#view_metrics" class="view-metrics">View Metrics</a></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2"><a href="#view_events" class="view_events">View Events</a></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2"><a href="#sort_reports" data-toggle="modal" class="sort-reports">Sort Reports</a></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        <div muce-include="templates/report/side-navbar.html"></div>
     </div>
     <div class="span10">
         <section class="common-filter-wrapper">
-            <a href="#analyze" class="btn btn-primary feel-smart muce-nav-tab" data-id="#analytics_container">Feel Smart ! </a>
+            <a href="#analyze" class="btn btn-primary feel-smart muce-nav-tab"
+                data-id="#analytics_container">Feel Smart ! </a>
             <div class="common-filter-content">
-                <div class="quick-select-wrapper">
-                </div>
-                <div class="periods-wrapper">
-                </div>
-
-                <input type="text" name="start_date" class="start-date date date-time-picker"/> - <input type="text" name="end_date" class="end-date date date-time-picker"/> <button class="btn btn-primary refresh-report">apply</button>
-
+                <div class="quick-select-wrapper"></div>
+                <div class="periods-wrapper"></div>
+                <input type="text" name="start_date" class="start-date date date-time-picker"/> -
+                <input type="text" name="end_date" class="end-date date date-time-picker"/>
+                <button class="btn btn-primary refresh-report">apply</button>
             </div>
         </section>
-
-        <section class="realtime-wrapper row-fluid">
-            <div class="overview-container span4">
-                <h1>Overview</h1>
-                <div class="overview-content">
-                    <span class="title">此时此刻</span>
-                    <span class="value" data-bind="text: metricValue">0</span>
-                    <span class="metric" data-bind="text: metricName"></span>
-                </div>
-            </div>
-            <div class="timeline-container span4" id="timeline_minute">
-            </div>
-            <div class="timeline-container span4" id="timeline_second">
-            </div>
-            <div class="overview-table-container span11" data-bind="foreach: overviewTableList">
-                <div class="overview-table span4">
-                    <h1 data-bind="text: title"></h1>
-                    <table class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th colspan=2 >Dimension value</th>
-                                <th data-bind="text: metricName"></th>
-                            </tr>
-                        </thead>
-                        <tbody data-bind="foreach: tbodyDataList">
-                            <tr>
-                                <td data-bind="text: index"></td>
-                                <td data-bind="text: dimenValue"></td>
-                                <td data-bind="text: metricValue"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
+        <div muce-include="templates/report/realtime-wrapper.html"></div>
         <section class="chart-wrapper">
             View:
             <select id="chart_type">
@@ -142,132 +26,7 @@
             </div>
             <div class="chart-canvas" id="chart_canvas"></div>
         </section>
-        <section class="detail-wrapper">
-            <div >
-                <div class="accordion" id="detail_accordion">
-                    <div class="accordion-group">
-                    <div class="accordion-heading">
-                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#detail_accordion" href="#collapseOne">
-                            Report Detail
-                        </a>
-                    </div>
-                    <div id="collapseOne" class="accordion-body collapse">
-                        <div class="accordion-inner">
-                            <ul class="detail-list">
-                                <li class="detail-owner">
-                                    <div>
-                                        <code>Owner:  </code>
-                                    </div>
-                                    <pre class="detail-item">
-                                    </pre>
-                                </li>
-                                <li class="detail-comment">
-                                    <div>
-                                        <code>Comments: </code>
-                                        <span class="btn btn-small update-detail-comment">
-                                            <i class="icon-pencil"></i>
-                                                add
-                                         </span>
-                                    </div>
-                                    <pre class="detail-item"></pre>
-                                 </li>
-                                <li class="detail-metrics">
-                                    <code>Metrics:  </code>
-                                    <pre class="detail-item"></pre>
-                                </li>
-                                <li class="detail-dimensions">
-                                    <code>Dimensions:  </code>
-                                    <pre class="detail-item"></pre>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                </div>
-            </div>
-        </section>
-        <section class="table-wrapper">
-            <div class="report-tab-container btn-group">
-                  <button class="btn active" data-type="table">Table</button>
-                  <button class="btn" data-type="pie">Pie</button>
-                  <button class="btn" data-type="area">Area</button>
-                  <button class="btn" data-type="map">Map</button>
-            </div>
-            <div class="add-widget-container focus-type">
-            </div>
-            <div class="report-content-container">
-                <div class="table-content">
-                    <div class="select-dimension-wrapper">
-                        <div class="dimension-content">
-                        </div>
-                        <button class="btn btn-primary refresh-table">apply</button>
-                        <a href="#filter_table" class="btn table-advanced" data-toggle="modal" >Advanced</a>
-                        <span class="export">Export: <a class="CSV">CSV</a></span>
-                    </div>
-                    <table class="table table-bordered table-striped" id="table_canvas"></table>
-                    <div class="pagination pagination-centered">
-                        <ul>
-                        </ul>
-                    </div>
-                </div>
-                <div class="pie-content">
-                    <div class="pie-content-filter">
-                        <div class="pie-content-metrics-wrapper">
-                            View: <select id="pie_content_metircs"></select>
-                        </div>
-                        <div class="pie-content-dimensions-wrapper">
-                            Group By: <select name="" id="pie_content_dimensions" class="dimen-select"></select>
-                        </div>
-                        <div class="pie-content-num-wrapper">
-                            Top: <input type="" id="pie_content_top" value="30" rel="tooltip" data-placement="bottom"  data-original-title="Enter「Return」To Draw Pie Chart">
-                        </div>
-                        <a  href="#filter_table" class="pie-advanced dimen-advanced" data-toggle="modal" >Advanced</a>
-                    </div>
-                    <div id="pie_content_canvas" class="pie-content-canvas"></div>
-                </div>
-                <div class="area-content">
-                    <div class="area-content-filter">
-                        <div class="area-content-metrics-wrapper">
-                            View: <select id="area_content_metircs"></select>
-                        </div>
-                        <div class="area-content-dimensions-wrapper">
-                            Group By: <select name="" id="area_content_dimensions" class="dimen-select"></select>
-                        </div>
-                        <div class="area-content-num-wrapper">
-                            Top: <input type="" id="area_content_top" value="3" rel="tooltip" data-placement="bottom"  data-original-title="Enter「Return」To Draw Area Chart">
-                        </div>
-                        <a  href="#filter_table" class="area-advanced dimen-advanced" data-toggle="modal" >Advanced</a>
-                    </div>
-                    <div id="area_content_canvas" class="area-content-canvas"></div>
-                </div>
-                <div class="map-content">
-                    <div class="map-content-filter">
-                        <div class="map-content-metrics-wrapper">
-                            View: <select id="map_content_metrics"></select>
-                        </div>
-                        <div class="map-content-dimensions-wrapper">
-                            Group By: <select name="" id="map_content_dimensions" class="dimen-select"></select>
-                        </div>
-                    </div>
-                    <div id="google_map">
-                    </div>
-                </div>
-            </div>
-        </section>
+        <div muce-include="templates/report/detail-wrapper.html"></div>
+        <div muce-include="templates/report/table-wrapper.html"></div>
     </div>
-   <!--  <div class="keyboard-shortcuts">
-        <button type="button" class="close">×</button>
-        <div class="shortcut">
-            <span class="key-combo">A+R</span>
-            <span class="key-action">Add Report</span>
-        </div>
-        <div class="shortcut">
-            <span class="key-combo">A+M</span>
-            <span class="key-action">Add Metric</span>
-        </div>
-        <div class="shortcut">
-            <span class="key-combo">A+D</span>
-            <span class="key-action">Add Dimension</span>
-        </div>
-    </div> -->
 </div>

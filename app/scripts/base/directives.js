@@ -9,5 +9,21 @@ define(['base/muceCom'], function(muceCom) {
         }
     }
 
-    angular.module('muceApp.base.directives', []).directive('muceNavbar', navbarDef);
+    function muceInclude($http, $templateCache, $compile) {
+        // quick fix for ng-include without create a new scope
+        // let you quick move popup etc into separate file
+        return function(scope, element, attrs) {
+            var templatePath = attrs.muceInclude;
+            $http.get(templatePath, {
+                cache: $templateCache
+            }).success(function(response) {
+                var contents = element.html(response).contents();
+                $compile(contents)(scope);
+            });
+        };
+    }
+
+    angular.module('muceApp.base.directives', [])
+        .directive('muceNavbar', navbarDef)
+        .directive('muceInclude', ['$http', '$templateCache', '$compile', muceInclude]);
 });

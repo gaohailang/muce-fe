@@ -11,7 +11,7 @@ require([
     'use strict';
 
     var muceApp = angular.module('muceApp', [
-        'classy', 'ui.router',
+        'ui.router',
         'muceApp.base'
     ]);
 
@@ -20,7 +20,7 @@ require([
     };
 
     muceApp.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
-        $locationProvider.html5Mode(true).hashPrefix('!')
+        $locationProvider.html5Mode(true).hashPrefix('!');
         // Use $urlRouterProvider to configure any redirects (when) and invalid urls (otherwise).
         $urlRouterProvider.otherwise('/');
 

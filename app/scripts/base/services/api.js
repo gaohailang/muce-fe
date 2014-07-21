@@ -1,4 +1,4 @@
-define([], function() {
+define(function() {
     function apiHelper($http) {
 
         /*
@@ -64,7 +64,6 @@ define([], function() {
         success: function() {},
         error: function() {}
     };
-    // var apiHelperInterceptor = ;
 
     angular.module('muceApp.base.services.api', [])
         .factory('apiHelper', ['$http', apiHelper])
@@ -84,8 +83,9 @@ define([], function() {
                         if (response.config.method === 'POST') {
                             $notice.success('操作成功！');
                         }
+                        return response.data;
                     }
-                    return response.data;
+                    return response;
                 }
             };
         })
