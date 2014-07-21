@@ -45,14 +45,6 @@ require([
         window.userName = MuceCom.getNameFromCookie();
     });
 
-    // most complicated reportCtrl with(profile, group etc)
-    muceApp.controller('reportCtrl', function(apiHelper) {
-
-        apiHelper('getGroupList').then(function(data) {
-            console.log(data);
-        });
-    });
-
     muceApp.controller('analyticsCtrl', function() {
         // Todo: 'analyze/:profile/:metric' : 'analyze',
         var profile = 1,

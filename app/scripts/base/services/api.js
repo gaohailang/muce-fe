@@ -55,6 +55,7 @@ define(function() {
 
             return $http(_.extend({
                 method: apiStr.split(' ')[0],
+                cache: true,
                 url: _urlPrfix + _buildUrl(apiStr.split(' ')[1], opt),
             }, opt));
         }
