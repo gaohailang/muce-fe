@@ -6,12 +6,14 @@ require([
     'old/dashboard',
     'old/mq',
     'base/MuceCom',
-    './base'
+    './base',
+    './api'
 ], function(misc, Analyze, Subscribe, Channels, Dashboard, Mq, MuceCom) {
     'use strict';
 
     var muceApp = angular.module('muceApp', [
         'ui.router',
+        'muceApp.api',
         'muceApp.base'
     ]);
 
@@ -45,10 +47,8 @@ require([
 
     // most complicated reportCtrl with(profile, group etc)
     muceApp.controller('reportCtrl', function(apiHelper) {
-        apiHelper.config({
-            'getGroups': 'GET /meta/groups'
-        });
-        apiHelper('getGroups').then(function(data) {
+
+        apiHelper('getGroupList').then(function(data) {
             console.log(data);
         });
     });

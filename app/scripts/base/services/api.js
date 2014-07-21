@@ -39,6 +39,13 @@ define(function() {
             return toUrl;
         }
 
+        function slugify(name) {
+            return name[0].toUpperCase() + name.slice(1)
+                .replace(/[-_]([a-z])/ig, function(all, letter) {
+                    return letter.toUpperCase();
+                });
+        }
+
         function helper(endpoint, opt) {
             var apiStr = _maps[endpoint];
             opt = opt || {};
@@ -56,10 +63,32 @@ define(function() {
             _maps = _.extend(_maps, maps);
         };
 
+        helper.configByType = function(maps, opt) {
+            // maps = _.extend({}, maps); // no need for ensure key-value exist
+            var processMaps = {};
+            var opt = opt || {
+                prefix: ''
+            };
+            // need template to build?
+            _.each(maps.add, function(endpoint) {
+                processMaps['add' + slugify(endpoint)] = 'POST ' + opt.prefix + endpoint;
+            });
+            _.each(maps.del, function(endpoint) {
+                processMaps['del' + slugify(endpoint)] = 'DELETE ' + opt.prefix + endpoint;
+            });
+            _.each(maps.list, function(endpoint) {
+                processMaps['get' + slugify(endpoint) + 'List'] = 'GET ' + opt.prefix + endpoint + 's';
+            });
+            _.each(maps.item, function(endpoint) {
+                processMaps['get' + slugify(endpoint)] = 'GET ' + opt.prefix + endpoint;
+            });
+            this.config(processMaps);
+        };
+
         return helper;
     }
 
-    // fake $notice should be created
+    // Todo: fake $notice should be created
     var $notice = {
         success: function() {},
         error: function() {}
