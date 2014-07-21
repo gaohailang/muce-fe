@@ -1,4 +1,6 @@
-define(function() {
+define([
+    'base/services/notice'
+], function() {
     function apiHelper($http) {
 
         /*
@@ -89,15 +91,9 @@ define(function() {
         return helper;
     }
 
-    // Todo: fake $notice should be created
-    var $notice = {
-        success: function() {},
-        error: function() {}
-    };
-
-    angular.module('muceApp.base.services.api', [])
+    angular.module('muceApp.base.services.api', ['muceApp.base.services.notice'])
         .factory('apiHelper', ['$http', apiHelper])
-        .factory('apiHelperInterceptor', function($q) {
+        .factory('apiHelperInterceptor', function($q, $notice) {
             return {
                 responseError: function(response) {
                     if (response.config.url.indexOf('/api/') > -1) {
