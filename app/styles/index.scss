@@ -1,3 +1,6 @@
+@import "vendor/bootstrap";
+@import "vendor/bootstrap-responsive";
+
 @import "main";
 @import "analyze";
 @import "channels";
@@ -5,6 +8,10 @@
 @import "mq";
 @import "realtime";
 @import "login";
+
+@import "vendor/font-awesome";
+@import "vendor/jquery-ui-timepicker-addon";
+
 // Todo: component directory should be created
 .global-error-container {
     position: absolute;
