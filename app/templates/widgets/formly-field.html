@@ -9,7 +9,7 @@
             type="{{options.type || 'text'}}"
             class="pmt-form-width-large">
         <!-- opt.name group by opt.group for opt in options.options -->
-        <select ng-options="opt.name for opt in options.options" ng-switch-when="select">
+        <select ng-switch-when="select">
             <option value="" ng-if="options.nullText">-- {{options.nullText}} --</option>
         </select>
         <textarea ng-switch-when="textarea"

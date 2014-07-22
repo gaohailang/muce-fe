@@ -2,7 +2,11 @@ define([
     'base/services/notice'
 ], function() {
     function apiHelper($http) {
-
+        /*
+            Todo
+            1. config.busy 的支持（gloabl, btn, partial etc）
+            2. to config api version
+        */
         /*
             way to use the api:
             每个 biz module 有个 endpoint api map
@@ -17,9 +21,6 @@ define([
             apiHelper('delBlackList', app_id, config).then(function() {
 
             });
-        */
-        /*
-            to config api version
         */
         var _maps = {},
             _urlPrfix = '/api/v1';

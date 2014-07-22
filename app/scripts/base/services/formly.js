@@ -25,6 +25,7 @@ define(function() {
         function notFoundTypeTpl(type) {
             console.log('Formly Error: template type \'' + type + '\' not supported.');
         }
+        var defaultNgOptionStr = 'opt as opt.name for opt in options.options';
 
         /*
             placeholder 可以 false掉或者over written, 默认是 label 值
@@ -40,7 +41,7 @@ define(function() {
 
                 // shortcut for hook referTpl
                 if ($scope.options.referTpl) {
-                    $element.html(document.querySelector($scope.options.referTpl).innerHTML);
+                    $element.html($templateCache.get($scope.options.referTpl));
                     $compile($element.contents())($scope);
                     return;
                 }
@@ -48,6 +49,7 @@ define(function() {
                 if (!$scope.options.label) {
                     $scope.options.label = $scope.options.key;
                 }
+
                 if ($scope.options.options) {
                     $scope.options.type = 'select';
                 }
@@ -63,14 +65,20 @@ define(function() {
 
                     // $input = $element.find($scope.options.type)[0] ? $element.find($scope.options.type)[0] : $element.find('input')[0]; // campatible with default option
                     // $msg = $element.find('div')[1];
-
-                    $input = $element.find('input')[0];
+                    var type = $scope.options.type;
+                    if ('input,select,textarea'.indexOf(type) === -1) {
+                        type = 'input';
+                    }
+                    $input = $element.find(type)[0];
                     $input.setAttribute('ng-model', $scope.$parent.options.key + '.' + $scope.options.key);
                     $input.setAttribute('name', $scope.options.key);
                     if ($input && $scope.options.validate) {
                         angular.forEach($scope.options.validate, function(val, key) {
                             $input.setAttribute('ng-' + key, val);
                         });
+                    }
+                    if ($scope.options.options) {
+                        $input.setAttribute('ng-options', $scope.options.optionStr || defaultNgOptionStr);
                     }
                     // if ($msg && $scope.options.msg) {
                     //     angular.forEach($scope.options.msg, function(val, key) {
@@ -88,8 +96,7 @@ define(function() {
             controller: function fieldController($scope) {
                 return;
                 $scope.options = $scope.optionsData();
-                if ($scope.options.
-                    default) {
+                if ($scope.options['default']) {
                     $scope.value = $scope.options.
                     default;
                 }

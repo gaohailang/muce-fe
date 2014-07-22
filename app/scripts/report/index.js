@@ -2,6 +2,13 @@ define([
     'report/add'
 ], function() {
 
+    function reportCtrl($scope) {
+        // those variable is used across report module
+        $scope.currentGroup = null;
+        $scope.currentCategory = null;
+        $scope.currentReport = null;
+    }
+
     // side - group->category-report list select
     function navbarCtrl(apiHelper, $scope) {
         // Todo: 更新 ulr?!
@@ -21,7 +28,7 @@ define([
         };
 
         $scope.switchReport = function(report) {
-            $rootScope.currentReport = report;
+            $scope.currentReport = report;
         };
 
         // update category list when user change select
@@ -51,7 +58,7 @@ define([
 
     // add modal 内部
     function addModalCtrl($scope, $modal) {
-        $scope.addTypes = ['group', 'category', 'dimension', 'metric', 'combine_metric', 'report'];
+        $scope.addTypes = ['group', 'category', 'dimension', 'metric', 'combineMetric', 'report'];
         $scope.openModal = function(type) {
             // support resolve
             var modalInstance = $modal.open({
@@ -92,7 +99,8 @@ define([
     }
 
     angular.module('muceApp.report', ['muceApp.report.add'])
-        .controller('reportCtrl', navbarCtrl)
+        .controller('reportCtrl', reportCtrl)
+        .controller('navbarCtrl', navbarCtrl)
         .controller('addModalCtrl', addModalCtrl)
         .controller('delPanelCtrl', delPanelCtrl);
 });

@@ -30,3 +30,40 @@
         <div muce-include="templates/report/table-wrapper.html"></div>
     </div>
 </div>
+
+
+<script type="text/ng-template"
+    id="report/add_report/period.html">
+    <div class="control-group">
+        <label for="period" class="control-label">
+            Report Periods *
+        </label>
+        <div class="controls">
+            <label for="hour">Hour
+                <input type="checkbox" value="1" name="hour">
+            </label>
+            <label for="day">Day
+                <input type="checkbox" value="1" name="day">
+            </label>
+        </div>
+    </div>
+</script>
+
+
+<script type="text/ng-template"
+    id="report/add_metric/expression.html">
+
+    <div class="control-group">
+        <label for="period" class="control-label">
+            Metric Expression
+        </label>
+        <div class="controls">
+            <select name="metric_id1" id="metric_id1" ng-model="form.metric_id1"
+                ng-options="opt.id as opt.name for opt in metricList"></select>
+            <select name="operator" id="operator" ng-model="form.operator"
+                ng-options="opt for opt in metricOperators"></select>
+            <select name="metric_id2" id="metric_id2" ng-model="form.metric_id2"
+                ng-options="opt.id as opt.name for opt in metricList"></select>
+        </div>
+    </div>
+</script>
