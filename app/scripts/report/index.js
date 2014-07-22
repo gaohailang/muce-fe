@@ -75,20 +75,26 @@ define([
     }
 
     // delete widget 内部
-    function delPanelCtrl(apiHelper, $scope) {
-        // scope: currentDelType, selectedItems, currentDelList
+    function delPanelCtrl(apiHelper, $scope, $timeout) {
+        // scope: currentDelType, selectedItems, currentDelList, currentQuery
         $scope.delTypes = ['group', 'category', 'dimension', 'metric', 'categoryt_report_relation'];
         $scope.currentDelType = $scope.delTypes[0];
 
         $scope.$watch('currentDelType', function(val) {
             if (!val) return;
+            resetType();
             apiHelper('get' + _.capitalize(val) + 'List').then(function(data) {
                 $scope.currentDelList = data;
             });
         });
 
-        // config select2 (with template, includes checkbox, selectedItems)
+        function resetType() {
+            $scope.currentQuery = '';
+            $scope.currentDelList = [];
+            // loading
+        }
 
+        // config select2 (with template, includes checkbox, selectedItems)
         $scope.delSelectedHandler = function() {
             // checkbox selectedItems exist, with notice?!
             // post and generate del opt differentiate by type
