@@ -1,12 +1,5 @@
 <section class="table-wrapper">
-    <div class="report-tab-container btn-group">
-          <button class="btn active" data-type="table">Table</button>
-          <button class="btn" data-type="pie">Pie</button>
-          <button class="btn" data-type="area">Area</button>
-          <button class="btn" data-type="map">Map</button>
-    </div>
-    <div class="add-widget-container focus-type">
-    </div>
+    <!-- Todo: with ng-grid extended -->
     <div class="report-content-container">
         <div class="table-content">
             <div class="select-dimension-wrapper">
@@ -20,48 +13,6 @@
             <div class="pagination pagination-centered">
                 <ul>
                 </ul>
-            </div>
-        </div>
-        <div class="pie-content">
-            <div class="pie-content-filter">
-                <div class="pie-content-metrics-wrapper">
-                    View: <select id="pie_content_metircs"></select>
-                </div>
-                <div class="pie-content-dimensions-wrapper">
-                    Group By: <select name="" id="pie_content_dimensions" class="dimen-select"></select>
-                </div>
-                <div class="pie-content-num-wrapper">
-                    Top: <input type="" id="pie_content_top" value="30" rel="tooltip" data-placement="bottom"  data-original-title="Enter「Return」To Draw Pie Chart">
-                </div>
-                <a  href="#filter_table" class="pie-advanced dimen-advanced" data-toggle="modal" >Advanced</a>
-            </div>
-            <div id="pie_content_canvas" class="pie-content-canvas"></div>
-        </div>
-        <div class="area-content">
-            <div class="area-content-filter">
-                <div class="area-content-metrics-wrapper">
-                    View: <select id="area_content_metircs"></select>
-                </div>
-                <div class="area-content-dimensions-wrapper">
-                    Group By: <select name="" id="area_content_dimensions" class="dimen-select"></select>
-                </div>
-                <div class="area-content-num-wrapper">
-                    Top: <input type="" id="area_content_top" value="3" rel="tooltip" data-placement="bottom"  data-original-title="Enter「Return」To Draw Area Chart">
-                </div>
-                <a  href="#filter_table" class="area-advanced dimen-advanced" data-toggle="modal" >Advanced</a>
-            </div>
-            <div id="area_content_canvas" class="area-content-canvas"></div>
-        </div>
-        <div class="map-content">
-            <div class="map-content-filter">
-                <div class="map-content-metrics-wrapper">
-                    View: <select id="map_content_metrics"></select>
-                </div>
-                <div class="map-content-dimensions-wrapper">
-                    Group By: <select name="" id="map_content_dimensions" class="dimen-select"></select>
-                </div>
-            </div>
-            <div id="google_map">
             </div>
         </div>
     </div>

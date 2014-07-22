@@ -3,6 +3,36 @@
         <div muce-include="templates/report/side-navbar.html"></div>
     </div>
     <div class="span10">
+
+        <!-- operator-wrapper -->
+        <section class="setting-wrapper">
+            <div class="operator-wrapper">
+                <div class="date-operator">
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-default">hour</button>
+                      <button type="button" class="btn btn-default">day</button>
+                    </div>
+                    <select name="" id=""></select>
+                    <input type="date"> - <input type="date">
+                </div>
+                <div class="dimension-operator">
+                    <button class="btn">Advanced</button>
+                    <label for="">1st Dimen:
+                        <select name="" id=""></select>
+                    </label>
+                    <label for="">2nd Dimen:
+                        <select name="" id=""></select>
+                    </label>
+                    <label for="">3rd Dimen:
+                        <select name="" id=""></select>
+                    </label>
+                </div>
+            </div>
+            <div class="trigger-wrapper">
+                <button class="btn btn-primary refresh-report">apply</button>
+                <a class="accordion-toggle"href="#collapseOne">Report Detail</a>
+            </div>
+        </section>
         <section class="common-filter-wrapper">
             <a href="#analyze" class="btn btn-primary feel-smart muce-nav-tab"
                 data-id="#analytics_container">Feel Smart ! </a>
@@ -11,22 +41,14 @@
                 <div class="periods-wrapper"></div>
                 <input type="text" name="start_date" class="start-date date date-time-picker"/> -
                 <input type="text" name="end_date" class="end-date date date-time-picker"/>
-                <button class="btn btn-primary refresh-report">apply</button>
             </div>
         </section>
-        <div muce-include="templates/report/realtime-wrapper.html"></div>
+
+
+        <div muce-include="templates/report/detail-wrapper.html"></div>
         <section class="chart-wrapper">
-            View:
-            <select id="chart_type">
-                <option selected value="timeline">Timeline</option>
-                <option value="pie">Pie</option>
-            </select>
-            <a href="#filter_chart" class="btn advanced" data-toggle="modal" >Advanced</a>
-            <div class="add-widget-container">
-            </div>
             <div class="chart-canvas" id="chart_canvas"></div>
         </section>
-        <div muce-include="templates/report/detail-wrapper.html"></div>
         <div muce-include="templates/report/table-wrapper.html"></div>
     </div>
 </div>
