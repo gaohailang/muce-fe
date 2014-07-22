@@ -99,7 +99,7 @@ define([
                 responseError: function(response) {
                     if (response.config.url.indexOf('/api/') > -1) {
                         $notice.error('error-' + response.status + ': ' +
-                            (response.config.url || '') + ', 接口出问题啦!');
+                            (response.config.url || '') + (response.data.msg || ', 接口出问题啦!'));
                     }
                     return $q.reject(response);
                 },
@@ -110,7 +110,7 @@ define([
                         if (response.config.method === 'POST') {
                             $notice.success('操作成功！');
                         }
-                        return response.data;
+                        return response.data.data;
                     }
                     return response;
                 }
