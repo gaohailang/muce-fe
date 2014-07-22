@@ -1,7 +1,7 @@
 define(function() {
     // extend underscore functionality
     _.capitalize = function(str) {
-        return str[0].toUpperCase + str.slice(1);
+        return str[0].toUpperCase() + str.slice(1);
     };
 
     // self-invoke when dom ready

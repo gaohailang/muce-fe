@@ -12,6 +12,18 @@ define([
             $scope.currentGroup = data[0];
         });
 
+        $scope.switchGroup = function(group) {
+            $scope.currentGroup = group;
+        };
+
+        $scope.switchCategory = function(category) {
+            $scope.currentCategory = category;
+        };
+
+        $scope.switchReport = function(report) {
+            $rootScope.currentReport = report;
+        };
+
         // update category list when user change select
         $scope.$watch('currentGroup', function(val) {
             if (!val) return;
@@ -19,7 +31,7 @@ define([
                 group_id: val
             }).then(function(data) {
                 $scope.categoryList = data;
-                // {id, name}
+                $scope.currentCategory = data[0];
             });
         });
 
@@ -63,7 +75,7 @@ define([
 
         $scope.$watch('currentDelType', function(val) {
             if (!val) return;
-            apiHelper('get' + _.capitalize(val)).then(function(data) {
+            apiHelper('get' + _.capitalize(val) + 'List').then(function(data) {
                 $scope.currentDelList = data;
             });
         });
@@ -81,5 +93,6 @@ define([
 
     angular.module('muceApp.report', ['muceApp.report.add'])
         .controller('reportCtrl', navbarCtrl)
-        .controller('addModalCtrl', addModalCtrl);
+        .controller('addModalCtrl', addModalCtrl)
+        .controller('delPanelCtrl', delPanelCtrl);
 });
