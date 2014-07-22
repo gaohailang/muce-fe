@@ -1,15 +1,13 @@
-define([], function() {
+define([
+    'report/add'
+], function() {
 
     // side - group->category-report list select
     function navbarCtrl(apiHelper, $scope) {
-        apiHelper('getGroupList').then(function(data) {
-            console.log(data);
-        });
-
         // Todo: 更新 ulr?!
 
         // fetch group list, and default assign first group
-        apiHelper.getGroupList().then(function(data) {
+        apiHelper('getGroupList').then(function(data) {
             $scope.groupList = data;
             $scope.currentGroup = data[0];
         });
@@ -37,12 +35,19 @@ define([], function() {
         });
 
         // currentGroup[groupList], currentCategory[categoryList], currentReport[reportList]
-
     }
 
     // add modal 内部
-    function addModalCtrl() {
-
+    function addModalCtrl($scope, $modal) {
+        $scope.addTypes = ['group', 'category', 'dimension', 'metric', 'combine_metric', 'report'];
+        $scope.openModal = function(type) {
+            // support resolve
+            var modalInstance = $modal.open({
+                templateUrl: 'templates/report/modal.html',
+                controller: type + 'ModalCtrl',
+                size: 'lg' // '', sm
+            });
+        };
     }
 
     // right - chart (currentReport - rootScope..)
@@ -74,6 +79,7 @@ define([], function() {
         };
     }
 
-    angular.module('muceApp.report', [])
-        .controller('reportCtrl', reportCtrl);
+    angular.module('muceApp.report', ['muceApp.report.add'])
+        .controller('reportCtrl', navbarCtrl)
+        .controller('addModalCtrl', addModalCtrl);
 });

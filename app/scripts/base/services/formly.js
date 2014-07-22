@@ -26,6 +26,11 @@ define(function() {
             console.log('Formly Error: template type \'' + type + '\' not supported.');
         }
 
+        /*
+            placeholder 可以 false掉或者over written, 默认是 label 值
+            label 默认是 key 的slugify值
+            options 和 type=select 是重复的？
+        */
         return {
             restrict: 'AE',
             replace: true,
@@ -38,6 +43,13 @@ define(function() {
                     $element.html(document.querySelector($scope.options.referTpl).innerHTML);
                     $compile($element.contents())($scope);
                     return;
+                }
+
+                if (!$scope.options.label) {
+                    $scope.options.label = $scope.options.key;
+                }
+                if ($scope.options.options) {
+                    $scope.options.type = 'select';
                 }
 
                 var templateUrl = getTemplateUrl($scope.options.type);

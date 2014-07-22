@@ -1,9 +1,10 @@
 <div class="control-group">
     <label class="control-label" for="{{options.key}}">
-        {{options.label}} {{options.required ? '*' : ''}}
+        {{options.label|capitalize}} {{options.required ? '*' : ''}}
     </label>
     <div class="controls" ng-switch on="options.type">
         <input ng-switch-default
+            placeholder="{{options.placeholder||options.label}}"
             id="{{options.key}}"
             type="{{options.type || 'text'}}"
             class="pmt-form-width-large">
@@ -11,6 +12,7 @@
         <select ng-options="opt.name for opt in options.options" ng-switch-when="select">
             <option value="" ng-if="options.nullText">-- {{options.nullText}} --</option>
         </select>
-        <textarea ng-switch-when="textarea"></textarea>
+        <textarea ng-switch-when="textarea"
+            placeholder="{{options.placeholder||options.label}}"></textarea>
     </div>
 </div>

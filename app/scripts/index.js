@@ -7,14 +7,17 @@ require([
     'old/mq',
     'base/MuceCom',
     './base',
-    './api'
+    './api',
+    'report/index'
 ], function(misc, Analyze, Subscribe, Channels, Dashboard, Mq, MuceCom) {
     'use strict';
 
     var muceApp = angular.module('muceApp', [
         'ui.router',
+        'ui.bootstrap',
         'muceApp.api',
-        'muceApp.base'
+        'muceApp.base',
+        'muceApp.report'
     ]);
 
     function tongji() {
