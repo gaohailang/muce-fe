@@ -69,23 +69,7 @@
             <option ng-repeat="type in delTypes" val="{{type}}">{{type|capitalize}}</option>
         </select>
 
-        <div multi-chooser multiple-select>
-            <header class="selected-wrapper">
-                Selected Items:
-                <span class="selected-name" ng-repeat="i in currentDelList|filter:{'selected': true}">
-                    <i class="icon-minus-sign" ng-click="i.selected=false"></i>{{i.name}}</span>
-            </header>
-            <div class="search-select-wrapper">
-                <input class="search-box suggestion-search-box"
-                    ng-model="currentQuery"
-                    placeholder="Search" type="search">
-                <div class="checkbox-wrapper">
-                    <label class="suggestion-item" ng-repeat="i in currentDelList | filter: currentQuery">
-                        <input type="checkbox" ng-model="i.selected" class="select-checkbox">
-                        # {{i.name}}</label>
-                </div>
-            </div>
-        </div>
+        <div multi-chooser choices-list="currentDelList"></div>
 
     </div>
 </div>

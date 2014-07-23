@@ -58,6 +58,10 @@ define(function() {
                 label: 'Report Name'
             }, {
                 referTpl: 'report/add_report/period.html'
+            }, {
+                referTpl: 'report/add_report/metric.html'
+            }, {
+                referTpl: 'report/add_report/dimension.html'
             },
             dataDict.commentField, {
                 key: 'isEnable',
@@ -154,6 +158,12 @@ define(function() {
                 $scope.formFields[0].options = data;
             });
 
+            apiHelper('getMetricList').then(function(data) {
+                $scope.metricList = data;
+            });
+            apiHelper('getDimensionList').then(function(data) {
+                $scope.dimensionList = data;
+            });
             // update category list -
             // when user change select at modal form
             $scope.$watch('form.group', function(val) {

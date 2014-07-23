@@ -33,7 +33,6 @@
     </div>
 </script>
 
-
 <script type="text/ng-template"
     id="report/add_metric/expression.html">
 
@@ -48,6 +47,31 @@
                 ng-options="opt for opt in metricOperators"></select>
             <select name="metric_id2" id="metric_id2" ng-model="form.metric_id2"
                 ng-options="opt.id as opt.name for opt in metricList"></select>
+        </div>
+    </div>
+</script>
+
+<!-- report add modal - metrics -->
+<script type="text/ng-template"
+    id="report/add_report/metric.html">
+    <div class="control-group">
+        <label for="period" class="control-label">
+            Metric *
+        </label>
+        <div class="controls">
+            <div multi-chooser choices-list="metricList"></div>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template"
+    id="report/add_report/dimension.html">
+    <div class="control-group">
+        <label for="period" class="control-label">
+            Dimensions *
+        </label>
+        <div class="controls">
+            <div multi-chooser choices-list="dimensionList"></div>
         </div>
     </div>
 </script>
