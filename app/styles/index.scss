@@ -22,3 +22,15 @@
         margin: 3px 0;
     }
 }
+
+.setting-wrapper {
+    .dimension-operator{
+        button, label{
+            display: inline-block;
+        }
+    }
+    select{
+        width: 120px;
+    }
+
+}
