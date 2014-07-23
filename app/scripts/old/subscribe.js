@@ -1,6 +1,6 @@
 define([
     'base/muceData',
-    'base/MuceCom'
+    'base/muceCom'
 ], function(MuceData, MuceCom) {
 
     var Subscribe = function() {

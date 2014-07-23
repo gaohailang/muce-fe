@@ -1,6 +1,9 @@
 # Muce FrontEnd
 built with angular, and its ui-related components, to make us focus on biz development, and aims to expolore data visualization.
 
+## Tip
+test machine: [http://192.168.100.47](http://192.168.100.47) @wandoulabs onsite
+
 ## Dependencies
 
 - angular

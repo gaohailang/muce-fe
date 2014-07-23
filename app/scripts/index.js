@@ -5,7 +5,7 @@ require([
     'old/channels',
     'old/dashboard',
     'old/mq',
-    'base/MuceCom',
+    'base/muceCom',
     './base',
     './api',
     'report/index'

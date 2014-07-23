@@ -1,6 +1,7 @@
 module.exports = function(grunt) {
 
     grunt.registerTask('serve', [
+        'compass:dev',
         'configureProxies:server',
         'connect:server',
         'watch'
