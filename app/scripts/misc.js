@@ -4,6 +4,13 @@ define(function() {
         return str[0].toUpperCase() + str.slice(1);
     };
 
+    _.slugify = function(name) {
+        return name[0].toUpperCase() + name.slice(1)
+            .replace(/[-_]([a-z])/ig, function(all, letter) {
+                return letter.toUpperCase();
+            });
+    };
+
     // self-invoke when dom ready
     (function() {
         // todo: tooltip, datetimepicker, modal

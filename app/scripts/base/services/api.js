@@ -12,8 +12,8 @@ define([
             每个 biz module 有个 endpoint api map
 
             var apiMap = {
-                delBlackList: 'GET /api/app/{app_id}/blacklist/delete',
-                fetchStat: 'GET /api/adformat/statement/{id}'
+                delBlackList: 'GET /api/app/:app_id/blacklist/delete',
+                fetchStat: 'GET /api/adformat/statement/:id'
             };
 
             apiHelper.config(apiMap);
@@ -25,41 +25,32 @@ define([
         var _maps = {},
             _urlPrfix = '/api/v1';
 
-        function _buildUrl(toUrl, opt) {
-            var params = opt.param;
+        function _buildUrl(toUrl, params) {
             if (!params) return toUrl;
-            delete opt.param;
 
-            if (_.isObject(params)) {
-                _.each(params, function(val, key) {
-                    toUrl = toUrl.replace(':' + key, val);
-                });
-            } else {
-                _.each(params, function(val) {
+            _.each(params, function(val) {
+                if (toUrl.indexOf(':') > -1) {
                     toUrl = toUrl.replace(/:[^/]+/, val);
-                });
-            }
+                } else {
+                    toUrl = toUrl + '/' + val;
+                }
+            });
             return toUrl;
         }
 
-        function slugify(name) {
-            return name[0].toUpperCase() + name.slice(1)
-                .replace(/[-_]([a-z])/ig, function(all, letter) {
-                    return letter.toUpperCase();
-                });
-        }
-
         function helper(endpoint, opt) {
-            var apiStr = _maps[endpoint];
+            arguments = _.toArray(arguments);
+            var apiStr = _maps[arguments.shift()];
             opt = opt || {};
-            if (!apiStr) {
-                // throw error
+            if (_.isObject(_.last(arguments))) {
+                opt = arguments.pop();
             }
+            if (!apiStr) throw new Error('Endpint ' + endpoint + 'Does Not Exist!');
 
             return $http(_.extend({
                 method: apiStr.split(' ')[0],
                 cache: true,
-                url: _urlPrfix + _buildUrl(apiStr.split(' ')[1], opt),
+                url: _urlPrfix + _buildUrl(apiStr.split(' ')[1], arguments),
             }, opt));
         }
 
@@ -75,16 +66,16 @@ define([
             };
             // need template to build?
             _.each(maps.add, function(endpoint) {
-                processMaps['add' + slugify(endpoint)] = 'POST ' + opt.prefix + endpoint;
+                processMaps['add' + _.slugify(endpoint)] = 'POST ' + opt.prefix + endpoint;
             });
             _.each(maps.del, function(endpoint) {
-                processMaps['del' + slugify(endpoint)] = 'DELETE ' + opt.prefix + endpoint;
+                processMaps['del' + _.slugify(endpoint)] = 'DELETE ' + opt.prefix + endpoint;
             });
             _.each(maps.list, function(endpoint) {
-                processMaps['get' + slugify(endpoint) + 'List'] = 'GET ' + opt.prefix + endpoint + 's';
+                processMaps['get' + _.slugify(endpoint) + 'List'] = 'GET ' + opt.prefix + endpoint + 's';
             });
             _.each(maps.item, function(endpoint) {
-                processMaps['get' + slugify(endpoint)] = 'GET ' + opt.prefix + endpoint;
+                processMaps['get' + _.slugify(endpoint)] = 'GET ' + opt.prefix + endpoint;
             });
             this.config(processMaps);
         };
