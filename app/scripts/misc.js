@@ -6,7 +6,7 @@ define(function() {
 
     _.slugify = function(name) {
         return name[0].toUpperCase() + name.slice(1)
-            .replace(/[-_]([a-z])/ig, function(all, letter) {
+            .replace(/[-_\s]([a-z])/ig, function(all, letter) {
                 return letter.toUpperCase();
             });
     };

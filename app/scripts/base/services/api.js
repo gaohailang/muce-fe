@@ -41,9 +41,10 @@ define([
         function helper(endpoint, opt) {
             arguments = _.toArray(arguments);
             var apiStr = _maps[arguments.shift()];
-            opt = opt || {};
             if (_.isObject(_.last(arguments))) {
                 opt = arguments.pop();
+            } else {
+                opt = {};
             }
             if (!apiStr) throw new Error('Endpint ' + endpoint + 'Does Not Exist!');
 

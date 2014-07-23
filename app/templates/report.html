@@ -1,15 +1,17 @@
-<div id="report_container" class="row-fluid" ng-controller="chartPanelCtrl">
+<div id="report_container" class="row-fluid">
     <div class="span2">
         <div muce-include="templates/report/side-navbar.html"></div>
     </div>
-    <div class="span10">
+    <div class="span10" ng-controller="chartPanelCtrl">
         <div muce-include="templates/report/setting-wrapper.html"></div>
 
         <div muce-include="templates/report/detail-wrapper.html"></div>
-        <section class="chart-wrapper">
-            <div class="chart-canvas" id="chart_canvas"></div>
-        </section>
-        <div muce-include="templates/report/table-wrapper.html"></div>
+        <div>
+            <section class="chart-wrapper">
+                <div class="chart-canvas" id="chart_canvas"></div>
+            </section>
+            <div muce-include="templates/report/table-wrapper.html"></div>
+        </div>
     </div>
 </div>
 

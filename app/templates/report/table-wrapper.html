@@ -1,19 +1,18 @@
 <section class="table-wrapper">
-    <!-- Todo: with ng-grid extended -->
-    <div class="report-content-container">
-        <div class="table-content">
-            <div class="select-dimension-wrapper">
-                <div class="dimension-content">
-                </div>
-                <button class="btn btn-primary refresh-table">apply</button>
-                <a href="#filter_table" class="btn table-advanced" data-toggle="modal" >Advanced</a>
-                <span class="export">Export: <a class="CSV">CSV</a></span>
-            </div>
-            <table class="table table-bordered table-striped" id="table_canvas"></table>
-            <div class="pagination pagination-centered">
-                <ul>
-                </ul>
-            </div>
-        </div>
-    </div>
+    <!-- Todo: one-bind to save watchers -->
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr class="header-row">
+                <!-- click to sort -->
+                <td ng-repeat="(key, val) in tableHeads" ng-click="toggleRowSort(key)">{{val}}</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="row in tableRows | orderBy:sortType:sortReverse">
+                <td ng-repeat="(key, val) in tableHeads">
+                    {{row[key]}}
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </section>

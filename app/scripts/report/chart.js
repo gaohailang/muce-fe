@@ -1,4 +1,6 @@
-define(function() {
+define([
+    'report/highchart'
+], function(highchart) {
     // right - chart (currentReport - rootScope..)
     function chartPanelCtrl($scope, apiHelper, $rootScope, $modal) {
         // table, highchart, operator panel parts
@@ -70,24 +72,36 @@ define(function() {
                 dimensions: []
             }).then(function(data) {
                 // Todo: 更新 ulr?!
+                // 构建 highchart
+                highchart.buildLineChart($scope.currentReportDetail, data);
+                // 构建 table
+                buildGridData($scope.currentReportDetail, data);
             });
         };
-
-        // filters
-
+        $scope.gridOptions = {
+            data: 'buildedGridData'
+        };
         // build detail str(metric str) - show detail etc
 
-        // /report/{report_id}?period={period}&start_date={start_date}&end_date={end_date}&dimensions={dimensions}&filters={json}&offset={offset}&size={size}&cache=true/false
+        function buildGridData(currentReport, data) {
+            var heads = _.pluck(currentReport.metrics, 'name');
+            heads.unshift('Date');
+            var xheads = _.map(heads, function(h) {
+                return _.slugify(h);
+            });
+            $scope.tableHeads = _.object(xheads, heads);
+            var rows = _.map(data.result, function(row) {
+                // Todo: filter date to format
+                return _.object(xheads, [row.date].concat(_.values(_.omit(row, 'date'))));
+            });
+            $scope.tableRows = rows;
+        }
 
-        /*
-            period
-            start_date, end_date <- quickType
-            dimensions
-            filters <- advanced
-            cache=1
-
-            filters: [{"value":"1.0.0","key":"d1","operator":"EQUAL"},{"value":"wandoujia","key":"2","operator":"STARTSWITH"}]
-        */
+        $scope.sortReverse = false;
+        $scope.toggleRowSort = function(type) {
+            $scope.sortType = type;
+            $scope.sortReverse = !$scope.sortReverse;
+        };
     }
 
     return chartPanelCtrl;
