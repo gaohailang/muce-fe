@@ -36,23 +36,11 @@ define(['base/muceCom'], function(muceCom) {
         var diyOptions = $scope.$eval($attr.picker);
 
         var options = _.extend({
-            // lang: 'zh',
+            // lang: 'zh', with i18n{zh: months, dayOfWeek}
             format: 'Y/m/d',
             defaultSelect: false,
             scrollInput: true,
             timepicker: false,
-            // i18n: {
-            //     zh: {
-            //         months: [
-            //             '一月', '二月', '三月', '四月',
-            //             '五月', '六月', '七月', '八月',
-            //             '九月', '十月', '十一月', '十二月'
-            //         ],
-            //         dayOfWeek: [
-            //             '星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'
-            //         ]
-            //     }
-            // },
             yearStart: 2010,
             yearEnd: 2016
         }, diyOptions, {
@@ -66,6 +54,16 @@ define(['base/muceCom'], function(muceCom) {
         $elem.datetimepicker(options);
     }
 
+    function multiChooser() {
+        return {
+            templateUrl: 'templates/widgets/multi-chooser.html',
+            replace: true,
+            scope: {
+                choicesList: '='
+            }
+        }
+    }
+
     angular.module('muceApp.base.directives', [])
         .directive('muceNavbar', navbarDef)
         .directive('muceInclude', ['$http', '$templateCache', '$compile', muceInclude])
@@ -74,5 +72,6 @@ define(['base/muceCom'], function(muceCom) {
                 require: '?ngModel',
                 link: dateTimePickerLinker
             };
-        });
+        })
+        .directive('multiChooser', multiChooser);
 });
