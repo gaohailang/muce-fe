@@ -37,7 +37,7 @@ define([
                 // Todo: 更新 ulr?! or resign by routeParam
                 $scope.currentCategory = data[0];
             });
-        });
+        }, true);
 
         // update report List when user change select
         $scope.$watch('currentCategory', function(val) {
@@ -48,7 +48,7 @@ define([
                 $scope.reportList = data;
                 $rootScope.currentReport = data[0];
             });
-        });
+        }, true);
 
         // currentGroup[groupList], currentCategory[categoryList], currentReport[reportList]
     }
