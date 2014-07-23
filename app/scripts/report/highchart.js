@@ -1,6 +1,6 @@
 define([
-    'base/MuceCom'
-], function(MuceCom) {
+    'base/muceCom'
+], function(muceCom) {
 
     return {
         buildLineChart: function(currentReport, data) {
