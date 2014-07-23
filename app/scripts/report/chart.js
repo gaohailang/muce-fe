@@ -80,6 +80,12 @@ define([
         };
 
         // build detail str(metric str) - show detail etc
+        $scope.detailStatus = false;
+        $scope.detailToggleStr = 'Show Report Detail';
+        $scope.toggleDetail = function() {
+            $scope.detailStatus = !$scope.detailStatus;
+            $scope.detailToggleStr = $scope.detailStatus ? 'Hide Report Detail' : 'Show Report Detail';
+        };
 
         function buildGridData(currentReport, data) {
             var heads = _.pluck(currentReport.metrics, 'name');

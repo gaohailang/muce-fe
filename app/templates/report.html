@@ -5,7 +5,7 @@
     <div class="span10" ng-controller="chartPanelCtrl">
         <div muce-include="templates/report/setting-wrapper.html"></div>
 
-        <div muce-include="templates/report/detail-wrapper.html"></div>
+        <div ng-show="detailStatus" muce-include="templates/report/detail-wrapper.html"></div>
         <div>
             <section class="chart-wrapper">
                 <div class="chart-canvas" id="chart_canvas"></div>
@@ -14,7 +14,6 @@
         </div>
     </div>
 </div>
-
 
 <script type="text/ng-template"
     id="report/add_report/period.html">

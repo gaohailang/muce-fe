@@ -1,5 +1,5 @@
 <section class="setting-wrapper row-fluid">
-    <div class="operator-wrapper span10">
+    <div class="operator-wrapper span9">
         <div class="date-operator">
             <!-- period type, 如果 report 不支持的要hide -->
             <div class="btn-group">
@@ -41,8 +41,8 @@
             </label>
         </div>
     </div>
-    <div class="trigger-wrapper span2">
+    <div class="trigger-wrapper span3">
         <button class="btn btn-primary refresh-report">apply</button>
-        <a class="accordion-toggle"href="#collapseOne">Report Detail</a>
+        <a ng-click="toggleDetail()" href="#">{{detailToggleStr}}</a>
     </div>
 </section>
