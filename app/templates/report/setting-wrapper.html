@@ -1,0 +1,45 @@
+<section class="setting-wrapper row-fluid">
+    <div class="operator-wrapper span10">
+        <div class="date-operator">
+            <!-- period type, 如果 report 不支持的要hide -->
+            <div class="btn-group">
+              <button type="button" class="btn btn-default">hour</button>
+              <button type="button" class="btn btn-default">day</button>
+            </div>
+
+            <select id="quickChooseList"
+                ng-model="currentQuick"
+                ng-options="val as key for (key, val) in quickChooseList">
+                <option value="">-- Quick Select --</option>
+            </select>
+
+            <!-- date-range start="" end="" -->
+            <input type="date"> - <input type="date">
+
+        </div>
+        <div class="dimension-operator">
+            <button class="btn"
+                ng-click="openAdvancedPanel()">
+                Advanced</button>
+            <label for="dimensions_1">1st Dimen:
+                <select id="dimensions_1" ng-model="dimensions.1st"
+                    ng-options="i for i in currentReportDetail.dimensions">
+                </select>
+            </label>
+            <label for="dimensions_2">2nd Dimen:
+                <select id="dimensions_2"  ng-model="dimensions.2nd"
+                    ng-options="i for i in currentReportDetail.dimensions">
+                </select>
+            </label>
+            <label for="dimensions_3">3rd Dimen:
+                <select id="dimensions_3" ng-model="dimensions.4rd"
+                    ng-options="i for i in currentReportDetail.dimensions">
+                </select>
+            </label>
+        </div>
+    </div>
+    <div class="trigger-wrapper span2">
+        <button class="btn btn-primary refresh-report">apply</button>
+        <a class="accordion-toggle"href="#collapseOne">Report Detail</a>
+    </div>
+</section>

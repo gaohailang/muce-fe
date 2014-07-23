@@ -1,49 +1,9 @@
-<div id="report_container" class="row-fluid">
+<div id="report_container" class="row-fluid" ng-controller="chartPanelCtrl">
     <div class="span2">
         <div muce-include="templates/report/side-navbar.html"></div>
     </div>
     <div class="span10">
-
-        <!-- operator-wrapper -->
-        <section class="setting-wrapper">
-            <div class="operator-wrapper">
-                <div class="date-operator">
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-default">hour</button>
-                      <button type="button" class="btn btn-default">day</button>
-                    </div>
-                    <select name="" id=""></select>
-                    <input type="date"> - <input type="date">
-                </div>
-                <div class="dimension-operator">
-                    <button class="btn">Advanced</button>
-                    <label for="">1st Dimen:
-                        <select name="" id=""></select>
-                    </label>
-                    <label for="">2nd Dimen:
-                        <select name="" id=""></select>
-                    </label>
-                    <label for="">3rd Dimen:
-                        <select name="" id=""></select>
-                    </label>
-                </div>
-            </div>
-            <div class="trigger-wrapper">
-                <button class="btn btn-primary refresh-report">apply</button>
-                <a class="accordion-toggle"href="#collapseOne">Report Detail</a>
-            </div>
-        </section>
-        <section class="common-filter-wrapper">
-            <a href="#analyze" class="btn btn-primary feel-smart muce-nav-tab"
-                data-id="#analytics_container">Feel Smart ! </a>
-            <div class="common-filter-content">
-                <div class="quick-select-wrapper"></div>
-                <div class="periods-wrapper"></div>
-                <input type="text" name="start_date" class="start-date date date-time-picker"/> -
-                <input type="text" name="end_date" class="end-date date date-time-picker"/>
-            </div>
-        </section>
-
+        <div muce-include="templates/report/setting-wrapper.html"></div>
 
         <div muce-include="templates/report/detail-wrapper.html"></div>
         <section class="chart-wrapper">
