@@ -2,7 +2,7 @@
 built with angular, and its ui-related components, to make us focus on biz development, and aims to expolore data visualization.
 
 ## Tip
-test machine: [http://192.168.100.47](http://192.168.100.47) @wandoulabs onsite
+test machine: [http://192.168.100.47:9001](http://192.168.100.47:9001) @wandoulabs onsite
 
 ## Dependencies
 
