@@ -1,5 +1,3 @@
-var lrSnippet = require('connect-livereload')();
-
 function mountFolder(connect, dir) {
     return connect.static(require('path').resolve(dir));
 }
@@ -30,7 +28,6 @@ module.exports = function(grunt) {
     var rewriteRules = _.map(['analytics', 'channels', 'dashboard', 'events', 'metrics', 'mq', 'report', 'subscribe'], function(mod) {
         return '^/' + mod + '/?.*$ /index.html';
     });
-    console.log(rewriteRules);
 
     // short task config defined here
     _.extend(configOpts, {

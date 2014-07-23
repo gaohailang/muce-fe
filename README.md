@@ -4,6 +4,48 @@ built with angular, and its ui-related components, to make us focus on biz devel
 ## Tip
 test machine: [http://192.168.100.47:9001](http://192.168.100.47:9001) @wandoulabs onsite
 
+旧 muce 环境搭建
+```
+
+// install grunt, matchdep, grunt-contrib-connect, grunt-connect-proxy
+// grunt serve
+connect: {
+    options: {
+        port: 9000,
+        hostname: '*'
+    },
+    server: {
+        options: {
+            middleware: function(connect) {
+                return [
+                    require('grunt-connect-proxy/lib/utils').proxyRequest,
+                    mountFolder(connect, 'app')
+                ];
+            },
+            open: true,
+            useAvailablePort: true
+        },
+        proxies: [{
+            context: '/muce-webapp/',
+            host: 'muce.corp.wandoujia.com',
+            changeOrigin: true,
+            headers: {
+                cookie: '<your cookie from muce.copr.wandoulabs>',
+                host: 'muce.corp.wandoujia.com'
+            }
+        }]
+    }
+}
+
+grunt.registerTask('serve', [
+        'configureProxies:server',
+        'connect:server',
+        'watch'
+]);
+
+```
+
+
 ## Dependencies
 
 - angular
