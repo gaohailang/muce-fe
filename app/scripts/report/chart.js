@@ -42,16 +42,16 @@ define([
 
         $scope.$watch('currentReportDetail', function(val) {
             if (!val) return;
+            $scope.currentQuick = -7; // last week
             // Todo: 更新 ulr?! or reset by routeParam
-            // set currentQuick
             // check period, and set default
         }, true);
 
         $scope.$watch('currentQuick', function(val) {
             if (!val) return;
             // set start_date, end_date, then fetchReport
-            $scope.form.startDate = new Date().getTime() + (1000 * 60 * 60 * 24) * val;
-            $scope.form.endDate = new Date().getTime();
+            $scope.startDate = new Date().getTime() + (1000 * 60 * 60 * 24) * val;
+            $scope.endDate = new Date().getTime();
             $scope.fetchReports();
         });
 
@@ -78,9 +78,7 @@ define([
                 buildGridData($scope.currentReportDetail, data);
             });
         };
-        $scope.gridOptions = {
-            data: 'buildedGridData'
-        };
+
         // build detail str(metric str) - show detail etc
 
         function buildGridData(currentReport, data) {
@@ -92,7 +90,9 @@ define([
             $scope.tableHeads = _.object(xheads, heads);
             var rows = _.map(data.result, function(row) {
                 // Todo: filter date to format
-                return _.object(xheads, [row.date].concat(_.values(_.omit(row, 'date'))));
+                return _.object(xheads, [row.date].concat(
+                    _.values(_.omit(row, 'date'))
+                ));
             });
             $scope.tableRows = rows;
         }

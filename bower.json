@@ -10,6 +10,7 @@
     "requirejs": "~2.1.14",
     "angular-classy": "~0.4.2",
     "underscore": "~1.6.0",
-    "bootstrap": "~3.2.0"
+    "bootstrap": "~3.2.0",
+    "datetimepicker": "~2.3.2"
   }
 }

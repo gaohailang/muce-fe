@@ -36,8 +36,8 @@ define([
                             name: item.name,
                             data: [],
                             id: item.id,
-                            pointStart: MuceCom.getUTCDateByDateAndPeriod(data.result[0].date, data.period),
-                            pointInterval: MuceCom.getIntervalByPeriod(data.period)
+                            pointStart: muceCom.getUTCDateByDateAndPeriod(data.result[0].date, data.period),
+                            pointInterval: muceCom.getIntervalByPeriod(data.period)
                         };
                         if (isMutipleY && item.type === 'percent') {
                             detailData.yAxis = 1;
