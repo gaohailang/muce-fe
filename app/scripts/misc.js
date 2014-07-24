@@ -5,10 +5,17 @@ define(function() {
     };
 
     _.slugify = function(name) {
+        // need fix no need to capital
         return name[0].toUpperCase() + name.slice(1)
             .replace(/[-_\s]([a-z])/ig, function(all, letter) {
                 return letter.toUpperCase();
             });
+    };
+
+    _.deSlugify = function(name) {
+        return name.replace(/[A-Z]/g, function(letter) {
+            return '-' + letter.toLowerCase();
+        })
     };
 
     // self-invoke when dom ready

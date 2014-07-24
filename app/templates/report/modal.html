@@ -1,14 +1,10 @@
 <div class="modal-header">
-    <button type="button" class="close"
-        ng-click="$close()"
+    <button type="button" class="close" ng-click="$close()"
         data-dismiss="modal" aria-hidden="true">×</button>
     <h3 class="modal-title">{{modalTitle}}</h3>
 </div>
 <div class="modal-body">
-    <formly-form name="ngSimpleForm"
-        validate-submit="submitHandler()"
-        fields="formFields" options="formOptions">
-    </formly-form>
+    <formly-form fields="formFields" key="{{formName}}"></formly-form>
 </div>
 <div class="modal-footer">
     <a target="_blank">
@@ -17,6 +13,12 @@
             data-original-title="Help Document">
         </i>
     </a>
-    <button class="btn" data-dismiss="modal" ng-click="$close()">Close</button>
-    <button class="btn btn-primary" ng-click="ok()">Save Changes</button>
+    <button class="btn"
+        data-dismiss="modal" ng-click="$close()">
+        Close
+    </button>
+    <button class="btn btn-primary"
+        formly-submit="{{formName}}" ng-click="ok()">
+        Save Changes
+    </button>
 </div>

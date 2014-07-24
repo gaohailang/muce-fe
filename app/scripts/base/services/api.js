@@ -89,10 +89,10 @@ define([
         .factory('apiHelperInterceptor', function($q, $notice) {
             return {
                 responseError: function(response) {
-                    if (response.config.url.indexOf('/api/') > -1) {
-                        $notice.error('error-' + response.status + ': ' +
-                            (response.config.url || '') + (response.data.msg || ', 接口出问题啦!'));
-                    }
+                    // if (response.config.url.indexOf('/api/') > -1) {
+                    $notice.error('error-' + response.status + ': ' +
+                        (response.config.url || '') + (response.data.msg || ', 接口出问题啦!'));
+                    // }
                     return $q.reject(response);
                 },
 

@@ -5,24 +5,20 @@ define(function() {
     // todo: 对于 periods -> 两个 checkbox -> 一个 model 值
     // todo: 对于 multi-select(列出所有 options etc) widget
     // todo: 如何设置 options 的值为 deferred 对象
-
+    var addModule = angular.module('muceApp.report.add', []);
     var dataDict = {
         dimensionTypes: ['string', 'int', 'float', 'percent'],
         metricOperators: ['+', '-', '*', '/'],
         commentField: {
             key: 'comment',
-            attr: {
+            type: 'textarea',
+            attrs: {
+                validator: 'required,lengthRange',
+                range: '4,30',
                 'text-area-elastic': true,
                 'rows': '4',
                 'cols': '50'
-            },
-            type: 'textarea',
-            validate: {
-                required: true,
-                maxlength: 20,
-                minlength: 4
-            },
-            msg: {}
+            }
         },
         groupField: {
             key: 'group',
@@ -40,7 +36,12 @@ define(function() {
     var fieldsDict = {
         group: [{
                 label: 'Group Name',
-                key: 'name'
+                key: 'name',
+                attrs: {
+                    validator: 'required',
+                    requiredErrorMessage: '测试错误',
+                    requiredSuccessMessage: '测试正确输入'
+                }
             },
             dataDict.commentField
         ],
@@ -108,53 +109,27 @@ define(function() {
         ]
     };
 
-    var metricFields = [];
+    var addOkMap = {
+        group: function() {
+            // this equal $scope
+            console.log();
+        },
+        category: function() {
+            console.log()
+        }
+    };
 
-    var combined_metricFields = [];
-
-
-    // Todo: with base tpl for duplicate boilerplate ctrl
-    angular.module('muceApp.report.add', [])
-        .controller('groupModalCtrl', function($scope) {
-            $scope.modalTitle = 'Add Group';
-            $scope.formFields = fieldsDict.group;
-            $scope.formOptions = {
-                key: 'form'
-            };
-
-            $scope.submitHandler = function() {
-                $scope.submittedData = $scope.form;
-                $scope.submittedData = null;
-                $scope.formData = {};
-            };
-        })
-        .controller('categoryModalCtrl', function($scope, apiHelper) {
-            $scope.form = {}; // no need to prefill group: $scope.currentGroup
-            $scope.modalTitle = 'Add Category';
-            $scope.formFields = fieldsDict.category;
-            $scope.formOptions = {
-                key: 'form'
-            };
+    var initMap = {
+        group: function() {},
+        category: function($scope, apiHelper) {
             apiHelper('getGroupList').then(function(data) {
-                $scope.form.group = data[0];
+                $scope.formlyData.group = data[0];
                 $scope.formFields[0].options = data;
             });
-
-            $scope.submitHandler = function() {
-                $scope.submittedData = $scope.form;
-                $scope.submittedData = null;
-                $scope.formData = {};
-            };
-        })
-        .controller('reportModalCtrl', function($scope, apiHelper) {
-            $scope.form = {};
-            $scope.formOptions = {
-                key: 'form'
-            };
-            $scope.modalTitle = 'Add Report';
-            $scope.formFields = fieldsDict.report;
+        },
+        report: function($scope, apiHelper) {
             apiHelper('getGroupList').then(function(data) {
-                $scope.form.group = data[0];
+                $scope.formlyData.group = data[0];
                 $scope.formFields[0].options = data;
             });
 
@@ -177,17 +152,11 @@ define(function() {
                     $scope.form.category = data[0];
                 });
             }, true);
-        })
-        .controller('metricModalCtrl', function($scope, apiHelper) {
-            $scope.form = {};
-            $scope.formOptions = {
-                key: 'form'
-            };
-            $scope.modalTitle = 'Add Metric';
-            $scope.formFields = fieldsDict.metric;
+        },
+        metric: function($scope, apiHelper) {
             apiHelper('getEventList').then(function(data) {
                 $scope.formFields[0].options = data;
-                $scope.form.event = data[0];
+                $scope.formlyData.event = data[0];
             });
 
             // watch event to fetch optional fields
@@ -199,42 +168,38 @@ define(function() {
                     }
                 }).then(function(data) {
                     console.log(data); // set $scope.form.xx bug!!
-                    $scope.form.x = _.pluck(data, 'name').join(',');
+                    $scope.formlyData.x = _.pluck(data, 'name').join(',');
                 });
             }, true);
-        })
-        .controller('combineMetricModalCtrl', function($scope, apiHelper) {
-            $scope.form = {};
-            $scope.formOptions = {
-                key: 'form'
-            };
-            $scope.modalTitle = 'Add Metric';
-            $scope.formFields = fieldsDict.combinedMetric;
+        },
+        combinedMetric: function($scope, apiHelper) {
             apiHelper('getMetricList').then(function(data) {
                 $scope.metricList = data;
             });
             $scope.metricOperators = dataDict.metricOperators;
-        })
-        .controller('dimensionModalCtrl', function($scope, apiHelper) {
-            $scope.form = {};
-            $scope.formOptions = {
-                key: 'form'
-            };
-            $scope.modalTitle = 'Add Dimension';
-            $scope.formFields = fieldsDict.dimension;
+        },
+        dimension: function($scope, apiHelper) {
             apiHelper('getFieldList').then(function(data) {
                 $scope.formFields[0].options = data;
             });
+        }
+    };
 
-            $scope.submitHandler = function() {
-                $scope.submittedData = $scope.form;
-                // { "name": "age", "type": 3, "field": "age", "comment": "年龄"}
-                apiHelper('addDimension', {
+    // Todo: with base tpl for duplicate boilerplate ctrl
+    _.each(fieldsDict, function(formFields, key) {
+        addModule.controller(key + 'ModalCtrl', function($scope, apiHelper) {
+            $scope.modalTitle = 'Add ' + _.capitalize(key);
+            $scope.formFields = formFields;
+            // $scope.formName = key;
+            // $scope[key + 'Data'] = {};
+            $scope.formName = 'formly';
+            $scope.formlyData = {};
 
-                }).then(function(data) {
-
-                });
-                $scope.submittedData = null;
+            initMap[key]($scope, apiHelper);
+            $scope.ok = function() {
+                console.log($scope.formlyData);
+                _.bind(addOkMap[key], $scope).call();
             };
         });
+    });
 });
