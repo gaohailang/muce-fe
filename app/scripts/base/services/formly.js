@@ -1,4 +1,6 @@
-define(function() {
+define([
+    'base/services/validator'
+], function(rules) {
     'use strict';
 
     /*
@@ -14,7 +16,7 @@ define(function() {
         // referTp showcase - hook for diy-style, dynamic and rich field widget
     */
 
-    function formlyField($http, $compile, $templateCache) {
+    function formlyField($http, $compile, $templateCache, $timeout) {
 
         function getTemplateUrl(type) {
             // Todo More Input Type Widget
@@ -38,6 +40,7 @@ define(function() {
             scope: false,
             link: function fieldLink($scope, $element, $attr) {
                 $scope.options = $scope.$eval($attr.options);
+                var formKey = $element.parents('div-form').attr('key') + 'Data';
 
                 // shortcut for hook referTpl
                 if ($scope.options.referTpl) {
@@ -62,15 +65,12 @@ define(function() {
                     cache: $templateCache
                 }).success(function(data) {
                     $element.html(data);
-
-                    // $input = $element.find($scope.options.type)[0] ? $element.find($scope.options.type)[0] : $element.find('input')[0]; // campatible with default option
-                    // $msg = $element.find('div')[1];
                     var type = $scope.options.type;
                     if ('input,select,textarea'.indexOf(type) === -1) {
                         type = 'input';
                     }
                     $input = $element.find(type)[0];
-                    $input.setAttribute('ng-model', $scope.$parent.options.key + '.' + $scope.options.key);
+                    $input.setAttribute('ng-model', formKey + '.' + $scope.options.key);
                     $input.setAttribute('name', $scope.options.key);
                     if ($input && $scope.options.validate) {
                         angular.forEach($scope.options.validate, function(val, key) {
@@ -80,17 +80,17 @@ define(function() {
                     if ($scope.options.options) {
                         $input.setAttribute('ng-options', $scope.options.optionStr || defaultNgOptionStr);
                     }
-                    // if ($msg && $scope.options.msg) {
-                    //     angular.forEach($scope.options.msg, function(val, key) {
-                    //         $msg.setAttribute(key, val);
-                    //     });
-                    // }
-                    if ($input && $scope.options.attr) {
-                        angular.forEach($scope.options.attr, function(val, key) {
-                            $input.setAttribute(key, val);
+                    if ($input && $scope.options.attrs) {
+                        angular.forEach($scope.options.attrs, function(val, key) {
+                            $input.setAttribute(_.deSlugify(key), val);
                         });
                     }
                     $compile($element.contents())($scope);
+                    $timeout(function() {
+                        $scope[$scope.formName].$addControl(
+                            $element.find('input,textarea,select').data("$ngModelController")
+                        );
+                    }, 500)
                 });
             },
             controller: function fieldController($scope) {
@@ -113,17 +113,67 @@ define(function() {
             templateUrl: 'templates/widgets/formly-form.html',
             replace: true,
             scope: true,
-            link: function($scope, $elem, $attr) {
-                $scope.options = $scope.$eval($attr.options);
-                $scope.fields = $scope.$eval($attr.fields);
-                $scope.$parent[$scope.options.key] = {};
-                // $elem[0].setAttribute('name', $scope.options.key);
-                $compile($elem.contents())($scope);
+            priority: 101,
+            compile: function(tElem, tAttr) {
+                return function($scope, $elem, $attr) {
+                    $scope.fields = $scope.$eval($attr.fields);
+                    var name = $attr.key || 'formly';
+                    // before form directive init(because dynamic name)
+
+                    if (!$scope[name + 'Data']) $scope[name + 'Data'] = {};
+                    var realFormStr = $elem[0].outerHTML.replace(/div-form/g, 'form').replace('<name>', name);
+                    $compile(realFormStr)($scope);
+                    // $rootScope.$emit('formly.formReady');
+                }
             }
         };
     }
 
-    angular.module('muceApp.base.services.formly', [])
+    angular.module('muceApp.base.services.formly', ['validation', 'validation.rule'])
         .directive('formlyField', formlyField)
-        .directive('formlyForm', formlyForm);
+        .directive('formlyForm', formlyForm)
+        .directive('formlySubmit', ['$injector',
+            function($injector) {
+
+                var $validationProvider = $injector.get('$validation'),
+                    $timeout = $injector.get('$timeout'),
+                    $parse = $injector.get('$parse');
+
+                return {
+                    priority: 1, // execute before ng-click (0)
+                    terminal: true,
+                    link: function postLink(scope, element, attrs) {
+
+                        $timeout(function() {
+                            element.on('click', function(e) {
+                                e.preventDefault();
+                                // quick fix:
+                                var form = scope.$$childHead[attrs.formlySubmit];
+                                $validationProvider.validate(form).success(function() {
+                                    $parse(attrs.ngClick)(scope);
+                                });
+                            });
+                        });
+
+                    }
+                }
+            }
+        ])
+        .config(function($validationProvider) {
+            $validationProvider.setErrorHTML(function(msg) {
+                return "<label class=\"control-label has-error\">" + msg + "</label>";
+            });
+
+            $validationProvider.setExpression(rules.expression).setDefaultMsg(rules.defaultMsg);
+
+            $validationProvider.checkValid = function(form) {
+                for (var k in form) { // whole scope
+                    if (form[k] && form[k].hasOwnProperty('$dirty')) {
+                        if (!form[k].$valid) return false;
+                    }
+                }
+                return true;
+            };
+        });
+
 });

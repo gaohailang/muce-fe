@@ -5,14 +5,13 @@
     <div class="controls" ng-switch on="options.type">
         <input ng-switch-default
             placeholder="{{options.placeholder||options.label}}"
-            id="{{options.key}}"
+            id="{{options.key}}" name="{{options.key}}"
             type="{{options.type || 'text'}}"
             class="pmt-form-width-large">
-        <!-- opt.name group by opt.group for opt in options.options -->
-        <select ng-switch-when="select">
+        <select ng-switch-when="select" name="{{options.key}}">
             <option value="" ng-if="options.nullText">-- {{options.nullText}} --</option>
         </select>
-        <textarea ng-switch-when="textarea"
+        <textarea ng-switch-when="textarea" name="{{options.key}}"
             placeholder="{{options.placeholder||options.label}}"></textarea>
     </div>
 </div>
