@@ -21,12 +21,15 @@
         <label for="period" class="control-label">
             Report Periods *
         </label>
+        <!-- Todo: 至少选一个 -->
         <div class="controls">
             <label for="hour">Hour
-                <input type="checkbox" value="1" name="hour">
+                <input type="checkbox" value="1" name="hour"
+                    validator="periodChooser" ng-model="formlyData.hour">
             </label>
             <label for="day">Day
-                <input type="checkbox" value="1" name="day">
+                <input type="checkbox" value="1" name="day"
+                    validator="periodChooser" ng-model="formlyData.day">
             </label>
         </div>
     </div>
@@ -40,11 +43,14 @@
             Metric Expression
         </label>
         <div class="controls">
-            <select name="metric_id1" id="metric_id1" ng-model="form.metric_id1"
+            <select validator="required" name="metric_id1"
+                id="metric_id1" ng-model="formlyData.metric_id1"
                 ng-options="opt.id as opt.name for opt in metricList"></select>
-            <select name="operator" id="operator" ng-model="form.operator"
+            <select validator="required" name="operator"
+                id="operator" ng-model="formlyData.operator"
                 ng-options="opt for opt in metricOperators"></select>
-            <select name="metric_id2" id="metric_id2" ng-model="form.metric_id2"
+            <select validator="required" name="metric_id2"
+                id="metric_id2" ng-model="formlyData.metric_id2"
                 ng-options="opt.id as opt.name for opt in metricList"></select>
         </div>
     </div>

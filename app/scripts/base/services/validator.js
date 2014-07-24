@@ -7,11 +7,18 @@ define(function() {
                     return true;
                 }
                 return false;
+            },
+            optional: function() {
+                return true;
             }
         },
         defaultMsg: {
             lengthRange: {
                 error: 'length dont meet', // Todo: msg from attr info
+                success: ''
+            },
+            optional: { // Todo: default msg?!
+                error: '',
                 success: ''
             }
         }

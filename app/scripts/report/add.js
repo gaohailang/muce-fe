@@ -2,9 +2,12 @@ define(function() {
 
     //$scope.groupList, categoryList, eventList, FieldList
     // todo: submit 之前的数据转换(group -> group_id)
-    // todo: 对于 periods -> 两个 checkbox -> 一个 model 值
     // todo: 对于 multi-select(列出所有 options etc) widget
     // todo: 如何设置 options 的值为 deferred 对象
+    // todo: dataDict 中的 option 的默认值
+    // todo: add category, 默认的当前的 group report etc
+    // done: 默认全是 required 的
+    // todo: 给外围 referTpl 设定 validator?
     var addModule = angular.module('muceApp.report.add', []);
     var dataDict = {
         dimensionTypes: ['string', 'int', 'float', 'percent'],
@@ -13,7 +16,8 @@ define(function() {
             key: 'comment',
             type: 'textarea',
             attrs: {
-                validator: 'required,lengthRange',
+                // validator: 'required,lengthRange',
+                validator: 'optional',
                 range: '4,30',
                 'text-area-elastic': true,
                 'rows': '4',
@@ -29,7 +33,10 @@ define(function() {
             label: 'Metric Type',
             key: 'type',
             optionStr: 'opt for opt in options.options',
-            options: ['int', 'float', 'percent']
+            options: ['int', 'float', 'percent'],
+            attrs: {
+                'ng-value': "'percent'"
+            }
         }
     };
 
@@ -96,7 +103,12 @@ define(function() {
             },
             dataDict.metricTypeField, dataDict.commentField
         ],
-        dimension: [dataDict.groupField, {
+        dimension: [{
+                label: 'Select Field',
+                key: 'field',
+                type: 'select',
+                options: []
+            }, {
                 key: 'name',
                 label: 'Dimension Name'
             }, {
@@ -116,6 +128,12 @@ define(function() {
         },
         category: function() {
             console.log()
+        },
+
+        report: function() {
+            // [metricList. dimensionList] array,with selected
+            // formlyData[comment, group[id], isEnable, name]
+            // todo: 对于 periods -> 两个 checkbox -> 一个 model 值
         }
     };
 
@@ -141,15 +159,15 @@ define(function() {
             });
             // update category list -
             // when user change select at modal form
-            $scope.$watch('form.group', function(val) {
+            $scope.$watch('formlyData.group', function(val) {
                 if (!val) return;
                 apiHelper('getCategoryList', {
                     params: {
                         group_id: val.id
                     }
                 }).then(function(data) {
+                    $scope.formlyData.category = data[0];
                     $scope.formFields[1].options = data;
-                    $scope.form.category = data[0];
                 });
             }, true);
         },
@@ -181,6 +199,7 @@ define(function() {
         dimension: function($scope, apiHelper) {
             apiHelper('getFieldList').then(function(data) {
                 $scope.formFields[0].options = data;
+                $scope.formlyData.field = data[0];
             });
         }
     };
@@ -198,8 +217,27 @@ define(function() {
             initMap[key]($scope, apiHelper);
             $scope.ok = function() {
                 console.log($scope.formlyData);
-                _.bind(addOkMap[key], $scope).call();
+                // _.bind(addOkMap[key], $scope).call();
             };
         });
     });
+
+    addModule.config(function($validationProvider) {
+        // 第一次如何 trigger(onSubmit)
+        $validationProvider.setExpression({
+            periodChooser: function(value, scope, element, attrs) {
+                var form = element.scope().formlyData;
+                if (form.day || form.hour) {
+                    return true;
+                }
+                return false;
+            }
+        }).setDefaultMsg({
+            periodChooser: {
+                error: '至少选一个吧', // Todo: msg from attr info
+                success: ''
+            }
+        });
+    });
+
 });

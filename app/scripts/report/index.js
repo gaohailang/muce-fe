@@ -55,7 +55,7 @@ define([
 
     // add modal 内部
     function addModalCtrl($scope, $modal) {
-        $scope.addTypes = ['group', 'category', 'dimension', 'metric', 'combineMetric', 'report'];
+        $scope.addTypes = ['group', 'category', 'dimension', 'metric', 'combinedMetric', 'report'];
         $scope.openModal = function(type) {
             // support resolve
             var modalInstance = $modal.open({

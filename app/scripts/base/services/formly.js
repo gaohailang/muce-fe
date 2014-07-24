@@ -80,8 +80,12 @@ define([
                     if ($scope.options.options) {
                         $input.setAttribute('ng-options', $scope.options.optionStr || defaultNgOptionStr);
                     }
-                    if ($input && $scope.options.attrs) {
-                        angular.forEach($scope.options.attrs, function(val, key) {
+                    // && $scope.options.attrs
+                    if ($input) {
+                        // default required, how to shutdown
+                        angular.forEach(_.extend({
+                            validator: 'required'
+                        }, $scope.options.attrs), function(val, key) {
                             $input.setAttribute(_.deSlugify(key), val);
                         });
                     }
