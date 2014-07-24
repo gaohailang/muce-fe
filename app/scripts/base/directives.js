@@ -59,7 +59,16 @@ define(['base/muceCom'], function(muceCom) {
             templateUrl: 'templates/widgets/multi-chooser.html',
             replace: true,
             scope: {
-                choicesList: '='
+                choicesList: '=',
+                trash: '@'
+            },
+            controller: function($scope) {
+                $scope.trash = $scope.trash || false;
+                $scope.cancelAllSelected = function() {
+                    _.each($scope.choicesList, function(item) {
+                        item.selected = false;
+                    });
+                }
             }
         }
     }
