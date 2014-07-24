@@ -1,8 +1,13 @@
 <div>
     <header class="selected-wrapper">
-        Selected Items:
-        <span class="selected-name" ng-repeat="i in choicesList|filter:{'selected': true}">
-            <i class="icon-minus-sign" ng-click="i.selected=false"></i>{{i.name}}</span>
+        <span>Selected Items:
+            <!-- ({{(choicesList|filter:{'selected': true}).length}} Num) -->
+            &nbsp;&nbsp;<i class="icon-trash"></i>
+        </span><br/>
+        <span class="selected-name"
+            ng-repeat="i in choicesList|filter:{'selected': true}">
+            <i class="icon-minus-sign" ng-click="i.selected=false"></i>{{i.name}}<br/>
+        </span>
     </header>
     <div class="search-select-wrapper">
         <input class="search-box suggestion-search-box"

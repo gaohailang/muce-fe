@@ -23,14 +23,113 @@
     }
 }
 
-.setting-wrapper {
-    .dimension-operator{
-        button, label{
-            display: inline-block;
+// report page fix
+#report_container {
+    .nav-sidebar {
+        padding: 0;
+
+        h3{
+            font-size: 18px;
+            line-height: 22px;
+            padding-left: 10px;
+            border-left: 2px solid red;
+        }
+
+        select{
+            max-width: 100%;
+        }
+        input{
+            max-width: 95%;
         }
     }
-    select{
-        width: 120px;
+
+    .setting-wrapper {
+        .date-operator, .dimension-operator {
+            & > * {
+                margin-right: 10px;
+            }
+        }
+        .date-operator {
+            .btn-group {
+                margin-bottom: 10px;
+                .btn {
+                    padding-left: 18px;
+                    padding-right: 18px;
+                }
+            }
+        }
+        .dimension-operator {
+            button, label{
+                display: inline-block;
+            }
+            margin-bottom: 10px;
+            & > button{
+                margin-bottom: 5px;
+            }
+            label select {
+                margin: 0;
+            }
+        }
+        .trigger-wrapper{
+            vertical-align: middle;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        select{
+            width: 130px;
+        }
     }
 
+    .chart-wrapper {
+        height: 450px;
+        max-height: 450px;
+    }
+    .table-wrapper {
+        thead td {
+            cursor: pointer;
+            i {
+                padding-left: 10px;
+            }
+        }
+        margin: 20px 0;
+        border: none;
+        min-height: initial;
+    }
 }
+
+// component - todo with prefix
+.selected-wrapper {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+.search-select-wrapper{
+    label{
+        white-space: nowrap;
+    }
+}
+
+
+label > input[type=checkbox] {
+    margin: 0;
+    top: -1px;
+    vertical-align: middle;
+}
+
+// global
+[class^="icon-"] {
+    cursor: pointer;
+    &:hover{
+        cursor: pointer;
+        color: red;
+        transition: all .5s ease;
+    }
+}
+
+// .ng-invalid.ng-dirty{
+//     .has-error .form-control;
+// }
+
+// label.has-error.control-label {
+//     .has-error .control-label;
+// }
