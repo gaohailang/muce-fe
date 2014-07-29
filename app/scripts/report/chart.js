@@ -10,15 +10,33 @@ define([
         $scope.form.filters = []; // store process result
         $scope.dimenAdv = {
             dimensions: [],
+            filters: null,
             filterTypes: ['', 'EQUAL', 'NOT_EQUAL', 'CONTAINING', 'STARTSWITH', 'ENDSWITH', 'NOT_CONTAINING', 'NOT_STARTSWITH', 'NOT_ENDSWITH'],
             nowDimensionsType: [],
             nowDimensionsVal: [],
             saveFilters: function() {
+                var self = this;
                 console.log($scope.dimenAdv);
                 // trigger fetchReports
-                _.each($scope.dimenAdv.nowDimensionsType, function(i, idx) {
+                self.filters = [];
+                _.each(self.dimensions, function(i, idx) {
+                    // {"value":"1.0.0","key":"d1","operator":"EQUAL"}
                     // process (dimension, type, val) idx to got string
+                    // make btn selected, and construct api data
+                    if (self.nowDimensionsType[idx] && self.nowDimensionsVal[idx]) {
+                        self.filters.push({
+                            value: self.nowDimensionsVal[idx],
+                            operator: self.nowDimensionsType[idx],
+                            key: 'd' + i.id
+                        });
+                    }
                 });
+                if (self.filters) {
+                    // re
+                }
+            },
+            removeFilters: function() {
+                this.filters = null;
             }
         };
 

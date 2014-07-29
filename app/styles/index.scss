@@ -113,6 +113,14 @@
         white-space: nowrap;
     }
 }
+.form-dimen-adv {
+    .controls select{
+        width: 35%;
+    }
+    .controls input{
+        width: 40%;
+    }
+}
 
 
 label > input[type=checkbox] {
