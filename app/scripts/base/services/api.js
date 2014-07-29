@@ -38,18 +38,27 @@ define([
             return toUrl;
         }
 
+        // endpont[, url part arr][,data/params][,opt]
         function helper(endpoint, opt) {
             arguments = _.toArray(arguments);
             var apiStr = _maps[arguments.shift()];
+            var method = apiStr.split(' ')[0];
             if (_.isObject(_.last(arguments))) {
                 opt = arguments.pop();
             } else {
                 opt = {};
             }
+            if (_.isObject(_.last(arguments))) {
+                if (/(DELETE)|(GET)/.test(method)) {
+                    opt.params = arguments.pop();
+                } else {
+                    opt.data = arguments.pop();
+                }
+            }
             if (!apiStr) throw new Error('Endpint ' + endpoint + 'Does Not Exist!');
 
             return $http(_.extend({
-                method: apiStr.split(' ')[0],
+                method: method,
                 cache: true,
                 url: _urlPrfix + _buildUrl(apiStr.split(' ')[1], arguments),
             }, opt));
