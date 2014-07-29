@@ -16,5 +16,18 @@ define(['base/muceCom'], function(muceCom) {
                 return metric.name + ': ' + metric.type + ', ' + metric.expression;
             }).join('\n')
         }
+    }).filter('transPeriod', function() {
+        return function(val) {
+            var _map = {
+                '0': 'Hour',
+                '1': 'Day'
+            };
+            return _map[val];
+        }
+    }).filter('castDimensionType', function() {
+        return function(val) {
+            var dimensionTypes = ['string', 'int', 'float', 'percent']
+            return dimensionTypes[val];
+        }
     });
 });

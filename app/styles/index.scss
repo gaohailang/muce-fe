@@ -141,6 +141,17 @@ label > input[type=checkbox] {
     }
 }
 
+.muce-form-help-block {
+    display: block;
+    margin: 5px 0 0;
+}
+.muce-form-help-inline {
+    display: inline-block;
+    margin: 0 0 0 10px;
+}
+.w-text-warning {
+    color: #f24949;
+}
 
 textarea{
     transition: all linear .2s;

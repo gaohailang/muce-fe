@@ -56,6 +56,24 @@
     </div>
 </script>
 
+<script type="text/ng-template"
+    id="report/add_metric/fileds.html">
+    <div class="control-group">
+        <label for="period" class="control-label">
+            Optional Fields *
+        </label>
+        <div class="controls">
+            <table class="table table-bordered table-striped">
+                <tr ng-repeat="item in optionalFileds">
+                    <td>{{item.name}}</td>
+                    <td>{{item.id}}</td>
+                    <td>{{item.type|castDimensionType}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</script>
+
 <!-- report add modal - metrics -->
 <script type="text/ng-template"
     id="report/add_report/metric.html">

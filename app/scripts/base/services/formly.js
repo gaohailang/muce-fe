@@ -165,10 +165,11 @@ define([
         ])
         .config(function($validationProvider) {
             $validationProvider.setErrorHTML(function(msg) {
-                return "<label class=\"control-label has-error\">" + msg + "</label>";
+                return "<p class=\"muce-form-help-block\"><span class=\"w-text-warning\">" + msg + "</span></p>";
             });
 
             $validationProvider.setExpression(rules.expression).setDefaultMsg(rules.defaultMsg);
+            $validationProvider.showSuccessMessage = false;
 
             $validationProvider.checkValid = function(form) {
                 for (var k in form) { // whole scope

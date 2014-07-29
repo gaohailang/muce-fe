@@ -45,9 +45,9 @@ define(function() {
                 label: 'Group Name',
                 key: 'name',
                 attrs: {
-                    validator: 'required',
-                    requiredErrorMessage: '测试错误',
-                    requiredSuccessMessage: '测试正确输入'
+                    validator: 'required'
+                    // requiredErrorMessage: '测试错误',
+                    // requiredSuccessMessage: '测试正确输入'
                 }
             },
             dataDict.commentField
@@ -82,16 +82,19 @@ define(function() {
                 label: 'Select Event',
                 options: []
             }, {
-                label: 'Optional Fields',
-                key: 'x',
-                type: 'textarea'
+                referTpl: 'report/add_metric/fileds.html'
             }, {
                 label: 'Metric Name',
                 key: 'name'
             }, {
                 label: 'Metric Expression',
                 key: 'expression',
-                type: 'textarea'
+                type: 'textarea',
+                attrs: {
+                    'text-area-elastic': true,
+                    'rows': '4',
+                    'cols': '50'
+                }
             },
             dataDict.metricTypeField, dataDict.commentField
         ],
@@ -178,7 +181,7 @@ define(function() {
             });
 
             // watch event to fetch optional fields
-            $scope.$watch('form.event', function(val) {
+            $scope.$watch('formlyData.event', function(val) {
                 if (!val) return;
                 apiHelper('getFieldList', {
                     params: {
@@ -186,7 +189,7 @@ define(function() {
                     }
                 }).then(function(data) {
                     console.log(data); // set $scope.form.xx bug!!
-                    $scope.formlyData.x = _.pluck(data, 'name').join(',');
+                    $scope.optionalFileds = data;
                 });
             }, true);
         },
