@@ -10,7 +10,9 @@ define([
     // side - group->category-report list select
     function navbarCtrl(apiHelper, $scope, $rootScope) {
         // fetch group list, and default assign first group
-        apiHelper('getGroupList').then(function(data) {
+        apiHelper('getGroupList', {
+            busy: 'global'
+        }).then(function(data) {
             $scope.groupList = data;
             $scope.currentGroup = data[0];
         });
@@ -31,7 +33,9 @@ define([
         $scope.$watch('currentGroup', function(val) {
             if (!val) return;
             apiHelper('getCategoryList', {
-                group_id: val
+                groupId: val.id
+            }, {
+                busy: 'global'
             }).then(function(data) {
                 $scope.categoryList = data;
                 // Todo: 更新 ulr?! or resign by routeParam
@@ -43,7 +47,9 @@ define([
         $scope.$watch('currentCategory', function(val) {
             if (!val) return;
             apiHelper('getReportList', {
-                group_id: val
+                categoryId: val.id
+            }, {
+                busy: 'global'
             }).then(function(data) {
                 $scope.reportList = data;
                 $rootScope.currentReport = data[0];
@@ -90,7 +96,9 @@ define([
         $scope.delSelectedHandler = function() {
             // checkbox selectedItems exist, with notice?!
             // post and generate del opt differentiate by type
-            apiHelper('del' + _.capitalize(currentDelType), {}).then(function(data) {
+            apiHelper('del' + _.capitalize(currentDelType), {
+
+            }, null).then(function(data) {
 
             });
         };

@@ -56,8 +56,8 @@
         <h3>Report:</h3>
         <!--Report List-->
         <ul class="nav nav-list sidebar-list" >
-            <li ng-repeat="report in reportList">
-                <a ng-click="switchReport(report)">{{report.name}}</a>
+            <li ng-repeat="report in reportList" ng-class="{'active': (currentReport == report)}">
+                <a href="#" ng-click="switchReport(report)">{{report.name}}</a>
             </li>
         </ul>
     </li>

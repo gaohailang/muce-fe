@@ -1,10 +1,12 @@
 <section class="setting-wrapper row-fluid">
-    <div class="operator-wrapper span9">
+    <div class="operator-wrapper span10">
         <div class="date-operator">
             <!-- period type, 如果 report 不支持的要hide -->
             <div class="btn-group">
-              <button type="button" class="btn btn-default">hour</button>
-              <button type="button" class="btn btn-default">day</button>
+              <button type="button" class="btn btn-default"
+                ng-repeat="i in currentReportDetail.period"
+                ng-class="{'active': (currentPeriod === i)}"
+                ng-click="$parent.currentPeriod = i">{{i|transPeriod}}</button>
             </div>
 
             <select id="quickChooseList"
@@ -41,7 +43,7 @@
             </label>
         </div>
     </div>
-    <div class="trigger-wrapper span3">
+    <div class="trigger-wrapper span2">
         <button class="btn btn-primary refresh-report">apply</button><br/>
         <a ng-click="toggleDetail()" href="#">{{detailToggleStr}}</a>
     </div>
