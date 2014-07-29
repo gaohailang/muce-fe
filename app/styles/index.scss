@@ -131,6 +131,11 @@ label > input[type=checkbox] {
     }
 }
 
+
+textarea{
+    transition: all linear .2s;
+}
+
 // .ng-invalid.ng-dirty{
 //     .has-error .form-control;
 // }

@@ -1,4 +1,7 @@
-define(['base/muceCom'], function(muceCom) {
+define([
+    'base/muceCom',
+    'base/directives/elastic'
+], function(muceCom) {
 
     function navbarDef() {
         return function(scope, elem, attr) {
@@ -73,7 +76,7 @@ define(['base/muceCom'], function(muceCom) {
         }
     }
 
-    angular.module('muceApp.base.directives', [])
+    angular.module('muceApp.base.directives', ['muceApp.base.directives.elastic'])
         .directive('muceNavbar', navbarDef)
         .directive('muceInclude', ['$http', '$templateCache', '$compile', muceInclude])
         .directive('dateTimePicker', function() {
