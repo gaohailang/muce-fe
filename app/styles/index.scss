@@ -156,6 +156,14 @@ label > input[type=checkbox] {
 textarea{
     transition: all linear .2s;
 }
+.control-stack-select select{
+    margin: 5px 0;
+}
+
+// fix select width
+.select2-container, .select2-drop, .select2-search, .select2-search input{
+    width: 220px;
+}
 
 // .ng-invalid.ng-dirty{
 //     .has-error .form-control;

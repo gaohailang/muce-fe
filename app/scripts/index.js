@@ -15,6 +15,7 @@ require([
     var muceApp = angular.module('muceApp', [
         'ui.router',
         'ui.bootstrap',
+        'ui.select',
         'muceApp.api',
         'muceApp.base',
         'muceApp.report'
@@ -41,6 +42,10 @@ require([
                 controller: module + 'Ctrl'
             });
         });
+    });
+
+    muceApp.config(function(uiSelectConfig) {
+        uiSelectConfig.theme = 'select2';
     });
 
     muceApp.run(function() {

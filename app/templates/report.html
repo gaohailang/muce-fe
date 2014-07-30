@@ -52,11 +52,22 @@
 
 <script type="text/ng-template"
     id="report/add_metric/fileds.html">
-    <table class="table table-bordered table-striped">
+    <table class="table table-striped">
         <tr ng-repeat="item in optionalFileds">
             <td>{{item.name}}</td>
             <td>{{item.id}}</td>
             <td>{{item.type|castDimensionType}}</td>
         </tr>
     </table>
+</script>
+
+<script type="text/ng-template"
+    id="report/add_dimension/fields.html">
+    <ui-select ng-model="formlyData.field">
+      <ui-select-match placeholder="Select or search in the list...">{{$select.selected.name}}</ui-select-match>
+      <ui-select-choices repeat="item in formFields[0].options | filter: $select.search">
+        <!-- <span ng-bind-html="item.name | highlight: $select.search"></span> -->
+        <span>{{item.name}}</span>
+      </ui-select-choices>
+    </ui-select>
 </script>

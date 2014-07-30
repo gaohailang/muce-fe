@@ -110,9 +110,7 @@ define(function() {
         ],
         dimension: [{
                 label: 'Select Field',
-                key: 'field',
-                type: 'select',
-                options: []
+                controlTpl: 'report/add_dimension/fields.html'
             }, {
                 key: 'name',
                 label: 'Dimension Name'
