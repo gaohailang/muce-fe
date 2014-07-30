@@ -16,9 +16,11 @@
             </select>
 
             <!-- date-range start="" end="" -->
-            <input type="text" ng-model="startDate" date-time-picker
+            <input type="text" id="report-start-date"
+                ng-model="startDate" date-time-picker
                 picker="{timepicker: true, format: 'Y/m/d H:i', minDate: 0}">
-            <input type="text" ng-model="endDate" date-time-picker
+            <input type="text" id="report-end-date"
+                ng-model="endDate" date-time-picker
                 picker="{timepicker: true, format: 'Y/m/d H:i', minDate: 0}">
 
         </div>

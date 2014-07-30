@@ -75,9 +75,9 @@
     <!-- Delete MultiChoose-->
     <li ng-controller="delPanelCtrl">
         <h3>Delete:</h3>
-        <select ng-model="currentDelType">
-            <option ng-repeat="type in delTypes"
-                val="{{type}}">{{type|capitalize}}</option>
+        <select ng-model="currentDelType" ng-options="type for type in delTypes">
+            <!-- <option ng-repeat="type in delTypes"
+                val="{{type}}">{{type|capitalize}}</option> -->
         </select>
 
         <div multi-chooser choices-list="currentDelList" trash="true"></div>

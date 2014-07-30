@@ -6,6 +6,10 @@ define([
         // table, highchart, operator panel parts
         $scope.form = {};
         $scope.quickChooseList = _.object('Last day,Last 2days,Last 3days,Last 1week,Last 2week,Last 1month'.split(','), [-1, -2, -3, -7, -14, -31]);
+        var periodFormatMap = {
+            '0': 'Y/m/d H:i',
+            '1': 'Y/m/d'
+        };
 
         $scope.form.filters = []; // store process result
         $scope.dimenAdv = {
@@ -51,18 +55,18 @@ define([
         $rootScope.$watch('currentReport', function(val) {
             if (!val) return;
             // Todo: 更新 ulr?!
-            apiHelper('getReportDetail', val.id).then(function(data) {
+            apiHelper('getReportDetail', val.id, {
+                cache: false,
+                busy: 'global'
+            }).then(function(data) {
                 console.log(data);
+                data.period = data.period.split(',');
+                $scope.currentPeriod = data.period[0];
+                $scope.currentQuick = -7; // last week
                 $scope.currentReportDetail = data;
                 $scope.dimenAdv.dimensions = data.dimensions; // sync for advanced modal
+                // Todo: 更新 ulr?! or reset by routeParam
             });
-        }, true);
-
-        $scope.$watch('currentReportDetail', function(val) {
-            if (!val) return;
-            $scope.currentQuick = -7; // last week
-            // Todo: 更新 ulr?! or reset by routeParam
-            // check period, and set default
         }, true);
 
         $scope.$watch('currentQuick', function(val) {
@@ -75,6 +79,13 @@ define([
 
         $scope.$watch('currentPeriod', function(val) {
             if (!val) return;
+            // Todo: change date range format to support hour/min etc
+            $('#report-start-date, #report-end-date').each(function(item) {
+                $(this).data('xdsoft_datetimepicker').setOptions({
+                    format: periodFormatMap[val],
+                    timepicker: val ? true : false
+                });
+            });
             $scope.fetchReports();
         });
 
@@ -88,6 +99,8 @@ define([
                 filters: [],
                 cache: 1,
                 dimensions: []
+            }, {
+                busy: 'global'
             }).then(function(data) {
                 // Todo: 更新 ulr?!
                 // 构建 highchart
