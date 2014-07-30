@@ -63,11 +63,14 @@ define(function() {
                 key: 'name',
                 label: 'Report Name'
             }, {
-                referTpl: 'report/add_report/period.html'
+                controlTpl: 'report/add_report/period.html',
+                label: 'Report Period'
             }, {
-                referTpl: 'report/add_report/metric.html'
+                controlHtml: '<div multi-chooser choices-list="metricList"></div>',
+                label: 'Metric'
             }, {
-                referTpl: 'report/add_report/dimension.html'
+                controlHtml: '<div multi-chooser choices-list="dimensionList"></div>',
+                label: 'Dimension'
             },
             dataDict.commentField, {
                 key: 'isEnable',
@@ -80,7 +83,8 @@ define(function() {
                 label: 'Select Event',
                 options: []
             }, {
-                referTpl: 'report/add_metric/fileds.html'
+                controlTpl: 'report/add_metric/fileds.html',
+                label: 'Optional Fields'
             }, {
                 label: 'Metric Name',
                 key: 'name'

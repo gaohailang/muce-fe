@@ -53,6 +53,17 @@ define([
                     $scope.options.label = $scope.options.key;
                 }
 
+                if ($scope.options.controlTpl || $scope.options.controlHtml) {
+                    var controlHtml = $scope.options.controlHtml ?
+                        $scope.options.controlHtml :
+                        $templateCache.get($scope.options.controlTpl);
+
+                    $element.html($templateCache.get('formly/basic-field-tpl')
+                        .replace('PLACEHOLDER', controlHtml));
+                    $compile($element.contents())($scope);
+                    return;
+                }
+
                 if ($scope.options.options) {
                     $scope.options.type = 'select';
                 }
@@ -179,6 +190,16 @@ define([
                 }
                 return true;
             };
+        })
+        .run(function($templateCache) {
+            $templateCache.put('formly/basic-field-tpl',
+                '<div class="control-group">\n' +
+                '    <label class="control-label" for="{{options.key}}">\n' +
+                '        {{options.label|capitalize}} {{options.required ? \'*\' : \'\'}}\n' +
+                '    </label>\n' +
+                '    <div class="controls">PLACEHOLDER</div>\n' +
+                '</div>'
+            );
         });
 
 });

@@ -17,38 +17,32 @@
 
 <script type="text/ng-template"
     id="report/add_report/period.html">
-    <div class="control-group">
-        <label for="period" class="control-label">
-            Report Periods *
-        </label>
-        <!-- Todo: 至少选一个 -->
-        <div class="controls">
-            <label for="hour">Hour
-                <input type="checkbox" value="1" name="hour"
-                    validator="periodChooser" ng-model="formlyData.hour">
-            </label>
-            <label for="day">Day
-                <input type="checkbox" value="1" name="day"
-                    validator="periodChooser" ng-model="formlyData.day">
-            </label>
-        </div>
-    </div>
+    <label for="hour">Hour
+        <input type="checkbox" value="1" name="hour"
+            validator="periodChooser" ng-model="formlyData.hour">
+    </label>
+    <label for="day">Day
+        <input type="checkbox" value="1" name="day"
+            validator="periodChooser" ng-model="formlyData.day">
+    </label>
 </script>
 
 <script type="text/ng-template"
     id="report/add_metric/expression.html">
 
-    <div class="control-group">
-        <label for="period" class="control-label">
+    <div class="control-group control-stack-select">
+        <label class="control-label">
             Metric Expression
         </label>
         <div class="controls">
             <select validator="required" name="metric_id1"
                 id="metric_id1" ng-model="formlyData.metric_id1"
                 ng-options="opt.id as opt.name for opt in metricList"></select>
-            <select validator="required" name="operator"
+            <br>
+            <select validator="required" name="operator" style="width: 50px"
                 id="operator" ng-model="formlyData.operator"
                 ng-options="opt for opt in metricOperators"></select>
+            <br>
             <select validator="required" name="metric_id2"
                 id="metric_id2" ng-model="formlyData.metric_id2"
                 ng-options="opt.id as opt.name for opt in metricList"></select>
@@ -58,43 +52,11 @@
 
 <script type="text/ng-template"
     id="report/add_metric/fileds.html">
-    <div class="control-group">
-        <label for="period" class="control-label">
-            Optional Fields *
-        </label>
-        <div class="controls">
-            <table class="table table-bordered table-striped">
-                <tr ng-repeat="item in optionalFileds">
-                    <td>{{item.name}}</td>
-                    <td>{{item.id}}</td>
-                    <td>{{item.type|castDimensionType}}</td>
-                </tr>
-            </table>
-        </div>
-    </div>
-</script>
-
-<!-- report add modal - metrics -->
-<script type="text/ng-template"
-    id="report/add_report/metric.html">
-    <div class="control-group">
-        <label for="period" class="control-label">
-            Metric *
-        </label>
-        <div class="controls">
-            <div multi-chooser choices-list="metricList"></div>
-        </div>
-    </div>
-</script>
-
-<script type="text/ng-template"
-    id="report/add_report/dimension.html">
-    <div class="control-group">
-        <label for="period" class="control-label">
-            Dimensions *
-        </label>
-        <div class="controls">
-            <div multi-chooser choices-list="dimensionList"></div>
-        </div>
-    </div>
+    <table class="table table-bordered table-striped">
+        <tr ng-repeat="item in optionalFileds">
+            <td>{{item.name}}</td>
+            <td>{{item.id}}</td>
+            <td>{{item.type|castDimensionType}}</td>
+        </tr>
+    </table>
 </script>
