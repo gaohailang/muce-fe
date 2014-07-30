@@ -61,10 +61,18 @@ define([
 
     // add modal 内部
     function addModalCtrl($scope, $modal) {
-        $scope.addTypes = ['group', 'category', 'dimension', 'metric', 'combinedMetric', 'report'];
+        $scope.addTypes = ['group', 'category', 'dimension', 'metric', 'report'];
         $scope.openModal = function(type) {
+            if (type === 'metric') {
+                // support resolve
+                $modal.open({
+                    templateUrl: 'templates/report/metric-tabs-modal.html',
+                    size: 'lg' // '', sm
+                });
+                return;
+            }
             // support resolve
-            var modalInstance = $modal.open({
+            $modal.open({
                 templateUrl: 'templates/report/modal.html',
                 controller: type + 'ModalCtrl',
                 size: 'lg' // '', sm
