@@ -18,7 +18,13 @@ define(function() {
         })
     };
 
+    _.db = {
+        dimensionTypes: ['string', 'int', 'float', 'percent'],
+        metricOperators: ['+', '-', '*', '/']
+    };
+
     // self-invoke when dom ready
+    // Todo: clean up
     (function() {
         // todo: tooltip, datetimepicker, modal
         $('.add-widget-container').html($('#add_widget').html());

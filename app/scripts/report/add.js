@@ -10,8 +10,6 @@ define(function() {
     // todo: 给外围 referTpl 设定 validator?
     var addModule = angular.module('muceApp.report.add', []);
     var dataDict = {
-        dimensionTypes: ['string', 'int', 'float', 'percent'],
-        metricOperators: ['+', '-', '*', '/'],
         commentField: {
             key: 'comment',
             type: 'textarea',
@@ -117,7 +115,7 @@ define(function() {
             }, {
                 key: 'type',
                 label: 'Dimension Type',
-                options: dataDict.dimensionTypes,
+                options: _.db.dimensionTypes,
                 optionStr: 'opt for opt in options.options'
             },
             dataDict.commentField
@@ -197,7 +195,7 @@ define(function() {
             apiHelper('getMetricList').then(function(data) {
                 $scope.metricList = data;
             });
-            $scope.metricOperators = dataDict.metricOperators;
+            $scope.metricOperators = _.db.metricOperators;
         },
         dimension: function($scope, apiHelper) {
             apiHelper('getFieldList').then(function(data) {
