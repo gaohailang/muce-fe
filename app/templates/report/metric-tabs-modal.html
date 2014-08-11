@@ -5,14 +5,15 @@
 </div>
 <div class="modal-body">
     <tabset>
-        <tab heading="Normal Metric" ng-controller="metricModalCtrl">
+        <tab heading="Normal Metric" ng-controller="metricModalCtrl" id="normal_metric">
             <formly-form fields="formFields" key="{{formName}}"></formly-form>
         </tab>
-        <tab heading="Combine Metric" ng-controller="combinedMetricModalCtrl">
-            <formly-form fields="formFields" key="{{formName}}"></formly-form>
+        <tab heading="Combine Metric">
+            <div ng-controller="combinedMetricModalCtrl" id="combine_metric">
+                <formly-form fields="formFields" key="{{formName}}"></formly-form>
+            </div>
         </tab>
     </tabset>
-    <!-- <formly-form fields="formFields" key="{{formName}}"></formly-form> -->
 </div>
 <div class="modal-footer">
     <a target="_blank">
@@ -26,7 +27,7 @@
         Close
     </button>
     <button class="btn btn-primary"
-        formly-submit="{{formName}}" ng-click="ok()">
+        formly-submit="formly" ng-click="ok()" target="{{currentMetricTab}}">
         Save Changes
     </button>
 </div>

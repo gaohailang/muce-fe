@@ -59,7 +59,7 @@ define([
 
             return $http(_.extend({
                 method: method,
-                cache: true,
+                // cache: true,
                 url: _urlPrfix + _buildUrl(apiStr.split(' ')[1], arguments),
             }, opt));
         }

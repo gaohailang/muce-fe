@@ -78,12 +78,21 @@ module.exports = function(grunt) {
                     open: true,
                     useAvailablePort: true
                 },
+                // {
+                //     context: '/api/v1',
+                //     host: 'muce3.apiary-mock.com',
+                //     changeOrigin: true
+                // }
                 proxies: [{
                     context: '/api/v1',
-                    host: 'muce3.apiary-mock.com',
-                    changeOrigin: true
+                    host: '10.0.66.51',
+                    port: 8080,
+                    changeOrigin: true,
+                    rewrite: {
+                        '^/api/v1': '/muce3-webapp/api/v1'
+                    }
                 }, {
-                    context: '/muce-webapp/',
+                    context: '/muce-webapp',
                     host: 'muce.corp.wandoujia.com',
                     changeOrigin: true,
                     headers: {

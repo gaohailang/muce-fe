@@ -22,6 +22,9 @@
     right: 30px;
     .alert{
         margin: 3px 0;
+        .close {
+            right: 0;
+        }
     }
 }
 

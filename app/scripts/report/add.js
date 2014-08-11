@@ -1,7 +1,6 @@
 define(function() {
 
     //$scope.groupList, categoryList, eventList, FieldList
-    // todo: submit 之前的数据转换(group -> group_id)
     // todo: 对于 multi-select(列出所有 options etc) widget
     // todo: 如何设置 options 的值为 deferred 对象
     // todo: dataDict 中的 option 的默认值
@@ -30,10 +29,10 @@ define(function() {
             type: 'select',
             label: 'Metric Type',
             key: 'type',
-            optionStr: 'opt for opt in options.options',
+            optionStr: '$index as opt for opt in options.options',
             options: ['int', 'float', 'percent'],
             attrs: {
-                'ng-value': "'percent'"
+                validator: 'required'
             }
         }
     };
@@ -124,22 +123,65 @@ define(function() {
         ]
     };
 
+    // specific handler for postdata parser
     var addOkMap = {
-        group: function() {
+        group: function($scope, apiHelper) {
             // this equal $scope
-            console.log();
+            apiHelper('addGroup', {
+                data: processIdObj($scope.formlyData)
+            }).then(function() {
+                $scope.$close();
+            });
         },
-        category: function() {
-            console.log()
+        category: function($scope, apiHelper) {
+            apiHelper('addCategory', {
+                data: processIdObj($scope.formlyData)
+            }).then(function() {
+                $scope.$close();
+            });
         },
+        report: function($scope, apiHelper) {
+            var postData = _.clone($scope.formlyData);
+            postData.metrics = _.map(_.filter($scope.metricList, function(i) {
+                return i.selected;
+            }), function(x) {
+                return [x.id, x.type].join(',');
+            });
+            postData.dimensions = _.pluck($scope.dimensionList, 'id');
+            postData.periods = [];
+            if (postData.hour) postData.periods.push(1);
+            if (postData.day) postData.periods.push(0);
+            postData.categoryId = postData.category.id;
+            _.each(['group', 'category', 'hour', 'day'], function(i) {
+                delete postData[i];
+            });
+            apiHelper('addReport', {
+                data: postData
+            }).then(function() {
+                $scope.$close();
+            });
+        },
+        metric: function($scope, apiHelper) {
 
-        report: function() {
-            // [metricList. dimensionList] array,with selected
-            // formlyData[comment, group[id], isEnable, name]
-            // todo: 对于 periods -> 两个 checkbox -> 一个 model 值
+        },
+        combinedMetric: function($scope, apiHelper) {
+            var postData = _.clone($scope.formlyData);
+            if (postData.metricId1 && postData.metricId2 && postData.operator) {
+                apiHelper('addCombineMetric', {
+                    data: postData
+                }).then(function() {
+                    $scope.$close();
+                });
+            } else {
+                $scope.expressionErr = '请先填写表达式';
+            }
+        },
+        dimension: function($scope, apiHelper) {
+
         }
     };
 
+    // specific handler for init add modal
     var initMap = {
         group: function() {},
         category: function($scope, apiHelper) {
@@ -153,20 +195,17 @@ define(function() {
                 $scope.formlyData.group = data[0];
                 $scope.formFields[0].options = data;
             });
-
             apiHelper('getMetricList').then(function(data) {
                 $scope.metricList = data;
             });
             apiHelper('getDimensionList').then(function(data) {
                 $scope.dimensionList = data;
             });
-            // update category list -
-            // when user change select at modal form
             $scope.$watch('formlyData.group', function(val) {
                 if (!val) return;
                 apiHelper('getCategoryList', {
                     params: {
-                        group_id: val.id
+                        groupId: val.id
                     }
                 }).then(function(data) {
                     $scope.formlyData.category = data[0];
@@ -175,6 +214,7 @@ define(function() {
             }, true);
         },
         metric: function($scope, apiHelper) {
+            $scope.$root.currentMetricTab = 'normal_metric';
             apiHelper('getEventList').then(function(data) {
                 $scope.formFields[0].options = data;
                 $scope.formlyData.event = data[0];
@@ -185,7 +225,7 @@ define(function() {
                 if (!val) return;
                 apiHelper('getFieldList', {
                     params: {
-                        event_id: val.id
+                        eventId: val.id
                     }
                 }).then(function(data) {
                     console.log(data); // set $scope.form.xx bug!!
@@ -194,6 +234,8 @@ define(function() {
             }, true);
         },
         combinedMetric: function($scope, apiHelper) {
+            $scope.$root.currentMetricTab = 'combine_metric';
+            $scope.formlyData.type = 0;
             apiHelper('getMetricList').then(function(data) {
                 $scope.metricList = data;
             });
@@ -220,7 +262,7 @@ define(function() {
             initMap[key]($scope, apiHelper);
             $scope.ok = function() {
                 console.log($scope.formlyData);
-                // _.bind(addOkMap[key], $scope).call();
+                addOkMap[key]($scope, apiHelper);
             };
         });
     });
@@ -243,4 +285,17 @@ define(function() {
         });
     });
 
+    /* utilities */
+    function processIdObj(formData) {
+        var clone = formData;
+        _.each(clone, function(val, key) {
+            if (['group'].indexOf(key) > -1) {
+                delete clone[key];
+                clone[key + 'Id'] = val.id;
+            }
+            // field 检查， 数组类型拼接
+            // type indexOf dimensionTypes
+        });
+        return clone;
+    }
 });
