@@ -29,7 +29,7 @@ define(function() {
             type: 'select',
             label: 'Metric Type',
             key: 'type',
-            optionStr: '$index as opt for opt in options.options',
+            optionStr: 'idx as opt for (idx, opt) in options.options',
             options: ['int', 'float', 'percent'],
             attrs: {
                 validator: 'required'
@@ -79,7 +79,7 @@ define(function() {
         metric: [{
                 type: 'select',
                 key: 'event',
-                label: 'Select Event',
+                label: 'From Event',
                 options: []
             }, {
                 controlTpl: 'report/add_metric/fileds.html',
@@ -88,10 +88,19 @@ define(function() {
                 label: 'Metric Name',
                 key: 'name'
             }, {
-                label: 'Metric Expression',
-                key: 'expression',
+                label: 'Select Target',
+                key: 'target',
+                attrs: {
+                    'placeholder': '例如 count(*)'
+                }
+            }, {
+                label: 'Where Condition',
+                key: 'condition',
                 type: 'textarea',
                 attrs: {
+                    'placeholder': "(选填) 例 url_normalize like '/explore/%' limit 100",
+                    validator: 'optional',
+                    range: '4,30',
                     'text-area-elastic': true,
                     'rows': '4',
                     'cols': '50'
@@ -128,19 +137,21 @@ define(function() {
         group: function($scope, apiHelper) {
             // this equal $scope
             apiHelper('addGroup', {
-                data: processIdObj($scope.formlyData)
-            }).then(function() {
+                data: $scope.formlyData
+            }).then(function(data) {
+                $scope.$root.groupList.push(data);
                 $scope.$close();
             });
         },
         category: function($scope, apiHelper) {
             apiHelper('addCategory', {
-                data: processIdObj($scope.formlyData)
-            }).then(function() {
+                data: processIdObj($scope.formlyData, 'group')
+            }).then(function(data) {
+                $scope.$root.categoryList.push(data);
                 $scope.$close();
             });
         },
-        report: function($scope, apiHelper) {
+        report: function($scope, apiHelper, $notice) {
             var postData = _.clone($scope.formlyData);
             postData.metrics = _.map(_.filter($scope.metricList, function(i) {
                 return i.selected;
@@ -155,14 +166,33 @@ define(function() {
             _.each(['group', 'category', 'hour', 'day'], function(i) {
                 delete postData[i];
             });
+            // Todo: remove owner
+            // Todo: 输入检查
+            // 注：所有Dimensions都可以选择，一次只能选3个 ，Metrics 数量应该 <= 10
+            if (postData.dimensions.length > 3) {
+                $notice.warning('Dimensions, 一次只能选3个');
+            }
+            if (postData.metrics.length > 10) {
+                $notice.warning('Metrics 数量应该 <= 10');
+            }
+            if (!postData.dimensions || !postData.metrics) $notice.warning('请按照要求填写');
+            postData.owner = 'siva'
             apiHelper('addReport', {
                 data: postData
-            }).then(function() {
+            }).then(function(data) {
+                $scope.$root.reportList.push(data);
                 $scope.$close();
+                // Todo: if current is
             });
         },
         metric: function($scope, apiHelper) {
-
+            var postData = _.clone($scope.formlyData);
+            postData.type = +(postData.type);
+            apiHelper('addMetric', {
+                data: processIdObj(postData, 'event')
+            }).then(function() {
+                $scope.close();
+            });
         },
         combinedMetric: function($scope, apiHelper) {
             var postData = _.clone($scope.formlyData);
@@ -234,7 +264,6 @@ define(function() {
             }, true);
         },
         combinedMetric: function($scope, apiHelper) {
-            $scope.$root.currentMetricTab = 'combine_metric';
             $scope.formlyData.type = 0;
             apiHelper('getMetricList').then(function(data) {
                 $scope.metricList = data;
@@ -251,18 +280,16 @@ define(function() {
 
     // Todo: with base tpl for duplicate boilerplate ctrl
     _.each(fieldsDict, function(formFields, key) {
-        addModule.controller(key + 'ModalCtrl', function($scope, apiHelper) {
+        addModule.controller(key + 'ModalCtrl', function($scope, apiHelper, $notice) {
             $scope.modalTitle = 'Add ' + _.capitalize(key);
             $scope.formFields = formFields;
-            // $scope.formName = key;
-            // $scope[key + 'Data'] = {};
             $scope.formName = 'formly';
             $scope.formlyData = {};
 
             initMap[key]($scope, apiHelper);
             $scope.ok = function() {
                 console.log($scope.formlyData);
-                addOkMap[key]($scope, apiHelper);
+                addOkMap[key]($scope, apiHelper, $notice);
             };
         });
     });
@@ -286,15 +313,14 @@ define(function() {
     });
 
     /* utilities */
-    function processIdObj(formData) {
+    function processIdObj(formData, key) {
         var clone = formData;
-        _.each(clone, function(val, key) {
-            if (['group'].indexOf(key) > -1) {
-                delete clone[key];
-                clone[key + 'Id'] = val.id;
-            }
-            // field 检查， 数组类型拼接
-            // type indexOf dimensionTypes
+        if (_.isString(key)) {
+            key = [key];
+        }
+        _.each(key, function(_key) {
+            clone[_key + 'Id'] = clone[_key].id;
+            delete clone[_key];
         });
         return clone;
     }

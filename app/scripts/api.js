@@ -4,16 +4,16 @@ define([], function() {
         // Meta
         apiHelper.configByType({
             add: ['group', 'category', 'dimension', 'metric', 'combineMetric', 'report'],
-            del: ['group', 'category', 'dimension', 'metric', 'categorytReportRelation'],
-            list: ['group', 'category', 'report', 'event', 'field', 'metric', 'dimension'],
-            item: ['reportDetail']
+            del: ['group', 'category', 'dimension', 'metric', 'categorytReportRelation', 'report'],
+            list: ['group', 'category', 'report', 'event', 'field', 'metric', 'dimension']
         }, {
             prefix: '/meta/'
         });
 
         // Report
         apiHelper.config({
-            'getReport': 'GET /report/:id'
+            'getReport': 'GET /report/:id',
+            'getReportDetail': 'GET /meta/report/:id'
         });
 
         // Muce Query

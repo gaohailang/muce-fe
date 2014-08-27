@@ -33,6 +33,11 @@
     .nav-sidebar {
         padding: 0;
 
+        .report-list{
+            max-height: 300px;
+            overflow: auto;
+        }
+
         h3{
             font-size: 18px;
             line-height: 22px;
@@ -88,6 +93,10 @@
     .chart-wrapper {
         height: 450px;
         max-height: 450px;
+        text-align: center;
+        vertical-align: middle;
+        line-height: 440px;
+        font-size: 30px;
     }
 
     .detail-list{
@@ -107,8 +116,17 @@
     }
 }
 
+.table-wrapper td {
+    text-align: center;
+}
 
 // component - todo with prefix
+.multi-choose-wrapper {
+    .checkbox-wrapper {
+        max-height: 300px;
+        overflow: auto;
+    }
+}
 .selected-wrapper {
     font-size: 14px;
     margin-bottom: 5px;
@@ -117,6 +135,9 @@
     label{
         white-space: nowrap;
     }
+}
+.selected-name .icon-minus-sign {
+    margin-right: 5px;
 }
 .form-dimen-adv {
     .controls select{
@@ -168,10 +189,17 @@ textarea{
     width: 220px;
 }
 
-// .ng-invalid.ng-dirty{
-//     .has-error .form-control;
-// }
+// group. category pointer cusror
+.dropdown-menu li a {
+    cursor: pointer;
+}
 
-// label.has-error.control-label {
-//     .has-error .control-label;
-// }
+// quick compoent
+.quickdate {
+    margin-bottom: 10px;
+    width: 200px;
+
+    .quickdate-button {
+        width: 90%;
+    }
+}

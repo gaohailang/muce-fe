@@ -11,10 +11,7 @@ module.exports = {
                 cwd: '<%= paths.app %>',
                 dest: '<%= paths.dist %>',
                 src: [
-                    '**/*.html',
-                    '!components/**/*.html',
-                    '!compass/**/*.html',
-                    'images/**/*.{webp,gif,png,jpg,jpeg,ttf,otf,svg}'
+                    '**/*'
                 ]
             }]
         },
@@ -25,7 +22,7 @@ module.exports = {
                 cwd: '<%= paths.tmp %>',
                 dest: '<%= paths.dist %>',
                 src: [
-                    'images/**/*.{webp,gif,png,jpg,jpeg,ttf,otf,svg}'
+                    '**/*'
                 ]
             }]
         }

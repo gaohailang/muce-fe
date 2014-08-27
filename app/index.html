@@ -3,11 +3,15 @@
     <head>
         <title>Muce 3.0 - Wandoulabs</title>
         <meta charset="utf-8">
+        <!-- build:css /styles/all.css -->
         <link rel="stylesheet" href="components/datetimepicker/jquery.datetimepicker.css">
-        <link rel="stylesheet" href="styles/index.css">
-        <link rel="stylesheet" href="http://todc.github.io/todc-bootstrap/dist/css/todc-bootstrap.min.css">
         <link rel="stylesheet" href="components/angular-ui-select/dist/select.min.css">
         <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.css">
+        <link rel="stylesheet" href="components/ngQuickDate/dist/ng-quick-date.css">
+        <link rel="stylesheet" href="components/ngQuickDate/dist/ng-quick-date-default-theme.css">
+        <link rel="stylesheet" href="styles/index.css">
+        <link rel="stylesheet" href="http://todc.github.io/todc-bootstrap/dist/css/todc-bootstrap.min.css">
+        <!-- endbuild -->
     </head>
     <body>
         <!-- alert global - old for before code -->
@@ -28,9 +32,11 @@
             <span class="scroll-bottom">⬇</span>
         </div>
 
+        <!-- build:js /scripts/all.js -->
         <!-- bower:js -->
         <script src="components/jquery/dist/jquery.js"></script>
         <script src="components/angular/angular.js"></script>
+        <script src="components/angular-sanitize/angular-sanitize.js"></script>
         <script src="components/angular-ui-router/release/angular-ui-router.js"></script>
         <script src="components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
         <script src="components/ng-grid/build/ng-grid.js"></script>
@@ -43,13 +49,21 @@
         <script src="components/datetimepicker/jquery.datetimepicker.js"></script>
         <script src="components/angular-ui-select/dist/select.min.js"></script>
 
+        <!-- vendor -->
+        <script src="vendors/echarts-plain-original.js"></script>
+        <script src="vendors/ng-infinite-scroll.js"></script>
+        <script src="vendors/angular-spinkit.min.js"></script>
+        <script src="vendors/Highcharts-4.0.3/js/highcharts.src.js"></script>
+        <script src="vendors/Highcharts-4.0.3/js/highcharts-more.src.js"></script>
+        <script src="vendors/Highcharts-4.0.3/js/modules/exporting.src.js"></script>
+        <script src="components/ngQuickDate/dist/ng-quick-date.js"></script>
+
         <script src="//muce.corp.wandoujia.com/scripts/vendor/4792da56.jquery.timer.js"></script>
-        <script src="//muce.corp.wandoujia.com/scripts/vendor/highCharts-2.3.2/6588e6ca.highcharts.js"></script>
-        <script src="//muce.corp.wandoujia.com/scripts/vendor/highCharts-2.3.2/b44d85b6.exporting.js"></script>
         <script src="//muce.corp.wandoujia.com/scripts/vendor/53ace77b.knockout.js"></script>
         <script src="//muce.corp.wandoujia.com/scripts/vendor/codeMirror-3.0/fc04e944.codemirror.js"></script>
         <script src="//muce.corp.wandoujia.com/scripts/vendor/codeMirror-3.0/2f805d0b.mysql.js"></script>
         <script src="//muce.corp.wandoujia.com/scripts/vendor/ed892db4.mousetrap.min.js"></script>
+        <!-- endbuild -->
 
         <script src="components/requirejs/require.js" data-main="scripts/index"></script>
     </body>

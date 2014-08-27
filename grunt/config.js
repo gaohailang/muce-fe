@@ -3,6 +3,17 @@ function mountFolder(connect, dir) {
 }
 var lrSnippet = require('connect-livereload')();
 
+
+/* mock server related */
+function requireUncached(module) {
+    try {
+        delete require.cache[require.resolve(module)]
+    } catch (e) {
+        console.log(e);
+    }
+    return require(module)
+}
+
 module.exports = function(grunt) {
 
     var _ = grunt.util._,
@@ -32,6 +43,11 @@ module.exports = function(grunt) {
     // short task config defined here
     _.extend(configOpts, {
         paths: pathConfig,
+        ngAnnotate: {
+            options: {
+                singleQuotes: true,
+            }
+        },
         rev: {
             dist: {
                 files: {
@@ -68,6 +84,24 @@ module.exports = function(grunt) {
                     livereload: 35722,
                     middleware: function(connect) {
                         return [
+                            function fakeDataMiddleware(req, res, next) {
+                                _.each(requireUncached('../mock/config'), function(data, url) {
+                                    var method = url.split(' ')[0];
+                                    var path = new RegExp(url.split(' ')[1]);
+
+                                    if (req.method === method && path.test(req.url)) {
+                                        if (_.isFunction(data)) {
+                                            data = data(req);
+                                        }
+                                        res.writeHead(200, {
+                                            'Content-Type': 'application/json; charset=utf-8'
+                                        });
+                                        res.end(JSON.stringify(data));
+                                        return;
+                                    }
+                                });
+                                next();
+                            },
                             require('grunt-connect-proxy/lib/utils').proxyRequest,
                             lrSnippet,
                             require('connect-modrewrite')(rewriteRules),
@@ -78,11 +112,11 @@ module.exports = function(grunt) {
                     open: true,
                     useAvailablePort: true
                 },
-                // {
-                //     context: '/api/v1',
-                //     host: 'muce3.apiary-mock.com',
-                //     changeOrigin: true
-                // }
+                /*{
+                    context: '/api/v1',
+                    host: 'muce3.apiary-mock.com',
+                    changeOrigin: true
+                }*/
                 proxies: [{
                     context: '/api/v1',
                     host: '10.0.66.51',

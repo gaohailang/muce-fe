@@ -1,0 +1,24 @@
+<div>
+    <ul class="detail-list">
+        <li class="detail-owner">
+            <div>
+                <code>Owner: </code>
+            </div>
+            <pre class="detail-item">{{currentReportDetail.owner}}</pre>
+        </li>
+        <li class="detail-comment">
+            <div>
+                <code>Comments: </code>
+            </div>
+            <pre class="detail-item">{{currentReportDetail.comments||'『Owner很懒，连注释都不写』'}}</pre>
+         </li>
+        <li class="detail-metrics">
+            <code>Metrics:  </code>
+            <pre class="detail-item">{{currentReportDetail.metrics|transMetricsDetail}}</pre>
+        </li>
+        <li class="detail-dimensions">
+            <code>Dimensions:  </code>
+            <pre class="detail-item">{{currentReportDetail.dimensions|joinArr:'name'}}</pre>
+        </li>
+    </ul>
+</div>

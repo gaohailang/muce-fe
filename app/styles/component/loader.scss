@@ -42,10 +42,10 @@
     }
 }
 @-webkit-keyframes spin{
-    0%: {
+    0% {
         @include transform(rotate3D(0,0,0,0deg));
     }
-    100%: {
+    100% {
         @include transform(rotate3D(0,0,1,360deg));
     }
 }

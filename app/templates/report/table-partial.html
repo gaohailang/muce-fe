@@ -1,0 +1,31 @@
+<section class="table-wrapper">
+    <button class="btn" style="float: right;"
+        ng-click="exportTableAsCsv(tableHeads, tableRows)"> 导出 CSV </button>
+    <!-- Todo: one-bind to save watchers -->
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr class="header-row">
+                <td ng-repeat="(key, val) in tableHeads"
+                    ng-click="toggleRowSort(key)">{{val}}
+                    <i class="icon-sort" tooltip="click to sort." ng-show="key !== sortType"
+                        tooltip-placement="right">
+                    </i>
+                    <i ng-show="key === sortType" ng-class="{'icon-arrow-up': !sortReverse, 'icon-arrow-down':sortReverse}"></i>
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="row in tableRows track by $index | orderBy:sortType:sortReverse">
+                <td ng-repeat="(key, val) in tableHeads" ng-switch on="key">
+                    <span ng-switch-when="Date">{{row[key]|dateNumFormat}}</span>
+                    <span ng-switch-default>
+                        {{row[key] | number}}
+                        <i tooltip="Row Value: {{row[key]}}"
+                            ng-show="(row[key]+'').split('.')[1].length > 3">...</i>
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <!-- <double-bounce-spinner></double-bounce-spinner> -->
+</section>

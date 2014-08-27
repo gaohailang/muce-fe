@@ -35,9 +35,13 @@ define([
             }, {
                 busy: 'global'
             }).then(function(data) {
+                // cleanup
+                delete $rootScope.reportList;
+                delete $rootScope.currentReport;
+
                 $rootScope.categoryList = data;
-                // Todo: 更新 ulr?! or resign by routeParam
                 $scope.currentCategory = data[0];
+                // Todo: 更新 ulr?! or resign by routeParam
             });
         }, true);
 
@@ -76,7 +80,7 @@ define([
     /* delete widget */
     function delPanelCtrl(apiHelper, $scope, $timeout) {
         // scope: currentDelType, selectedItems, currentDelList, currentQuery
-        $scope.delTypes = ['group', 'category', 'dimension', 'metric', 'categoryt_report_relation'];
+        $scope.delTypes = ['group', 'category', 'dimension', 'metric'];
         $scope.currentDelType = $scope.delTypes[0];
 
         $scope.$watch('currentDelType', function(val) {
@@ -93,14 +97,33 @@ define([
             // loading
         }
 
-        // config select2 (with template, includes checkbox, selectedItems)
         $scope.delSelectedHandler = function() {
-            // checkbox selectedItems exist, with notice?!
-            // post and generate del opt differentiate by type
-            apiHelper('del' + _.capitalize(currentDelType), {
+            var selectedItems = _.filter($scope.currentDelList, function(i) {
+                return i.selected
+            });
+            var selected = _.pluck(selectedItems, 'name');
+            if (!selected.length) return;
 
-            }, null).then(function(data) {
-
+            function buildAlertStr() {
+                var suffix;
+                if (selected.length > 1) {
+                    suffix = 'those ' + $scope.currentDelType + 's';
+                } else {
+                    suffix = 'this ' + $scope.currentDelType;
+                }
+                return 'Are you sure you wish to delete ' + suffix + ' :『' + selected.join(', ') + '』';
+            }
+            if (!window.confirm(buildAlertStr())) return;
+            // use selectedItems to ids
+            _.each(selectedItems, function(item) {
+                apiHelper('del' + _.capitalize($scope.currentDelType), item.id).then(function(data) {
+                    // remove from list
+                    $scope.currentDelList = _.without($scope.currentDelList, item);
+                    // remove from $rootScope.reportList, $rootScope.categoryList, $rootScope.groupList
+                    if (_.contains(['group', 'category', 'report'], $scope.currentDelType)) {
+                        $rootScope[$scope.currentDelType + 'List'] = _.without($rootScope[$scope.currentDelType + 'List'], item);
+                    }
+                });
             });
         };
     }

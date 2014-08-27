@@ -7,7 +7,7 @@ module.exports = {
     },
     usemin: {
         html: ['<%= paths.dist %>/**/*.html'],
-        css: ['<%= paths.dist %>/stylesheets/**/*.css'],
+        css: ['.tmp/styles/**/*.css'],
         options: {
             dirs: ['<%= paths.dist %>'],
             assetsDirs: ['<%= paths.dist %>']

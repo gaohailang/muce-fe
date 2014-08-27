@@ -14,16 +14,17 @@ module.exports = function(grunt) {
     grunt.registerTask('build:staging', [
         'clean:dist',
         'concurrent:dist',
-        'useminPrepare',
-        'concat',
-        'uglify',
+        // 'ngAnnotate',
+        // 'useminPrepare',
+        // 'concat',
+        // 'uglify',
         // 'cssmin', // Uncomment this line if using none-sass style
         // 'requirejs:dist', // Uncomment this line if using RequireJS in your project
-        'rev',
+        // 'rev',
         'copy:compass',
-        'imagemin',
-        'usemin',
-        'htmlmin'
+        // 'imagemin',
+        // 'usemin'
+        'copy:dist'
     ]);
 
     grunt.registerTask('build:production', [
@@ -38,7 +39,7 @@ module.exports = function(grunt) {
         'copy:compass',
         'imagemin',
         'usemin',
-        'htmlmin',
+        // 'htmlmin',
         'cdn:dist'
     ]);
 

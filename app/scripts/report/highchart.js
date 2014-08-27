@@ -3,7 +3,7 @@ define([
 ], function(MuceCom) {
     // Fuck. date format(humanable, or timestamp etc)
     var buildLineChart = function(currentReport, data) {
-        $('#chart_canvas').html('');
+        $('#highcharts_wrapper').html('Report No Data');
         var uniqCate = _.uniq(_.pluck(currentReport.metrics, 'type'));
         var isMutipleY = currentReport.metrics.length > 1 && uniqCate.length > 1;
 
@@ -57,7 +57,8 @@ define([
                         pointStart: MuceCom.getUTCDateByDateAndPeriod(data.result[0].date, data.period),
                         pointInterval: MuceCom.getIntervalByPeriod(data.period)
                     };
-                    if (isMutipleY && item.type === 'percent') {
+                    // change percent to 2
+                    if (isMutipleY && item.type === 2) {
                         detailData.yAxis = 1;
                     }
                     retData.push(detailData);
@@ -198,7 +199,7 @@ define([
 
         var chartOptions = {
             chart: {
-                renderTo: 'chart_canvas',
+                renderTo: 'highcharts_wrapper',
                 type: 'line',
                 zoomType: 'x',
                 marginRight: 50,
@@ -213,11 +214,11 @@ define([
                 enabled: false
             },
             title: {
-                text: '',
+                text: currentReport.name,
                 x: -20
             },
             subtitle: {
-                text: '',
+                text: currentReport.comment,
                 x: -20
             },
             xAxis: {
@@ -235,6 +236,15 @@ define([
                     events: {
                         click: addAnotation
                     }
+                }
+            },
+            lang: {
+                noData: '没有查询到相关数据'
+            },
+            noData: {
+                style: {
+                    fontSize: '18px',
+                    color: '#303030'
                 }
             },
             series: getSeries()

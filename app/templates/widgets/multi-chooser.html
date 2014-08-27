@@ -1,10 +1,10 @@
-<div>
+<div class="multi-choose-wrapper">
     <header class="selected-wrapper">
         <span>Selected Items:
             <!-- ({{(choicesList|filter:{'selected': true}).length}} Num) -->
             &nbsp;&nbsp;<i class="icon-trash"
                 ng-show="trash"
-                ng-click="cancelAllSelected()"></i>
+                ng-click="triggerDel(choicesList)"></i>
         </span><br/>
         <span class="selected-name"
             ng-repeat="i in choicesList|filter:{'selected': true}">

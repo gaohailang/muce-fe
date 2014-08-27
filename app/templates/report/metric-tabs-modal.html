@@ -5,10 +5,12 @@
 </div>
 <div class="modal-body">
     <tabset>
-        <tab heading="Normal Metric" ng-controller="metricModalCtrl" id="normal_metric">
-            <formly-form fields="formFields" key="{{formName}}"></formly-form>
+        <tab heading="Normal Metric" select="$root.currentMetricTab = 'normal_metric'">
+            <div ng-controller="metricModalCtrl" id="normal_metric">
+                <formly-form fields="formFields" key="{{formName}}"></formly-form>
+            </div>
         </tab>
-        <tab heading="Combine Metric">
+        <tab heading="Combine Metric" select="$root.currentMetricTab = 'combine_metric'">
             <div ng-controller="combinedMetricModalCtrl" id="combine_metric">
                 <formly-form fields="formFields" key="{{formName}}"></formly-form>
             </div>

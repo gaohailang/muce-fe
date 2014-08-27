@@ -43,13 +43,13 @@ define([
                 var formKey = $element.parents('div-form').attr('key') + 'Data';
 
                 // shortcut for hook referTpl
+                var _ctrl;
                 if ($scope.options.referTpl) {
                     $element.html($templateCache.get($scope.options.referTpl));
                     $compile($element.contents())($scope);
                     $timeout(function() {
-                        $scope[$scope.formName].$addControl(
-                            $element.find('input,textarea,select').data("$ngModelController")
-                        );
+                        _ctrl = $element.find('input,textarea,select').data("$ngModelController");
+                        _ctrl && $scope[$scope.formName].$addControl(_ctrl);
                     }, 500);
                     return;
                 }
@@ -67,9 +67,8 @@ define([
                         .replace('PLACEHOLDER', controlHtml));
                     $compile($element.contents())($scope);
                     $timeout(function() {
-                        $scope[$scope.formName].$addControl(
-                            $element.find('input,textarea,select').data("$ngModelController")
-                        );
+                        _ctrl = $element.find('input,textarea,select').data("$ngModelController");
+                        _ctrl && $scope[$scope.formName].$addControl(_ctrl);
                     }, 500);
                     return;
                 }

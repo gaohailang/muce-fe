@@ -29,24 +29,30 @@ define([
         ngModelCtrl.$formatters.unshift(function(valueFromModel) {
             // return how data will be shown in input
             if (!valueFromModel) return;
-            return new Date(valueFromModel).dateFormat('Y/m/d');
+            return new Date(valueFromModel).dateFormat('Y-m-d');
         });
 
         ngModelCtrl.$parsers.push(function(valueFromInput) {
             // return how data should be stored in model
             return new Date(valueFromInput).getTime();
         });
-        var diyOptions = $scope.$eval($attr.picker);
+
+        var diyOptions;
+        $scope.$watch('picker', function(val) {
+            if (!val) return;
+            $elem.data('xdsoft_datetimepicker').setOptions(val);
+            $elem.val($elem.data('xdsoft_datetimepicker').data('xdsoft_datetime').str());
+        }, true);
 
         var options = _.extend({
             // lang: 'zh', with i18n{zh: months, dayOfWeek}
-            format: 'Y/m/d',
+            format: 'Y-m-d',
             defaultSelect: false,
             scrollInput: true,
             timepicker: false,
             yearStart: 2010,
             yearEnd: 2016
-        }, diyOptions, {
+        }, {
             onChangeDateTime: function(dp, $input) {
                 if (diyOptions && diyOptions.onChangeDateTime) {
                     diyOptions.onChangeDateTime.call(this, dp);
@@ -63,15 +69,15 @@ define([
             replace: true,
             scope: {
                 choicesList: '=',
-                trash: '@'
+                triggerDel: '&'
             },
             controller: function($scope) {
-                $scope.trash = $scope.trash || false;
+                $scope.trash = $scope.triggerDel || false;
                 $scope.cancelAllSelected = function() {
                     _.each($scope.choicesList, function(item) {
                         item.selected = false;
                     });
-                }
+                };
             }
         }
     }
@@ -82,6 +88,9 @@ define([
         .directive('dateTimePicker', function() {
             return {
                 require: '?ngModel',
+                scope: {
+                    picker: '='
+                },
                 link: dateTimePickerLinker
             };
         })

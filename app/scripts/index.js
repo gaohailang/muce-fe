@@ -16,6 +16,9 @@ require([
         'ui.router',
         'ui.bootstrap',
         'ui.select',
+        'ngSanitize',
+        'ngQuickDate',
+        'infinite-scroll', 'angularSpinkit',
         'muceApp.api',
         'muceApp.base',
         'muceApp.report'

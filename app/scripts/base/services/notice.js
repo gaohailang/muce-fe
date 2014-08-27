@@ -24,40 +24,27 @@ define([], function() {
     }
 
     angular.module('muceApp.base.services.notice', [])
-        .controller('noticeController', function($scope, $attrs, $rootScope) {
+        .controller('noticesController', function($scope, $attrs, $rootScope) {
             $scope.close = function(notice) {
                 $rootScope._notices = _.without($rootScope._notices, notice);
             };
         })
         .factory('$notice', noticeFactory)
-        .directive('muceNotice', function() {
-            return {
-                restrict: 'EA',
-                controller: 'noticeController',
-                templateUrl: 'snippet/notice.html',
-                transclude: true,
-                replace: true,
-                scope: {
-                    type: '=',
-                    notice: '='
-                }
-            };
-        })
         .directive('muceNotices', function() {
             return {
                 restrict: 'EA',
+                controller: 'noticesController',
                 templateUrl: 'snippet/notices.html'
             };
         })
-        .run(function($templateCache) {
-            $templateCache.put("snippet/notice.html",
-                "<div class='alert' ng-class='\"alert-\" + (type || \"warning\")'>\n" +
-                "    <button type='button' class='close' ng-click='close(notice)'>&times;</button>\n" +
-                "    <div ng-transclude></div>\n" +
-                "</div>\n");
-            $templateCache.put("snippet/notices.html",
-                "<muce-notice ng-repeat='notice in $root._notices' notice='notice' type='notice.type'>" +
-                "    <div>{{notice.msg}}</div>" +
-                "</muce-notice>");
-        });
+
+    .run(function($templateCache) {
+        $templateCache.put("snippet/notices.html",
+            "<div class='muce-notices'>" +
+            "<div ng-repeat='notice in $root._notices' class='alert alert-dismissible' role='alert' ng-class='\"alert-\" + (type || \"warning\")'>\n" +
+            '    <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>\n' +
+            "    {{notice.msg}}\n" +
+            "</div></div>"
+        );
+    });
 });
