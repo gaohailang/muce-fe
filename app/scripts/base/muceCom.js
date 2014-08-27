@@ -5,7 +5,7 @@ define([
 ], function(Suggestion, FormModal, Const) {
 
     var Com = {
-        moduleList: ['report', 'analytics'],
+        moduleList: ['report', 'mq'],
 
         getNameFromCookie: function() {
             var cookie = document.cookie;
