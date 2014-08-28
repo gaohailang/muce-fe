@@ -98,7 +98,7 @@ define([
         function fetchReports() {
             // Todo: check form validate
             var postData = {
-                period: $scope.currentPeriod || 1,
+                period: $scope.currentPeriod || 0,
                 startDate: $scope.startDate,
                 endDate: $scope.endDate,
                 filters: $scope.dimenAdv.filters || [],

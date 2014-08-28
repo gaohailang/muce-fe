@@ -9,18 +9,30 @@
             data-original-title="Double click view Groups">
 
             <!-- data-bind="event: {dblclick: showAllProfile}" -->
-            <button class="btn btn-success btn-name">
+            <button class="btn btn-success btn-name"
+                ng-mouseenter="isShow=true"
+                ng-mouseleave="isShow=false">
                 <span>{{currentGroup.name||'loading...'}}</span>
+                <!-- <i class="icon-pencil edit-report"
+                    ng-show="isShow" ng-click="editReport(report)"></i>
+                <i class="icon-trash delete-report" ng-show="isShow"></i> -->
             </button>
 
-            <button class="btn btn-success dropdown-toggle btn-caret" data-toggle="dropdown">
+            <button data-toggle="dropdown"
+                class="btn btn-success dropdown-toggle btn-caret">
                 <span class="caret"></span>
             </button>
 
             <!-- data-bind="text: name, click: $parent.switchProfile" -->
-            <ul class="dropdown-menu">
-                <li ng-repeat="group in groupList">
+            <ul class="dropdown-menu sidebar-list">
+                <li ng-repeat="group in groupList|orderBy:'name'"
+                    ng-mouseenter="isShow=true"
+                    ng-mouseleave="isShow=false">
                     <a ng-click="switchGroup(group)">{{group.name}}</a>
+
+                    <i class="icon-pencil edit-report"
+                        ng-show="isShow" ng-click="editReport(report)"></i>
+                    <i class="icon-trash delete-report" ng-show="isShow"></i>
                 </li>
             </ul>
         </div>
@@ -37,14 +49,21 @@
                     <span ng-show="categoryList.length==0">No Category</span>
                     <span ng-show="categoryList.length>0">{{currentCategory.name}}</span>
                 </button>
-                <button class="btn btn-info dropdown-toggle btn-caret" data-toggle="dropdown">
+                <button data-toggle="dropdown"
+                    class="btn btn-info dropdown-toggle btn-caret">
                     <span class="caret"></span>
                 </button>
 
                 <!-- data-bind="text: name, click: $parent.switchGroup" -->
-                <ul class="dropdown-menu">
-                    <li ng-repeat="category in categoryList">
+                <ul class="dropdown-menu sidebar-list">
+                    <li ng-repeat="category in categoryList|orderBy:'name'"
+                        ng-mouseenter="isShow=true"
+                        ng-mouseleave="isShow=false">
                         <a ng-click="switchCategory(category)">{{category.name}}</a>
+
+                        <i class="icon-pencil edit-report"
+                            ng-show="isShow" ng-click="editReport(report)"></i>
+                        <i class="icon-trash delete-report" ng-show="isShow"></i>
                     </li>
                 </ul>
             </div>
@@ -56,8 +75,14 @@
         <!--Report List-->
         <p ng-show="!reportList">No Report</p>
         <ul class="nav nav-list sidebar-list report-list">
-            <li ng-repeat="report in reportList" ng-class="{'active': (currentReport == report)}">
+            <li ng-repeat="report in reportList|orderBy:'name'"
+                ng-mouseenter="isShow=true"
+                ng-mouseleave="isShow=false"
+                ng-class="{'active': (currentReport == report)}">
                 <a href="#" ng-click="switchReport(report)">{{report.name}}</a>
+                <i class="icon-pencil edit-report"
+                    ng-show="isShow" ng-click="editReport(report)"></i>
+                <i class="icon-trash delete-report" ng-show="isShow"></i>
             </li>
         </ul>
     </li>
