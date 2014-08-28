@@ -1,0 +1,15 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="$close()">×</button>
+    <h3 class="modal-title" ng-if="result">JOB RESULT</h3>
+    <h3 class="modal-title" ng-if="reason">FAILED REASON</h3>
+</div>
+<div class="modal-body" ng-class="{'i-bg-red': reason}">
+    <table class="table table-striped" ng-if="result">
+        <tbody>
+            <tr ng-repeat="i in result">
+                <td ng-repeat="ii in i">{{ii}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <p ng-if="reason">{{reason}}</p>
+</div>

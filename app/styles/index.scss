@@ -195,6 +195,27 @@ textarea {
     }
 }
 
+
+// mq page
+.mq-db-list {
+    .db-item {
+        margin-bottom: 3px;
+        .dropdown-toggle {
+            width: 90px;
+            overflow: hidden;
+        }
+    }
+    // move dropdown-menu for db table sideby dbitem
+    /*.open > .dropdown-menu {
+        display: block;
+        left: 100%;
+        top: 0px;
+    }*/
+}
+.i-bg-red {
+    background-color: #f2dede;
+}
+
 // login
 @keyframes shake {
     0% {

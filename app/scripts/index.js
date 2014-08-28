@@ -78,14 +78,56 @@ require([
             });
         };
 
-            });
+        $scope.switchTbView = function(view) {
+            $scope.currentTbView = view;
         };
 
-        $scope.
+        apiHelper('getJobList', {
+            from: 'gaohailang'
+        }).then(function(data) {
+            $scope.jobList = data;
+            _.each(data, function(job, i) {
+                if (job.status === 'FAILED') return;
+                apiHelper('getJobResultSize', job.id).then(function(data) {
+                    job.size = data;
+                });
+            });
+        });
 
-        Mq.getInstance();
-        MuceCom.updateTitle('Query');
-        tongji();
+        $scope.openJobResultView = function(job) {
+            var newScope = $scope.$new(true);
+            if (job.status === 'FAILED') {
+                newScope.reason = job.reason;
+                open();
+            } else {
+                apiHelper('getJobView', job.id).then(function(data) {
+                    newScope.result = data;
+                    open();
+                });
+            }
+
+            function open() {
+                $modal.open({
+                    templateUrl: 'templates/mq/job-result.html',
+                    size: 'lg',
+                    scope: newScope,
+                    controller: function($scope) {
+                        // Todo: hive result stdout
+                        if ($scope.result) {
+                            $scope.result = _.map($scope.result.split('\n'), function(i) {
+                                return i.split('\t');
+                            });
+                        }
+                    }
+                });
+            }
+        };
+
+        $scope.downloadJobResultView = function(id) {
+            apiHelper('getJobResult', id);
+        };
+
+
 
 
     });
