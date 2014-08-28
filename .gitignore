@@ -7,7 +7,7 @@ deploy
 .sass-cache
 node_modules
 app/components
-app/vendors
+# app/vendors
 
 *.sublime-*
 .wdrc
