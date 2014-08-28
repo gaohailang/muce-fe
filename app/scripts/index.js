@@ -1,10 +1,11 @@
 require([
     './misc',
     'base/muceCom',
+    'mq',
     './base',
     './api',
     'report/index'
-], function(misc, MuceCom) {
+], function(misc, MuceCom, Mq) {
     'use strict';
 
     var muceApp = angular.module('muceApp', [
@@ -54,6 +55,10 @@ require([
         Mq.getInstance();
         MuceCom.updateTitle('Query');
         tongji();
+    });
+
+    muceApp.controller('feedbackCtrl', function($scope) {
+        console.log('in feedbackCtrl');
     });
 
     angular.bootstrap(document, ['muceApp']);

@@ -72,7 +72,7 @@ define(['base/muceCom'], function(MuceCom) {
 
         function login() {
             var url = window.location.href;
-            window.location.href = '/login.html?url=' + url;
+            // window.location.href = '/login.html?url=' + url;
         }
 
         function errorHandler(resp, errorMsgContainer) {

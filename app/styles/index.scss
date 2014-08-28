@@ -1,12 +1,6 @@
-@import "vendor/bootstrap";
-@import "vendor/bootstrap-responsive";
-
 @import "main";
-@import "analyze";
-@import "channels";
-@import "docs";
+// @import "docs";
 @import "mq";
-@import "realtime";
 @import "login";
 
 @import "vendor/font-awesome";
@@ -20,7 +14,7 @@
     top: 50px;
     z-index: 100000;
     right: 30px;
-    .alert{
+    .alert {
         margin: 3px 0;
         .close {
             right: 0;
@@ -32,27 +26,23 @@
 #report_container {
     .nav-sidebar {
         padding: 0;
-
-        .report-list{
+        .report-list {
             max-height: 300px;
             overflow: auto;
         }
-
-        h3{
+        h3 {
             font-size: 18px;
             line-height: 22px;
             padding-left: 10px;
             border-left: 2px solid red;
         }
-
-        select{
+        select {
             max-width: 100%;
         }
-        input{
+        input {
             max-width: 95%;
         }
     }
-
     .setting-wrapper {
         .date-operator, .dimension-operator {
             & > * {
@@ -69,27 +59,25 @@
             }
         }
         .dimension-operator {
-            button, label{
+            button, label {
                 display: inline-block;
             }
             margin-bottom: 10px;
-            & > button{
+            & > button {
                 margin-bottom: 5px;
             }
             label select {
                 margin: 0;
             }
         }
-        .trigger-wrapper{
+        .trigger-wrapper {
             vertical-align: middle;
             margin-top: 10px;
         }
-
-        select{
+        select {
             width: 130px;
         }
     }
-
     .chart-wrapper {
         height: 450px;
         max-height: 450px;
@@ -98,11 +86,9 @@
         line-height: 440px;
         font-size: 30px;
     }
-
-    .detail-list{
+    .detail-list {
         padding-left: 0;
     }
-
     .table-wrapper {
         thead td {
             cursor: pointer;
@@ -127,27 +113,30 @@
         overflow: auto;
     }
 }
+
 .selected-wrapper {
     font-size: 14px;
     margin-bottom: 5px;
 }
-.search-select-wrapper{
-    label{
+
+.search-select-wrapper {
+    label {
         white-space: nowrap;
     }
 }
+
 .selected-name .icon-minus-sign {
     margin-right: 5px;
 }
+
 .form-dimen-adv {
-    .controls select{
+    .controls select {
         width: 35%;
     }
-    .controls input{
+    .controls input {
         width: 40%;
     }
 }
-
 
 label > input[type=checkbox] {
     margin: 0;
@@ -158,7 +147,7 @@ label > input[type=checkbox] {
 // global
 [class^="icon-"] {
     cursor: pointer;
-    &:hover{
+    &:hover {
         cursor: pointer;
         color: red;
         transition: all .5s ease;
@@ -169,23 +158,26 @@ label > input[type=checkbox] {
     display: block;
     margin: 5px 0 0;
 }
+
 .muce-form-help-inline {
     display: inline-block;
     margin: 0 0 0 10px;
 }
+
 .w-text-warning {
     color: #f24949;
 }
 
-textarea{
+textarea {
     transition: all linear .2s;
 }
-.control-stack-select select{
+
+.control-stack-select select {
     margin: 5px 0;
 }
 
 // fix select width
-.select2-container, .select2-drop, .select2-search, .select2-search input{
+.select2-container, .select2-drop, .select2-search, .select2-search input {
     width: 220px;
 }
 
@@ -198,8 +190,34 @@ textarea{
 .quickdate {
     margin-bottom: 10px;
     width: 200px;
-
     .quickdate-button {
         width: 90%;
     }
+}
+
+// login
+@keyframes shake {
+    0% {
+        transform: translateX(0);
+    }
+    12.5% {
+        transform: translateX(-6px) rotateY(-5deg);
+    }
+    37.5% {
+        transform: translateX(5px) rotateY(4deg);
+    }
+    62.5% {
+        transform: translateX(-3px) rotateY(-2deg);
+    }
+    87.5% {
+        transform: translateX(2px) rotateY(1deg);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+
+.shake {
+    animation: shake 400ms ease-in-out;
 }
