@@ -19,8 +19,8 @@
             <div class="mq-db-list">
                 <h5>DataBases</h5>
                 <ul class="db-list">
-                    <li ng-repeat="db in allDbs"
-                        class="dropdown db-item" ng-click="changeDb(db)">
+                    <li class="dropdown db-item"
+                        ng-repeat="db in allDbs" ng-click="changeDb(db)">
                         <i class="icon-th"></i>
                         <a class="btn dropdown-toggle">{{db}}</a>
                         <ul class="dropdown-menu" ng-if="currentDb==db">
@@ -84,47 +84,36 @@
             </div>
 
             <!-- mq db schema/partition info -->
-            <div>
+            <div class="mq-tb-view" ng-show="currentDb">
                 <div id="mq_db_tb_des">
                     <i class="icon-th"></i>
-                    <span class="label label-important">{{}}</span>
+                    <span class="label label-important">{{currentDb}}</span>
                     <i class="icon-table"></i>
-                    <span class="label label-info">{{i}}</span>
+                    <span class="label label-info">{{currentTb}}</span>
 
-                    <div class="btn-group mq-select-btn">
-                        <button class="btn">Schema</button>
-                        <button class="btn">Partition</button>
+                    <div class="btn-group">
+                        <button class="btn"
+                            ng-repeat="i in ['schema', 'partition']"
+                            ng-click="switchTbView(i)"
+                            ng-class="{'active': currentTbView==i}">
+                            {{i}}
+                        </button>
                     </div>
                 </div>
 
-                <div id="mq_schemas" class="span6">
-                    <table class="table table-striped">
-                        <caption>
-                        </caption>
+                <div class="span6"  ng-show="currentTb">
+                    <table class="table table-striped"
+                        ng-show="i == currentTbView"
+                        ng-repeat="i in ['schema', 'partition']">
+                        <!-- <caption></caption> -->
                         <thead>
                             <tr>
-                                <th>Schema</th>
+                                <th>{{i}}</th>
                             </tr>
                         </thead>
-                        <tbody data-bind="foreach: mqSchemas">
-                            <tr>
-                                <td data-bind="text: $data"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div id="mq_partitions" class="span6">
-                    <table class="table table-striped">
-                        <caption>
-                        </caption>
-                        <thead>
-                            <tr>
-                                <th>Partition</th>
-                            </tr>
-                        </thead>
-                        <tbody data-bind="foreach: mqPartitions">
-                            <tr>
-                                <td data-bind="text: $data"></td>
+                        <tbody>
+                            <tr ng-repeat="ii in tbInfo[currentTbView]">
+                                <td>{{ii}}</td>
                             </tr>
                         </tbody>
                     </table>

@@ -51,21 +51,32 @@ require([
         window.userName = MuceCom.getNameFromCookie();
     });
 
-    muceApp.controller('mqCtrl', function($scope, apiHelper) {
+    muceApp.controller('mqCtrl', function($scope, apiHelper, $modal) {
+
+        $scope.currentTbView = 'schema';
 
         apiHelper('getDatabases').then(function(data) {
             $scope.allDbs = data;
         });
 
-        apiHelper('getDbTable', 'debug_muce_event_client').then(function(data) {
-            $scope.allTables['debug_muce_event_client'] = data;
-        });
+        $scope.changeDb = function(db) {
+            $scope.currentDb = db;
+            apiHelper('getDbTable', db).then(function(data) {
+                $scope.allTables = data;
+            });
+        };
 
         $scope.changeTable = function(tb) {
-            apiHelper('getDbSchema', tb).then(function() {
-
+            var db = $scope.currentDb;
+            $scope.currentTb = tb;
+            $scope.tbInfo = {};
+            apiHelper('getDbSchema', db, tb).then(function(data) {
+                $scope.tbInfo.schema = data;
             });
-            apiHelper('getDbParts', tb).then(function() {
+            apiHelper('getDbParts', db, tb).then(function(data) {
+                $scope.tbInfo.partition = data;
+            });
+        };
 
             });
         };
