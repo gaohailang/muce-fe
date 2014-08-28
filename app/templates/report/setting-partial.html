@@ -30,22 +30,27 @@
             </div>
         </div>
         <div class="dimension-operator">
-            <label for="dimensions_1">1st Dimen:
+            <label for="dimensions_1"
+                ng-show="currentReportDetail.dimensions.length>0">1st Dimen:
                 <select id="dimensions_1" ng-model="dimensions.1st"
                     ng-options="i as i.name for i in currentReportDetail.dimensions">
                 </select>
             </label>
-            <label for="dimensions_2">2nd Dimen:
+            <label for="dimensions_2"
+                ng-show="currentReportDetail.dimensions.length>1">2nd Dimen:
                 <select id="dimensions_2"  ng-model="dimensions.2nd"
                     ng-options="i as i.name for i in currentReportDetail.dimensions">
                 </select>
             </label>
-            <label for="dimensions_3">3rd Dimen:
+            <label for="dimensions_3"
+                ng-show="currentReportDetail.dimensions.length>2">3rd Dimen:
                 <select id="dimensions_3" ng-model="dimensions.3rd"
                     ng-options="i as i.name for i in currentReportDetail.dimensions">
                 </select>
             </label>
-            <button class="btn" ng-class="{'active': dimenAdv.filters}"
+            <button class="btn"
+                ng-show="currentReportDetail.dimensions.length"
+                ng-class="{'active': dimenAdv.filters}"
                 ng-click="openAdvancedPanel()">
                 <span ng-if="!dimenAdv.filters">Advanced</span>
                 <span ng-if="dimenAdv.filters">Advanced Filter ON</span>
@@ -54,10 +59,18 @@
     </div>
 
     <div class="trigger-wrapper span2" ng-init="isShowDetailInfo = false">
-        <button class="btn btn-primary refresh-report" ng-click="fetchReports()">apply</button><br/>
-        <a ng-click="isShowDetailInfo = !isShowDetailInfo" href="#">
+        <button class="btn btn-primary refresh-report" ng-click="fetchReports()">apply</button>
+        <!-- <a ng-click="isShowDetailInfo = !isShowDetailInfo" href="#">
             <span ng-show="!isShowDetailInfo">Show Report Detail</span>
             <span ng-show="isShowDetailInfo">Hide Report Detail</span>
-        </a>
+        </a> -->
+
+        <span class="report-detail-triiger"
+            ng-click="isShowDetailInfo = !isShowDetailInfo">
+            <i ng-show="!isShowDetailInfo"
+                tooltip="show report detail" class="fa fa-folder"></i>
+            <i ng-show="isShowDetailInfo"
+                tooltip="hide report detail" class="fa fa-folder-open"></i>
+        </span>
     </div>
 </section>

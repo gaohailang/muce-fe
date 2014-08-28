@@ -102,6 +102,19 @@ var jobListData = [{
 // Todo More Mock Helper _.dateRange, etc, incrId -> ItemList
 
 module.exports = {
+    'GET /api/v1/meta/groups': wrapper([{
+        "id": 1,
+        "name": "test_group"
+    }, {
+        "id": 1,
+        "name": "best_group"
+    }, {
+        "id": 1,
+        "name": "aest_group"
+    }, {
+        "id": 1,
+        "name": "测试下fsaf"
+    }]),
     'GET /api/v1/report/1?.*': renderFsMock('report-1-data.json'),
     'GET /api/v1/meta/report/.*': renderFsMock('report-1-detail.json'),
 
