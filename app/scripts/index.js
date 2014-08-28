@@ -11,6 +11,7 @@ require([
     var muceApp = angular.module('muceApp', [
         'ui.router',
         'ui.bootstrap',
+        'ui.codemirror',
         // 'ui.select',
         'ngSanitize',
         'ngQuickDate',
@@ -128,8 +129,85 @@ require([
         };
 
 
+        $scope.editorOptions = {
+            autofocus: true,
+            lineWrapping: true,
+            lineNumbers: true,
+            indentWithTabs: true,
+            smartIndent: true,
+            matchBrackets: true,
+            // readOnly: 'nocursor',
+            mode: 'text/x-hive',
+            extraKeys: {
+                // "Ctrl-Space": "autocomplete"
+            },
+            hintOptions: {
+                tables: {
+                    users: {
+                        name: null,
+                        score: null,
+                        birthDate: null
+                    },
+                    countries: {
+                        name: null,
+                        population: null,
+                        size: null
+                    }
+                }
+            },
+            onLoad: function(_editor) {
+                // Editor part
+                var _doc = _editor.getDoc();
+                _editor.focus();
+
+                _editor.on("change", function(cm, change) {
+                    console.log(arguments);
+                    if (change.origin == '+input') return;
+                    // +input, +delete, complete
+                    CodeMirror.showHint(cm);
+                });
+
+                _editor.on("change", autoReplace);
+
+                function autoReplace(cm, change) {
+                    var replacements = {
+                        "lambda": "λ",
+                        "mc": "muce",
+                        "wdj": "wandoujia",
+                        "*": "×",
+                        "/": "÷",
+                        "<=": "≤",
+                        ">=": "≥",
+                        "!=": "≠",
+                    };
+
+                    if (change.text[0] !== ".") return; // todo: replace space to comma
+                    var type = cm.getTokenTypeAt(change.from);
+                    // if (type !== "operator" && type !== "builtin") return;
+                    var token = cm.getTokenAt(change.from, true);
+                    var replacement = replacements[token.string];
+                    if (!replacement) return;
+                    var line = change.to.line;
+                    cm.replaceRange(replacement, {
+                        ch: token.start,
+                        line: line
+                    }, {
+                        ch: token.end,
+                        line: line
+                    });
+                }
+            }
+        };
 
 
+        $scope.$watch('currentMqRaw', function(val) {
+            if (!val) return;
+            if (val.split('\n').length > 7) {
+                $('.mq-editor-wrapper .CodeMirror').css('height', 'auto');
+            } else {
+                $('.mq-editor-wrapper .CodeMirror').css('height', '112px');
+            }
+        });
     });
 
     muceApp.controller('feedbackCtrl', function($scope) {

@@ -216,6 +216,22 @@ textarea {
     background-color: #f2dede;
 }
 
+.mq-container {
+    .CodeMirror {
+        height: 112px;
+        margin: 5px 2px 22px 0;
+        font-family: monospace;
+        position: relative;
+        border: 1px solid #d9d9d9;
+        line-height: normal;
+        width: 100%;
+    }
+    .CodeMirror-scroll {
+      overflow-y: hidden;
+      overflow-x: auto;
+    }
+}
+
 // login
 @keyframes shake {
     0% {
