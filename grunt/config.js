@@ -93,10 +93,8 @@ module.exports = function(grunt) {
                                         if (_.isFunction(data)) {
                                             data = data(req);
                                         }
-                                        res.writeHead(200, {
-                                            'Content-Type': 'application/json; charset=utf-8'
-                                        });
                                         res.end(JSON.stringify(data));
+                                        // res.setHeader('Content-Type', 'application/json; charset=utf-8');
                                         return;
                                     }
                                 });

@@ -105,8 +105,8 @@ module.exports = {
     'GET /api/v1/report/1?.*': renderFsMock('report-1-data.json'),
     'GET /api/v1/meta/report/.*': renderFsMock('report-1-detail.json'),
 
-    'GET /api/v1/mq/job': wrapper(jobListData),
-    'GET /api/v1/mq/job/\d+': function() {
+    'GET /api/v1/mq/job$': wrapper(jobListData),
+    'GET /api/v1/mq/job/\d+$': function() {
         // RANDOM CHOICE ONE
         return wrapper(_.sample(jobListData));
     },
