@@ -1,6 +1,9 @@
-<div id="mq_container" class="container-fluid">
+<div id="mq_container" class="container-fluid mq_container">
     <div class="row-fluid">
-        <div class="span3">
+        <!-- mq sidebar -->
+        <div class="span3" >
+
+            <!-- mq fisrt-class menu -->
             <div id="mq_job">
                 <div id="mq_compose_query">
                     <button class="btn btn-primary">Compose Query</button>
@@ -8,25 +11,33 @@
                 <ul id='mq_user_query' class="nav nav-pills nav-stacked">
                     <li><a href="#mq" class="mq-history">Query History</a></li>
                     <li><a href="#mq" class="mq-example">Query Example</a></li>
-                    <li><a href="#mq" class="share-query">Query Share</a></li>
+                    <!-- <li><a href="#mq" class="share-query">Query Share</a></li> -->
                 </ul>
             </div>
-            <div id="mq_db">
+
+            <!-- database list -->
+            <div class="mq-db-list">
                 <h5>DataBases</h5>
-                <ul id="mq_databases" data-bind="foreach: mqDataBases">
-                    <li>
-                        <span><i class="icon-th"></i></span>
-                        <div class="btn-group">
-                            <a class="btn dropdown-toggle mq-database-btn" data-bind="text: $data, click: $parent.mqShowTables" data-toggle="dropdown" href="#"></a>
-                        </div>
+                <ul class="db-list">
+                    <li ng-repeat="db in allDbs"
+                        class="dropdown db-item" ng-click="changeDb(db)">
+                        <i class="icon-th"></i>
+                        <a class="btn dropdown-toggle">{{db}}</a>
+                        <ul class="dropdown-menu" ng-if="currentDb==db">
+                            <li ng-repeat="tb in allTables">
+                                <a href='#mq' ng-click="changeTable(tb)">
+                                    {{tb}}
+                                </a>
+                            </li>
+                        </ul>
                     </li>
-                </ul>
-                <ul class="dropdown-menu mq-tables" data-bind="foreach: mqTables">
-                    <li><a href='#mq' data-bind="text: $data, click: $parent.mqShowSchemas"></a></li>
                 </ul>
             </div>
         </div>
+
+        <!-- mq content -->
         <div id="mq_detail" class="span9">
+            <!-- mq editor -->
             <div id="mq_query">
                 <h4>New Query...</h4>
                 <div id="mq_code_mirror">
@@ -71,16 +82,56 @@
                     </div>
                 </div>
             </div>
-            <div id="mq_db_tb_des">
-                <span class="icon-th"></span>
-                <span class="label label-important" data-bind="text: mqSelectDatabase"></span>
-                <span class="icon-table"></span>
-                <span class="label label-info" data-bind="text: mqSelectTable"></span>
-                <div class="btn-group mq-select-btn">
-                    <button class="btn mq-show-schemas">Schema</button>
-                    <button class="btn mq-show-partitions">Partition</button>
+
+            <!-- mq db schema/partition info -->
+            <div>
+                <div id="mq_db_tb_des">
+                    <i class="icon-th"></i>
+                    <span class="label label-important">{{}}</span>
+                    <i class="icon-table"></i>
+                    <span class="label label-info">{{i}}</span>
+
+                    <div class="btn-group mq-select-btn">
+                        <button class="btn">Schema</button>
+                        <button class="btn">Partition</button>
+                    </div>
+                </div>
+
+                <div id="mq_schemas" class="span6">
+                    <table class="table table-striped">
+                        <caption>
+                        </caption>
+                        <thead>
+                            <tr>
+                                <th>Schema</th>
+                            </tr>
+                        </thead>
+                        <tbody data-bind="foreach: mqSchemas">
+                            <tr>
+                                <td data-bind="text: $data"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="mq_partitions" class="span6">
+                    <table class="table table-striped">
+                        <caption>
+                        </caption>
+                        <thead>
+                            <tr>
+                                <th>Partition</th>
+                            </tr>
+                        </thead>
+                        <tbody data-bind="foreach: mqPartitions">
+                            <tr>
+                                <td data-bind="text: $data"></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
+
+            <!-- mq history -->
             <div id="mq_user_query_table" class="span9">
                 <table class="table table-bordered user-query-detail">
                     <thead>
@@ -99,6 +150,8 @@
                 </table>
                 <p><a class="btn mq-more-querys btn-large">more</a></p>
             </div>
+
+            <!-- mq example -->
             <div id="mq_user_query_example" class="span9">
                 <div class="bs-docs-example">
                     <code>&lt;distinct&gt;</code> Windows Launch Users In Day 20130723
@@ -121,6 +174,8 @@
                 <pre class="prettyprint linenums">select * from windows2x.tb_app_download where p_date='20130701' and p_hourmin='0000' limit 10
                 </pre>
             </div>
+
+            <!-- mq share -->
             <div id="mq_user_query_share" class="span9">
                 <div class="navbar-div pull-right">
                     <div class="alert alert-info">
@@ -146,38 +201,7 @@
                 </table>
                 <p><a class="btn mq-more-querys btn-large">more</a></p>
             </div>
-            <div id="mq_schemas" class="span6">
-                <table class="table table-striped">
-                    <caption>
-                    </caption>
-                    <thead>
-                        <tr>
-                            <th>Schema</th>
-                        </tr>
-                    </thead>
-                    <tbody data-bind="foreach: mqSchemas">
-                        <tr>
-                            <td data-bind="text: $data"></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div id="mq_partitions" class="span6">
-                <table class="table table-striped">
-                    <caption>
-                    </caption>
-                    <thead>
-                        <tr>
-                            <th>Partition</th>
-                        </tr>
-                    </thead>
-                    <tbody data-bind="foreach: mqPartitions">
-                        <tr>
-                            <td data-bind="text: $data"></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+
             <div id="mq_result_view" class="span6">
                 <table class="table table-striped">
                     <caption>
