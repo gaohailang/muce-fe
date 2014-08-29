@@ -4,8 +4,6 @@ define([
 ], function(chartPanelCtrl) {
 
     function reportCtrl($scope, $modal) {
-        // those variable is used across report module
-
         $scope.openDelModal = function(type, data) {
             var newScope = $scope.$new(true);
             $scope._data = data;
@@ -19,7 +17,7 @@ define([
                 });
             } else {
                 $modal.open({
-                    templateUrl: 'templates/report/metric-tabs-modal.html',
+                    templateUrl: 'report/metric-tabs-modal.html',
                     size: 'lg'
                 });
             }
@@ -32,22 +30,22 @@ define([
             busy: 'global'
         }).then(function(data) {
             $rootScope.groupList = data;
-            $scope.currentGroup = data[0];
+            $rootScope.currentGroup = data[0];
         });
 
         $scope.switchGroup = function(group) {
-            $scope.currentGroup = group;
+            $rootScope.currentGroup = group;
         };
 
         $scope.switchCategory = function(category) {
-            $scope.currentCategory = category;
+            $rootScope.currentCategory = category;
         };
 
         $scope.switchReport = function(report) {
             $rootScope.currentReport = report;
         };
 
-        $scope.$watch('currentGroup', function(val) {
+        $rootScope.$watch('currentGroup', function(val) {
             if (!val) return;
             apiHelper('getCategoryList', {
                 groupId: val.id
@@ -59,12 +57,12 @@ define([
                 delete $rootScope.currentReport;
 
                 $rootScope.categoryList = data;
-                $scope.currentCategory = data[0];
+                $rootScope.currentCategory = data[0];
                 // Todo: 更新 ulr?! or resign by routeParam
             });
         }, true);
 
-        $scope.$watch('currentCategory', function(val) {
+        $rootScope.$watch('currentCategory', function(val) {
             if (!val) return;
             apiHelper('getReportList', {
                 categoryId: val.id
@@ -89,7 +87,7 @@ define([
                 });
             } else {
                 $modal.open({
-                    templateUrl: 'templates/report/metric-tabs-modal.html',
+                    templateUrl: 'report/metric-tabs-modal.html',
                     size: 'lg'
                 });
             }

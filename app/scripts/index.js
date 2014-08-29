@@ -21,10 +21,6 @@ require([
         'muceApp.mq'
     ]);
 
-    function tongji() {
-        $('<img/>').attr('src', '/images/tongji.png');
-    };
-
     muceApp.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
 
         var routeInfo = {

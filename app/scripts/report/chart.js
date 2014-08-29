@@ -14,7 +14,7 @@ define([
         var dimenAdvModal;
         $scope.openAdvancedPanel = function() {
             dimenAdvModal = $modal.open({
-                templateUrl: 'templates/report/dimen-adv-modal.html',
+                templateUrl: 'report/dimen-adv-modal.html',
                 scope: $scope
             });
         };
