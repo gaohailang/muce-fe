@@ -68,8 +68,14 @@ define(function() {
                 controlHtml: '<div multi-chooser choices-list="metricList"></div>',
                 label: 'Metric'
             }, {
+                controlTpl: 'report/_validateMetric.html',
+                label: ''
+            }, {
                 controlHtml: '<div multi-chooser choices-list="dimensionList"></div>',
                 label: 'Dimension'
+            }, {
+                controlTpl: 'report/_validateDimension.html',
+                label: ''
             },
             dataDict.commentField, {
                 key: 'isEnable',
@@ -306,6 +312,7 @@ define(function() {
         });
     });
 
+
     addModule.config(function($validationProvider) {
         // 第一次如何 trigger(onSubmit)
         $validationProvider.setExpression({
@@ -315,11 +322,20 @@ define(function() {
                     return true;
                 }
                 return false;
+            },
+            multiChooseChecker: function(val, scope, element, attrs) {
+                var x = _.filter(element.scope()[attrs.key], function(i) {
+                    return i.selected;
+                });
+                return (x.length < attrs.lt && x.length > attrs.gt);
             }
         }).setDefaultMsg({
             periodChooser: {
-                error: '至少选一个吧', // Todo: msg from attr info
+                error: 'Please check period at least one', // Todo: msg from attr info
                 success: ''
+            },
+            multiChooseChecker: {
+                error: 'Please choose correct number items'
             }
         });
     });

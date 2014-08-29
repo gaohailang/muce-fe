@@ -1,3 +1,18 @@
+
+<script type="text/ng-template"
+    id="report/_validateMetric.html">
+    <input type="text" name="validate-metric" ng-model="_validateMetric" style="display: none"
+        multi-choose-checker-error-message="Metrics 数量应该 <= 10"
+        validator="multiChooseChecker" key="metricList" gt="0" lt="4">
+</script>
+
+<script type="text/ng-template"
+    id="report/_validateDimension.html">
+    <input type="text" name="validate-dimension" ng-model="_validateDimension" style="display: none"
+        multi-choose-checker-error-message="Dimensions都可以选择，一次只能选不大于3个"
+        validator="multiChooseChecker" key="dimensionList" gt="0" lt="11">
+</script>
+
 <script type="text/ng-template"
     id="report/add_report/period.html">
     <label for="hour">Hour
