@@ -213,14 +213,26 @@ define(function() {
 
     // specific handler for init add modal
     var initMap = {
-        group: function() {},
+        group: function($scope) {
+            if ($scope._data) {
+                $scope.formlyData = $scope._data;
+            }
+        },
         category: function($scope, apiHelper) {
+            if ($scope._data) {
+                $scope.formlyData = $scope._data;
+            }
+
             apiHelper('getGroupList').then(function(data) {
                 $scope.formlyData.group = data[0];
                 $scope.formFields[0].options = data;
             });
         },
         report: function($scope, apiHelper) {
+            if ($scope._data) {
+                $scope.formlyData = $scope._data;
+            }
+
             apiHelper('getGroupList').then(function(data) {
                 $scope.formlyData.group = data[0];
                 $scope.formFields[0].options = data;

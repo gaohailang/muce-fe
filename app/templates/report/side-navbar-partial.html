@@ -30,8 +30,8 @@
                     ng-mouseleave="isShow=false">
                     <a ng-click="switchGroup(group)">{{group.name}}</a>
 
-                    <i class="icon-pencil edit-report"
-                        ng-show="isShow" ng-click="editReport(report)"></i>
+                    <i class="icon-pencil edit-report" ng-show="isShow"
+                        ng-click="openDelModal('group', group)"></i>
                     <i class="icon-trash delete-report" ng-show="isShow"></i>
                 </li>
             </ul>
@@ -61,8 +61,8 @@
                         ng-mouseleave="isShow=false">
                         <a ng-click="switchCategory(category)">{{category.name}}</a>
 
-                        <i class="icon-pencil edit-report"
-                            ng-show="isShow" ng-click="editReport(report)"></i>
+                        <i class="icon-pencil edit-report" ng-show="isShow"
+                            ng-click="openDelModal('category', category)"></i>
                         <i class="icon-trash delete-report" ng-show="isShow"></i>
                     </li>
                 </ul>
@@ -80,8 +80,8 @@
                 ng-mouseleave="isShow=false"
                 ng-class="{'active': (currentReport == report)}">
                 <a href="#" ng-click="switchReport(report)">{{report.name}}</a>
-                <i class="icon-pencil edit-report"
-                    ng-show="isShow" ng-click="editReport(report)"></i>
+                <i class="icon-pencil edit-report" ng-show="isShow"
+                ng-click="openDelModal('report', report)"></i>
                 <i class="icon-trash delete-report" ng-show="isShow"></i>
             </li>
         </ul>

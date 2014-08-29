@@ -3,8 +3,27 @@ define([
     'report/add'
 ], function(chartPanelCtrl) {
 
-    function reportCtrl($scope) {
+    function reportCtrl($scope, $modal) {
         // those variable is used across report module
+
+        $scope.openDelModal = function(type, data) {
+            var newScope = $scope.$new(true);
+            $scope._data = data;
+
+            if (type !== 'metric') {
+                $modal.open({
+                    templateUrl: 'templates/report/modal.html',
+                    controller: type + 'ModalCtrl',
+                    scope: $scope,
+                    size: 'lg'
+                });
+            } else {
+                $modal.open({
+                    templateUrl: 'templates/report/metric-tabs-modal.html',
+                    size: 'lg'
+                });
+            }
+        };
     }
 
     /* type dropdown (group,category,report) */
