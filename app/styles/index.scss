@@ -33,8 +33,12 @@ textarea {
 .dropdown-menu li a {
     cursor: pointer;
 }
+.formly .select2-container {
+    width: 220px;
+}
 
 /* 外部组件设置 */
+
 
 // 业务前缀 mc-<modle>-
 // 组件前缀 i-<componentName>-

@@ -68,9 +68,9 @@ require([
         $urlRouterProvider.otherwise('/');
     });
 
-    // muceApp.config(function(uiSelectConfig) {
-    //     uiSelectConfig.theme = 'select2';
-    // });
+    muceApp.config(function(uiSelectConfig) {
+        uiSelectConfig.theme = 'select2';
+    });
 
     muceApp.run(function() {
         // set window.userName which is required by ...

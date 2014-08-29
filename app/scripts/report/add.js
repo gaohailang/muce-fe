@@ -43,8 +43,6 @@ define(function() {
                 key: 'name',
                 attrs: {
                     validator: 'required'
-                    // requiredErrorMessage: '测试错误',
-                    // requiredSuccessMessage: '测试正确输入'
                 }
             },
             dataDict.commentField
@@ -132,7 +130,7 @@ define(function() {
                 key: 'type',
                 label: 'Dimension Type',
                 options: _.db.dimensionTypes,
-                optionStr: 'opt for opt in options.options'
+                optionStr: 'idx as opt for (idx, opt) in options.options'
             },
             dataDict.commentField
         ]
@@ -342,7 +340,7 @@ define(function() {
 
     /* utilities */
     function processIdObj(formData, key) {
-        var clone = formData;
+        var clone = _.clone(formData);
         if (_.isString(key)) {
             key = [key];
         }

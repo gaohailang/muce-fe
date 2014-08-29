@@ -106,13 +106,13 @@ module.exports = {
         "id": 1,
         "name": "test_group"
     }, {
-        "id": 1,
+        "id": 2,
         "name": "best_group"
     }, {
-        "id": 1,
+        "id": 3,
         "name": "aest_group"
     }, {
-        "id": 1,
+        "id": 4,
         "name": "测试下fsaf"
     }]),
     'GET /api/v1/meta/fields': wrapper([{
