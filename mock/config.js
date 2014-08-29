@@ -115,6 +115,19 @@ module.exports = {
         "id": 1,
         "name": "测试下fsaf"
     }]),
+    'GET /api/v1/meta/fields': wrapper([{
+        "id": 1,
+        "name": "age",
+        "type": 0
+    }, {
+        "id": 2,
+        "name": "test1",
+        "type": 1
+    }, {
+        "id": 3,
+        "name": "test2",
+        "type": 2
+    }]),
     'GET /api/v1/report/1?.*': renderFsMock('report-1-data.json'),
     'GET /api/v1/meta/report/.*': renderFsMock('report-1-detail.json'),
 

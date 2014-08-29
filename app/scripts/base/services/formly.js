@@ -192,7 +192,7 @@ define([
         ])
         .config(function($validationProvider) {
             $validationProvider.setErrorHTML(function(msg) {
-                return "<p class=\"muce-form-help-block\"><span class=\"w-text-warning\">" + msg + "</span></p>";
+                return "<p class=\"i-form-help-block\"><span class=\"w-text-warning\">" + msg + "</span></p>";
             });
 
             $validationProvider.setExpression(rules.expression).setDefaultMsg(rules.defaultMsg);

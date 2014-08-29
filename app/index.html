@@ -4,24 +4,39 @@
         <title>Muce 3.0 - Wandoulabs</title>
         <meta charset="utf-8">
         <!-- build:css /styles/all.css -->
-        <link rel="stylesheet" href="vendors/bootstrap.css">
-        <link rel="stylesheet" href="vendors/bootstrap-responsive.css">
-        <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.css">
+        <!-- <link rel="stylesheet" href="vendors/bootstrap.css">
+        <link rel="stylesheet" href="vendors/bootstrap-responsive.css"> -->
+        <!-- <link rel="stylesheet" href="vendors/custom-bootstrap/css/bootstrap.css"> -->
+        <!-- <link rel="stylesheet" href="vendors/todc-bootstrap-3.2.0-3.3.0/dist/css/todc-bootstrap.css"> -->
+        <!-- <link rel="stylesheet" href="vendors/font-awesome-4.2.0/css/font-awesome.css"> -->
+        <!-- <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.css"> -->
+
+
+        <!-- basic styles -->
+        <link rel="stylesheet" href="vendors/ace-v1.2/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="vendors/ace-v1.2/css/bootstrap-responsive.min.css" />
+        <link rel="stylesheet" href="vendors/ace-v1.2/css/font-awesome.min.css" />
+        <link rel="stylesheet" href="vendors/ace-v1.2/css/ace-fonts.css" />
+        <link rel="stylesheet" href="vendors/ace-v1.2/css/ace.min.css" />
+        <!-- <link rel="stylesheet" href="vendors/ace-v1.2/assets/css/ace-responsive.min.css" /> -->
+        <!-- <link rel="stylesheet" href="vendors/ace-v1.2/assets/css/ace-skins.min.css" /> -->
+
+
         <link rel="stylesheet" href="components/ngQuickDate/dist/ng-quick-date.css">
         <link rel="stylesheet" href="components/ngQuickDate/dist/ng-quick-date-default-theme.css">
-        <link rel="stylesheet" href="styles/index.css">
-        <link rel="stylesheet" href="http://todc.github.io/todc-bootstrap/dist/css/todc-bootstrap.min.css">
         <link rel="stylesheet" href="components/codemirror/lib/codemirror.css">
         <link rel="stylesheet" href="components/codemirror/addon/hint/show-hint.css" />
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="components/angular-ui-select/dist/select.min.css">
+
+        <link rel="stylesheet" href="styles/index.css">
         <!-- endbuild -->
     </head>
     <body>
         <!-- alert global - old for before code -->
-        <div class="global-error-container"><div muce-notices></div></div>
+        <div class="i-error-container"><div muce-notices></div></div>
 
         <!-- top navbar -->
-        <div ng-include src="'templates/partials/navbar.html'"></div>
+        <div muce-include="templates/partials/navbar.html"></div>
 
         <!-- page container -->
         <div class="container-fluid container-wrapper">
@@ -38,6 +53,8 @@
         <!-- build:js /scripts/all.js -->
         <!-- bower:js -->
         <script src="components/jquery/dist/jquery.js"></script>
+        <script src="components/underscore/underscore.js"></script>
+
         <script src="components/angular/angular.js"></script>
         <script src="components/angular-sanitize/angular-sanitize.js"></script>
         <script src="components/angular-ui-router/release/angular-ui-router.js"></script>
@@ -45,6 +62,8 @@
         <script src="components/angular-validation/dist/angular-validation.js"></script>
         <script src="components/angular-validation/dist/angular-validation-rule.js"></script>
         <script src="components/underscore/underscore.js"></script>
+        <script src="components/angular-ui-select/dist/select.min.js"></script>
+
         <script src="components/bootstrap/dist/js/bootstrap.js"></script>
         <!-- endbower -->
 
@@ -55,9 +74,11 @@
         <script src="components/angular-ui-codemirror/ui-codemirror.js"></script>
 
         <!-- vendor -->
-        <script src="//muce.corp.wandoujia.com/scripts/vendor/4792da56.jquery.timer.js"></script>
-        <script src="//muce.corp.wandoujia.com/scripts/vendor/53ace77b.knockout.js"></script>
-        <script src="//muce.corp.wandoujia.com/scripts/vendor/ed892db4.mousetrap.min.js"></script>
+        <!--
+            <script src="//muce.corp.wandoujia.com/scripts/vendor/4792da56.jquery.timer.js"></script>
+            <script src="//muce.corp.wandoujia.com/scripts/vendor/53ace77b.knockout.js"></script>
+            <script src="//muce.corp.wandoujia.com/scripts/vendor/ed892db4.mousetrap.min.js"></script>
+        -->
 
         <script src="vendors/Highcharts-4.0.3/js/highcharts.src.js"></script>
         <script src="vendors/Highcharts-4.0.3/js/highcharts-more.src.js"></script>

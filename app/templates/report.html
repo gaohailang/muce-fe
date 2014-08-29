@@ -1,4 +1,4 @@
-<div id="report_container" class="row-fluid">
+<div class="row-fluid mc-report-container">
     <div class="span2">
         <div muce-include="templates/report/side-navbar-partial.html"></div>
     </div>
@@ -6,70 +6,13 @@
         <div muce-include="templates/report/setting-partial.html"></div>
 
         <div ng-show="isShowDetailInfo" muce-include="templates/report/detail-partial.html"></div>
-        <div>
-            <section class="chart-wrapper">
-                <div class="chart-canvas" id="highcharts_wrapper"></div>
-            </section>
-            <div muce-include="templates/report/table-partial.html"></div>
-        </div>
+
+        <section class="chart-wrapper">
+            <div class="chart-canvas" id="highcharts_wrapper"></div>
+        </section>
+
+        <div muce-include="templates/report/table-partial.html"></div>
     </div>
 </div>
 
-<script type="text/ng-template"
-    id="report/add_report/period.html">
-    <label for="hour">Hour
-        <input type="checkbox" value="1" name="hour"
-            validator="periodChooser" ng-model="formlyData.hour">
-    </label>
-    <label for="day">Day
-        <input type="checkbox" value="1" name="day" ng-model="formlyData.day">
-    </label>
-</script>
-
-<script type="text/ng-template"
-    id="report/add_metric/expression.html">
-
-    <div class="control-group control-stack-select">
-        <label class="control-label">
-            Metric Expression
-        </label>
-        <div class="controls">
-            <select name="metric_id1"
-                id="metric_id1" ng-model="formlyData.metricId1"
-                ng-options="opt.id as opt.name for opt in metricList"></select>
-            <br>
-            <select validator="required" name="operator" style="width: 50px"
-                id="operator" ng-model="formlyData.operator" required
-                ng-options="$index as opt for opt in metricOperators"></select>
-            <br>
-            <select validator="required" name="metric_id2"
-                id="metric_id2" ng-model="formlyData.metricId2" required
-                ng-options="opt.id as opt.name for opt in metricList"></select>
-            <p class="muce-form-help-block">
-                <span class="w-text-warning">{{expressionErr}}</span>
-            </p>
-        </div>
-    </div>
-</script>
-
-<script type="text/ng-template"
-    id="report/add_metric/fileds.html">
-    <table class="table table-striped">
-        <tr ng-repeat="item in optionalFileds">
-            <td>{{item.name}}</td>
-            <td>{{item.id}}</td>
-            <td>{{item.type|castDimensionType}}</td>
-        </tr>
-    </table>
-</script>
-
-<script type="text/ng-template"
-    id="report/add_dimension/fields.html">
-    <ui-select ng-model="formlyData.field">
-      <ui-select-match placeholder="Select or search in the list...">{{$select.selected.name}}</ui-select-match>
-      <ui-select-choices repeat="item in formFields[0].options | filter: $select.search">
-        <!-- <span ng-bind-html="item.name | highlight: $select.search"></span> -->
-        <span>{{item.name}}</span>
-      </ui-select-choices>
-    </ui-select>
-</script>
+<div muce-include="templates/report/snippet.html"></div>

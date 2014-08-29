@@ -1,10 +1,12 @@
-<div class="multi-choose-wrapper">
+<div class="i-multi-choose-wrapper">
     <header class="selected-wrapper">
         <span>Selected Items:
             <!-- ({{(choicesList|filter:{'selected': true}).length}} Num) -->
-            &nbsp;&nbsp;<i class="icon-trash"
+            &nbsp;&nbsp;
+            <i class="icon-trash"
                 ng-show="trash"
-                ng-click="triggerDel(choicesList)"></i>
+                ng-click="triggerDel(choicesList)">
+            </i>
         </span><br/>
         <span class="selected-name"
             ng-repeat="i in choicesList|filter:{'selected': true}">
@@ -18,7 +20,8 @@
         <div class="checkbox-wrapper">
             <label class="suggestion-item" ng-repeat="i in choicesList|filter: currentQuery">
                 <input type="checkbox" ng-model="i.selected" class="select-checkbox">
-                # {{i.name}}</label>
+                # {{i.name}}
+            </label>
         </div>
     </div>
 </div>

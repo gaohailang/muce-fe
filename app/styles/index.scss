@@ -1,64 +1,89 @@
-@import "main";
-// @import "docs";
-@import "mq";
-@import "login";
+@import "component/misc";
 
-@import "vendor/font-awesome";
-@import "vendor/jquery-ui-timepicker-addon";
+@import "main";
+// @import "mq";
+@import "login";
 
 @import "component/loader";
 
-// Todo: component directory should be created
-.global-error-container {
-    position: absolute;
-    top: 50px;
-    z-index: 100000;
-    right: 30px;
-    .alert {
-        margin: 3px 0;
-        .close {
-            right: 0;
-        }
+/* global setting */
+a {
+    cursor: pointer;
+}
+label > input[type=checkbox] {
+    margin: 0;
+    top: -1px;
+    vertical-align: middle;
+}
+
+[class^="icon-"] {
+    cursor: pointer;
+    &:hover {
+        cursor: pointer;
+        color: red;
+        transition: all .5s ease;
     }
 }
 
-.report-detail-triiger {
-    cursor: pointer;
-    i {
-        font-size: 16px;
-    }
+textarea {
+    transition: all linear .2s;
 }
+
+// dropdown item cusror for bs
+.dropdown-menu li a {
+    cursor: pointer;
+}
+
+/* 外部组件设置 */
+
+// 业务前缀 mc-<modle>-
+// 组件前缀 i-<componentName>-
+// 一次性限定 x-语义+限定
 
 // report page fix
-#report_container {
-    .nav-sidebar {
-        padding: 0;
-        .report-list {
-            max-height: 300px;
-            overflow: auto;
-        }
-        h3 {
-            font-size: 18px;
-            line-height: 22px;
-            padding-left: 10px;
-            border-left: 2px solid red;
-        }
-        select {
-            max-width: 100%;
-        }
-        input {
-            max-width: 95%;
+.mc-report-container {
+
+    // Todo: check
+    .detail-list {
+        padding-left: 0;
+    }
+    .report-detail-triiger {
+        cursor: pointer;
+        i {
+            font-size: 16px;
         }
     }
+
+    .chart-wrapper {
+        height: 450px;
+        max-height: 450px;
+        text-align: center;
+        vertical-align: middle;
+        line-height: 440px;
+        font-size: 30px;
+    }
+
     .setting-wrapper {
+        // quick compoent
+        .quickdate {
+            width: 200px;
+            margin-bottom: 10px;
+
+            .quickdate-button {
+                width: 90%;
+            }
+        }
+
         .date-operator, .dimension-operator {
             & > * {
                 margin-right: 10px;
             }
         }
         .date-operator {
+            // select{
+            //     margin-bottom: 0px;
+            // }
             .btn-group {
-                margin-bottom: 10px;
                 .btn {
                     padding-left: 18px;
                     padding-right: 18px;
@@ -66,12 +91,15 @@
             }
         }
         .dimension-operator {
+            margin: 10px 0;
+
             button, label {
                 display: inline-block;
             }
-            margin-bottom: 10px;
+            // margin-bottom: 10px;
+
             & > button {
-                margin-bottom: 5px;
+                // margin-bottom: 5px;
             }
             label select {
                 margin: 0;
@@ -81,21 +109,12 @@
             vertical-align: middle;
             margin-top: 10px;
         }
+
         select {
             width: 130px;
         }
     }
-    .chart-wrapper {
-        height: 450px;
-        max-height: 450px;
-        text-align: center;
-        vertical-align: middle;
-        line-height: 440px;
-        font-size: 30px;
-    }
-    .detail-list {
-        padding-left: 0;
-    }
+
     .table-wrapper {
         thead td {
             cursor: pointer;
@@ -106,37 +125,15 @@
         margin: 20px 0;
         border: none;
         min-height: initial;
+
+        td {
+            text-align: center;
+        }
     }
 }
 
-.table-wrapper td {
-    text-align: center;
-}
-
-// component - todo with prefix
-.multi-choose-wrapper {
-    .checkbox-wrapper {
-        max-height: 300px;
-        overflow: auto;
-    }
-}
-
-.selected-wrapper {
-    font-size: 14px;
-    margin-bottom: 5px;
-}
-
-.search-select-wrapper {
-    label {
-        white-space: nowrap;
-    }
-}
-
-.selected-name .icon-minus-sign {
-    margin-right: 5px;
-}
-
-.form-dimen-adv {
+// advanced dimension modal
+.mc-report-dimenAdv-form {
     .controls select {
         width: 35%;
     }
@@ -145,85 +142,47 @@
     }
 }
 
-label > input[type=checkbox] {
-    margin: 0;
-    top: -1px;
-    vertical-align: middle;
-}
+.mc-report-sidebar {
+    padding: 0;
 
-// global
-[class^="icon-"] {
-    cursor: pointer;
-    &:hover {
-        cursor: pointer;
-        color: red;
-        transition: all .5s ease;
-    }
-}
+    .btn-group {
+        width: 100%;
 
-.muce-form-help-block {
-    display: block;
-    margin: 5px 0 0;
-}
+        .btn-name, .btn-caret {
+            height: 35px;
+            font-size: 16px;
+        }
 
-.muce-form-help-inline {
-    display: inline-block;
-    margin: 0 0 0 10px;
-}
+        .btn-name {
+            width: 87%;
+        }
 
-.w-text-warning {
-    color: #f24949;
-}
-
-textarea {
-    transition: all linear .2s;
-}
-
-.control-stack-select select {
-    margin: 5px 0;
-}
-
-// fix select width
-.select2-container, .select2-drop, .select2-search, .select2-search input {
-    width: 220px;
-}
-
-// group. category pointer cusror
-.dropdown-menu li a {
-    cursor: pointer;
-}
-
-// quick compoent
-.quickdate {
-    margin-bottom: 10px;
-    width: 200px;
-    .quickdate-button {
-        width: 90%;
-    }
-}
-
-
-// mq page
-.mq-db-list {
-    .db-item {
-        margin-bottom: 3px;
-        .dropdown-toggle {
-            width: 90px;
-            overflow: hidden;
+        .dropdown-menu {
+            width: 100%;
+            overflow: auto;
         }
     }
-    // move dropdown-menu for db table sideby dbitem
-    /*.open > .dropdown-menu {
-        display: block;
-        left: 100%;
-        top: 0px;
-    }*/
-}
-.i-bg-red {
-    background-color: #f2dede;
+    .report-list {
+        max-height: 400px;
+        overflow: auto;
+    }
+
+    h3 {
+        font-size: 18px;
+        line-height: 22px;
+        padding-left: 10px;
+        border-left: 2px solid red;
+    }
+    select {
+        max-width: 100%;
+    }
+    input {
+        max-width: 95%;
+    }
 }
 
-.mq-container {
+// mq page
+.mc-mq-container {
     .CodeMirror {
         height: 112px;
         margin: 5px 2px 22px 0;
@@ -237,9 +196,83 @@ textarea {
       overflow-y: hidden;
       overflow-x: auto;
     }
+
+    .mq-db-list {
+        .db-list{
+            list-style: none;
+            margin: 0;
+        }
+        .db-item {
+            margin-bottom: 3px;
+            .dropdown-toggle {
+                width: 70%;
+                overflow: hidden;
+                padding: 0;
+            }
+        }
+    }
 }
 
-// login
+
+.x-control-stack-select select {
+    margin: 5px 0;
+}
+
+/* component define here */
+.i-error-container {
+    position: absolute;
+    top: 50px;
+    z-index: 100000;
+    right: 30px;
+    .alert {
+        margin: 3px 0;
+        .close {
+            right: 0;
+        }
+    }
+}
+
+// component - multi-choose
+.i-multi-choose-wrapper {
+    .checkbox-wrapper {
+        max-height: 300px;
+        overflow: auto;
+    }
+    .selected-wrapper {
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+    .search-select-wrapper {
+        label {
+            white-space: nowrap;
+        }
+    }
+    .suggestion-item {
+        line-height: 30px;
+        font-size: 15px;
+    }
+    .selected-name .icon-minus-sign {
+        margin-right: 5px;
+    }
+}
+
+/* component - helper */
+.i-form-help-block{
+    display: block;
+    margin: 5px 0 0;
+}
+.i-form-help-inline {
+    display: inline-block;
+    margin: 0 0 0 10px;
+}
+.i-bg-red {
+    background-color: #f2dede;
+}
+.w-text-warning {
+    color: #f24949;
+}
+
+/* component archive */
 @keyframes shake {
     0% {
         transform: translateX(0);
@@ -260,8 +293,8 @@ textarea {
         transform: translateX(0);
     }
 }
-
-
-.shake {
+.i-ux-shake {
     animation: shake 400ms ease-in-out;
 }
+
+

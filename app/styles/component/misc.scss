@@ -1,0 +1,20 @@
+.w-text-warning {
+    font-weight: bold;
+    color: red;
+}
+
+.global-error-msg {
+    position: absolute;
+    top: 50px;
+    z-index: 100000;
+}
+
+.toast-msg {
+    position: absolute;
+    z-index: 99;
+    background-color: black;
+    color: white;
+    font-size: 14px;
+    padding: 10px;
+    margin: 10px;
+}

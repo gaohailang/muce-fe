@@ -1,4 +1,4 @@
-<div id="mq_container" class="container-fluid mq-container">
+<div class="container-fluid mc-mq-container">
     <div class="row-fluid">
         <!-- mq sidebar -->
         <div class="span3" >
@@ -21,8 +21,9 @@
                 <ul class="db-list">
                     <li class="dropdown db-item"
                         ng-repeat="db in allDbs" ng-click="changeDb(db)">
-                        <i class="icon-th"></i>
-                        <a class="btn dropdown-toggle">{{db}}</a>
+                        <a class="btn dropdown-toggle">
+                            <i class="icon-th"></i>{{db}}
+                        </a>
                         <ul class="dropdown-menu" ng-if="currentDb==db">
                             <li ng-repeat="tb in allTables">
                                 <a href='#mq' ng-click="changeTable(tb)">
@@ -40,16 +41,18 @@
             <!-- mq editor -->
             <div class="mq-editor-wrapper">
                 <h4>New Query...</h4>
-                <!-- codemirror edtior -->
-                <div ui-codemirror="editorOptions"
-                    ng-model="currentMqRaw"></div>
 
-                <div id="mq_run_animate">
+                <!-- codemirror edtior -->
+                <div ui-codemirror="editorOptions" ng-model="currentMqRaw"></div>
+
+                <div id="mq_run_animate" style="margin-bottom: 20px">
                     <button class="btn btn-danger" id="mq_run">Run Query</button>
+
                     <span class="icon-time"></span>
                     <span class="mq-run-time label label-info"></span>
                     <span class="mq-run-status label label-warning"></span>
-                    <div class="mq-notification input-append">
+
+                    <div class="mq-task-notification input-append" style="margin-bottom: 0">
                         <span class="add-on">
                             <input type="checkbox">
                             <i class="icon-envelope"></i>
@@ -57,12 +60,14 @@
                         </span>
                     </div>
                 </div>
-                <div class="mq-run-error-alert">
+
+                <!-- <div class="mq-run-error-alert">
                     <div class="alert alert-block alert-error">
                         <button type="button" class="close" data-dismiss="alert">x</button>
                         <p></p>
                     </div>
-                </div>
+                </div> -->
+
                 <div class="bs-docs-example success-example">
                     <div class="mq-run-success-alert">
                         <div class="alert alert-block alert-success fade in">
@@ -86,12 +91,6 @@
             </div>
 
             <div ui-view></div>
-
-            <!-- mq db schema/partition info -->
-            <!-- mq history -->
-            <!-- mq example -->
-            <!-- mq share -->
-
             <!-- <div id="mq_result_view" class="span6">
                 <table class="table table-striped">
                     <caption>

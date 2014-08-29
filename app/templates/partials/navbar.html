@@ -1,36 +1,50 @@
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container-fluid">
-            <!-- <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+
+            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
-            </button> -->
+            </button>
+
             <a class="brand" href="report">Muce</a>
-            <p class="navbar-text pull-right">
-                <span class="warning">CONFIDENTIAL!</span> |
-                <span class="navbar-link user-name"></span> |
-                <a href="/muce-webapp/j_spring_security_logout" ng-click="loginIt()">Logout</a>
-            </p>
+
+            <ul class="nav pull-right">
+                <li><a class="text-error"
+                    style="cursor: not-allowed;color: red">CONFIDENTIAL!</a>
+                </li>
+                <li>
+                    <a class="muce-nav-tab"
+                        ui-sref-active="selected" ui-sref="feedback">Feedback</a>
+                </li>
+                <li>
+                    <a href="https://docs.google.com/a/wandoujia.com/document/d/1yG3Dx-Cyvyu91QBiVz36RSs_IOoj1a9-Q4Flv-cZUrM/edit" target="_blank">Help</a>
+                </li>
+
+                <li>
+                    <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+                        <!-- <img class="nav-user-photo" src="assets/avatars/user.jpg" alt="Jason's Photo"> -->
+                        <span class="user-info">
+                            <!-- <small>Welcome,</small> -->
+                            Gaohailang
+                        </span>
+                        <i class="icon-caret-down"></i>
+                    </a>
+                </li>
+
+            </ul>
+
             <div class="nav-collapse collapse" muce-navbar>
                 <ul class="nav">
                     <li>
-                        <a class="profile-bar muce-nav-tab" ui-sref-active="selected"
-                            data-id="#report_container" ui-sref="report">
-                        Report</a>
+                        <a class="muce-nav-tab" ui-sref-active="selected"
+                            ui-sref="report">Report</a>
                     </li>
 
                     <li>
-                        <a class="profile-bar muce-nav-tab"
-                            ui-sref-active="selected" ui-sref="mq.info">
-                        Mq</a>
-                    </li>
-
-                    <li>
-                        <a href="https://docs.google.com/a/wandoujia.com/document/d/1yG3Dx-Cyvyu91QBiVz36RSs_IOoj1a9-Q4Flv-cZUrM/edit" target="_blank">Help</a>
-                    </li>
-                    <li>
-                        <a href="https://docs.google.com/a/wandoujia.com/forms/d/1_XmNMNhuB1KM-irbFVKCQ9jQS_C8cphwuSqLddrC-oU/viewform" target="_blank">Feedback</a>
+                        <a class="muce-nav-tab" ui-sref-active="selected"
+                            ui-sref="mq.info">Mq</a>
                     </li>
                 </ul>
             </div>

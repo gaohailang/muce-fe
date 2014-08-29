@@ -12,7 +12,7 @@ require([
         'ui.router',
         'ui.bootstrap',
         'ui.codemirror',
-        // 'ui.select',
+        'ui.select',
         'ngSanitize',
         'ngQuickDate',
         'muceApp.api',
@@ -25,39 +25,45 @@ require([
     };
 
     muceApp.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
-        $stateProvider.state('index', {
-            url: '/',
-            templateUrl: 'templates/report.html',
-            controller: 'reportCtrl'
-        });
 
-        $stateProvider.state('report', {
-            url: '/report',
-            templateUrl: 'templates/report.html',
-            controller: 'reportCtrl'
-        });
+        var routeInfo = {
+            'index': {
+                url: '/',
+                templateUrl: 'templates/report.html',
+                controller: 'reportCtrl'
+            },
+            'report': {
+                url: '/report',
+                templateUrl: 'templates/report.html',
+                controller: 'reportCtrl'
+            },
+            'mq': {
+                url: '/mq',
+                abstract: true,
+                templateUrl: 'templates/mq.html',
+                controller: 'mqCtrl'
+            },
+            'mq.info': {
+                url: '',
+                templateUrl: '/templates/mq/schema.html'
+            },
+            'mq.example': {
+                url: '/example',
+                templateUrl: '/templates/mq/example.html'
+            },
+            'mq.history': {
+                url: '/history',
+                templateUrl: '/templates/mq/history.html',
+                controller: 'mqHistoryCtrl'
+            },
+            'feedback': {
+                url: '/feedback',
+                templateUrl: 'templates/feedback.html'
+            }
+        };
 
-        $stateProvider.state('mq', {
-            url: '/mq',
-            abstract: true,
-            templateUrl: 'templates/mq.html',
-            controller: 'mqCtrl'
-        });
-
-        $stateProvider.state('mq.info', {
-            url: '',
-            templateUrl: '/templates/mq/schema.html'
-        });
-
-        $stateProvider.state('mq.example', {
-            url: '/example',
-            templateUrl: '/templates/mq/example.html'
-        });
-
-        $stateProvider.state('mq.history', {
-            url: '/history',
-            templateUrl: '/templates/mq/history.html',
-            controller: 'mqHistoryCtrl'
+        _.each(routeInfo, function(opt, name) {
+            $stateProvider.state(name, opt);
         });
 
         $locationProvider.html5Mode(true).hashPrefix('!');
