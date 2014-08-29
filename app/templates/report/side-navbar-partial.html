@@ -10,7 +10,7 @@
 
             <!-- data-bind="event: {dblclick: showAllProfile}" -->
             <button class="btn btn-success dropdown-toggle btn-name"
-                ng-mouseenter="isShow=true"
+                data-toggle="dropdown" ng-mouseenter="isShow=true"
                 ng-mouseleave="isShow=false">
                 <span>{{currentGroup.name||'loading...'}}</span>
                 <!-- <i class="icon-pencil edit-report"
@@ -43,7 +43,7 @@
         <h3>Category:</h3>
         <!-- data-original-title="Double click to edit Categories" -->
         <div class="btn-group">
-            <button class="btn btn-info btn-name">
+            <button class="btn btn-info btn-name" data-toggle="dropdown">
                 <span ng-show="categoryList==undefined">loading...</span>
                 <span ng-show="categoryList.length==0">No Category</span>
                 <span ng-show="categoryList.length>0">{{currentCategory.name}}</span>
