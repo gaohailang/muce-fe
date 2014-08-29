@@ -98,10 +98,13 @@ define([
         .factory('apiHelperInterceptor', function($q, $notice) {
             return {
                 responseError: function(response) {
+                    try {
+                        $notice.error('error-' + response.status + ': ' +
+                            (response.config.url || '') + (response.data.msg || ', 接口出问题啦!'));
+                    } catch (e) {
+                        console.log('Err in apiHelperInterceptor: ' + e);
+                    }
                     // if (response.config.url.indexOf('/api/') > -1) {
-                    $notice.error('error-' + response.status + ': ' +
-                        (response.config.url || '') + (response.data.msg || ', 接口出问题啦!'));
-                    // }
                     return $q.reject(response);
                 },
 
