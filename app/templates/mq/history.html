@@ -1,0 +1,25 @@
+<div class="span9 mq-job-history">
+    <table class="table table-bordered user-query-detail">
+        <thead>
+            <tr>
+                <th>Status</th>
+                <th>View</th>
+                <th>Download</th>
+                <th>Size</th>
+                <th>Hql</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="job in jobList"
+                ng-class="{'error': job.status == 'FAILED'}">
+                <td>{{job.status}}</td>
+                <td><a ng-click="openJobResultView(job)">VIEW</a></td>
+                <td><a ng-click="downloadJobResultView(job.id)">DOWNLOAD</a></td>
+                <td ng-show="job.size">{{job.size}} Byte</td>
+                <td ng-hide="job.size">UNKOWN</td>
+                <td>{{job.hql}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <!-- <p><a class="btn mq-more-querys btn-large">more</a></p> -->
+</div>

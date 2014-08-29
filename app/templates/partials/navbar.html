@@ -14,10 +14,16 @@
             </p>
             <div class="nav-collapse collapse" muce-navbar>
                 <ul class="nav">
-                    <li ng-repeat="nav in navs">
+                    <li>
                         <a class="profile-bar muce-nav-tab" ui-sref-active="selected"
-                            data-id="#{{nav}}_container" ui-sref="{{nav}}">
-                        {{nav|capitalize}}</a>
+                            data-id="#report_container" ui-sref="report">
+                        Report</a>
+                    </li>
+
+                    <li>
+                        <a class="profile-bar muce-nav-tab"
+                            ui-sref-active="selected" ui-sref="mq.info">
+                        Mq</a>
                     </li>
 
                     <li>

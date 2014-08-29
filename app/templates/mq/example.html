@@ -1,0 +1,22 @@
+<div id="mq_user_query_example" class="span9">
+    <div class="bs-docs-example">
+        <code>&lt;distinct&gt;</code> Windows Launch Users In Day 20130723
+    </div>
+    <pre class="prettyprint linenums">select count(distinct col_guid) from windows2x.tb_application where col_status='start' and p_date='20130723'
+    </pre>
+    <div class="bs-docs-example">
+        <code>&lt;group by&gt;</code> 按照新老用户来看用户数
+    </div>
+    <pre class="prettyprint linenums">select col_is_day_new, count(distinct col_udid) from android.tb_application_start where p_date='20120812' and p_hourmin>='0000' and p_hourmin<='2300' group by col_is_day_new
+    </pre>
+    <div class="bs-docs-example">
+        <code>&lt;like&gt;</code> 查看入口中包含某关键字的package 在 20130710 ~ 20130712这3天的下载量
+    </div>
+    <pre class="prettyprint linenums">select col_pn,count(*) from app.tb_app where p_date>='20130710' and p_date<='20130712' and col_url like '%w/starter%' and col_pn='com.mt.mtxx.mtxx' group by col_pn
+    </pre>
+    <div class="bs-docs-example">
+        <code>&lt;limit&gt;</code> 查询前10条 app.download 日志
+    </div>
+    <pre class="prettyprint linenums">select * from windows2x.tb_app_download where p_date='20130701' and p_hourmin='0000' limit 10
+    </pre>
+</div>

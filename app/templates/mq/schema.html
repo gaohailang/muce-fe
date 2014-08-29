@@ -1,0 +1,35 @@
+<div class="mq-tb-view" ng-show="currentDb">
+    <div id="mq_db_tb_des">
+        <i class="icon-th"></i>
+        <span class="label label-important">{{currentDb}}</span>
+        <i class="icon-table"></i>
+        <span class="label label-info">{{currentTb}}</span>
+
+        <div class="btn-group">
+            <button class="btn"
+                ng-repeat="i in ['schema', 'partition']"
+                ng-click="switchTbView(i)"
+                ng-class="{'active': currentTbView==i}">
+                {{i}}
+            </button>
+        </div>
+    </div>
+
+    <div class="span6"  ng-show="currentTb">
+        <table class="table table-striped"
+            ng-show="i == currentTbView"
+            ng-repeat="i in ['schema', 'partition']">
+            <!-- <caption></caption> -->
+            <thead>
+                <tr>
+                    <th>{{i}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="ii in tbInfo[currentTbView]">
+                    <td>{{ii}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

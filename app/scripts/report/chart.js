@@ -95,7 +95,11 @@ define([
             fetchReports();
         });
 
+        var isFetchReport = false;
+
         function fetchReports() {
+            if (isFetchReport) return;
+            isFetchReport = true;
             // Todo: check form validate
             var postData = {
                 period: $scope.currentPeriod || 0,
@@ -112,6 +116,7 @@ define([
                 highchart.buildLineChart($scope.currentReportDetail, data);
                 // echarts.buildLineChart($scope.currentReportDetail, data);
                 buildGridData($scope.currentReportDetail, data);
+                isFetchReport = false;
             }, function() {
                 // Todo:
                 /*

@@ -9,8 +9,8 @@
                     <button class="btn btn-primary">Compose Query</button>
                 </div>
                 <ul id='mq_user_query' class="nav nav-pills nav-stacked">
-                    <li><a href="#mq" class="mq-history">Query History</a></li>
-                    <li><a href="#mq" class="mq-example">Query Example</a></li>
+                    <li><a class="mq-history" ui-sref="mq.history" ui-sref-active="active">Query History</a></li>
+                    <li><a ui-sref="mq.example" class="mq-example" ui-sref-active="active">Query Example</a></li>
                     <!-- <li><a href="#mq" class="share-query">Query Share</a></li> -->
                 </ul>
             </div>
@@ -85,122 +85,14 @@
                 </div>
             </div>
 
+            <div ui-view></div>
+
             <!-- mq db schema/partition info -->
-            <div class="mq-tb-view" ng-show="currentDb">
-                <div id="mq_db_tb_des">
-                    <i class="icon-th"></i>
-                    <span class="label label-important">{{currentDb}}</span>
-                    <i class="icon-table"></i>
-                    <span class="label label-info">{{currentTb}}</span>
-
-                    <div class="btn-group">
-                        <button class="btn"
-                            ng-repeat="i in ['schema', 'partition']"
-                            ng-click="switchTbView(i)"
-                            ng-class="{'active': currentTbView==i}">
-                            {{i}}
-                        </button>
-                    </div>
-                </div>
-
-                <div class="span6"  ng-show="currentTb">
-                    <table class="table table-striped"
-                        ng-show="i == currentTbView"
-                        ng-repeat="i in ['schema', 'partition']">
-                        <!-- <caption></caption> -->
-                        <thead>
-                            <tr>
-                                <th>{{i}}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="ii in tbInfo[currentTbView]">
-                                <td>{{ii}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
             <!-- mq history -->
-            <div class="span9 mq-job-history">
-                <table class="table table-bordered user-query-detail">
-                    <thead>
-                        <tr>
-                            <th>Status</th>
-                            <th>View</th>
-                            <th>Download</th>
-                            <th>Size</th>
-                            <th>Hql</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="job in jobList"
-                            ng-class="{'error': job.status == 'FAILED'}">
-                            <td>{{job.status}}</td>
-                            <td><a ng-click="openJobResultView(job)">VIEW</a></td>
-                            <td><a ng-click="downloadJobResultView(job.id)">DOWNLOAD</a></td>
-                            <td ng-show="job.size">{{job.size}} Byte</td>
-                            <td ng-hide="job.size">UNKOWN</td>
-                            <td>{{job.hql}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <!-- <p><a class="btn mq-more-querys btn-large">more</a></p> -->
-            </div>
-
             <!-- mq example -->
-            <div id="mq_user_query_example" class="span9">
-                <div class="bs-docs-example">
-                    <code>&lt;distinct&gt;</code> Windows Launch Users In Day 20130723
-                </div>
-                <pre class="prettyprint linenums">select count(distinct col_guid) from windows2x.tb_application where col_status='start' and p_date='20130723'
-                </pre>
-                <div class="bs-docs-example">
-                    <code>&lt;group by&gt;</code> 按照新老用户来看用户数
-                </div>
-                <pre class="prettyprint linenums">select col_is_day_new, count(distinct col_udid) from android.tb_application_start where p_date='20120812' and p_hourmin>='0000' and p_hourmin<='2300' group by col_is_day_new
-                </pre>
-                <div class="bs-docs-example">
-                    <code>&lt;like&gt;</code> 查看入口中包含某关键字的package 在 20130710 ~ 20130712这3天的下载量
-                </div>
-                <pre class="prettyprint linenums">select col_pn,count(*) from app.tb_app where p_date>='20130710' and p_date<='20130712' and col_url like '%w/starter%' and col_pn='com.mt.mtxx.mtxx' group by col_pn
-                </pre>
-                <div class="bs-docs-example">
-                    <code>&lt;limit&gt;</code> 查询前10条 app.download 日志
-                </div>
-                <pre class="prettyprint linenums">select * from windows2x.tb_app_download where p_date='20130701' and p_hourmin='0000' limit 10
-                </pre>
-            </div>
-
             <!-- mq share -->
-            <div id="mq_user_query_share" class="span9">
-                <div class="navbar-div pull-right">
-                    <div class="alert alert-info">
-                        <strong>Heads up!</strong> The search needs wiki account name. For example, if you want to dig zhangtao's querys, you should type <strong>hidecloud</strong>.
-                    </div>
-                    <input type="text" class="span5">
-                    <button type="submit" class="btn btn-primary mq-search">Search</button>
-                </div>
-                <table class="table table-bordered user-query-share">
-                    <thead>
-                        <tr>
-                            <th>Status</th>
-                            <th>View</th>
-                            <th>Download</th>
-                            <th>Size</th>
-                            <th>Hql</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                        </tr>
-                    </tbody>
-                </table>
-                <p><a class="btn mq-more-querys btn-large">more</a></p>
-            </div>
 
-            <div id="mq_result_view" class="span6">
+            <!-- <div id="mq_result_view" class="span6">
                 <table class="table table-striped">
                     <caption>
                     </caption>
@@ -212,10 +104,12 @@
                     <tbody class="table table-bordered mq-result-view">
                     </tbody>
                 </table>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>
+
+
 
 <script type="text/template" id="mq_history_view_fail_modal">
     <div class="modal hide fade" id="mq_history_view">

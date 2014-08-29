@@ -25,22 +25,44 @@ require([
     };
 
     muceApp.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
-        $locationProvider.html5Mode(true).hashPrefix('!');
-        // Use $urlRouterProvider to configure any redirects (when) and invalid urls (otherwise).
-        $urlRouterProvider.otherwise('/');
-
         $stateProvider.state('index', {
             url: '/',
             templateUrl: 'templates/report.html',
             controller: 'reportCtrl'
         });
-        _.each(MuceCom.moduleList, function(module) {
-            $stateProvider.state(module, {
-                url: '/' + module,
-                templateUrl: 'templates/' + module + '.html',
-                controller: module + 'Ctrl'
-            });
+
+        $stateProvider.state('report', {
+            url: '/report',
+            templateUrl: 'templates/report.html',
+            controller: 'reportCtrl'
         });
+
+        $stateProvider.state('mq', {
+            url: '/mq',
+            abstract: true,
+            templateUrl: 'templates/mq.html',
+            controller: 'mqCtrl'
+        });
+
+        $stateProvider.state('mq.info', {
+            url: '',
+            templateUrl: '/templates/mq/schema.html'
+        });
+
+        $stateProvider.state('mq.example', {
+            url: '/example',
+            templateUrl: '/templates/mq/example.html'
+        });
+
+        $stateProvider.state('mq.history', {
+            url: '/history',
+            templateUrl: '/templates/mq/history.html',
+            controller: 'mqHistoryCtrl'
+        });
+
+        $locationProvider.html5Mode(true).hashPrefix('!');
+        // Use $urlRouterProvider to configure any redirects (when) and invalid urls (otherwise).
+        $urlRouterProvider.otherwise('/');
     });
 
     // muceApp.config(function(uiSelectConfig) {
@@ -52,37 +74,7 @@ require([
         window.userName = MuceCom.getNameFromCookie();
     });
 
-    muceApp.controller('mqCtrl', function($scope, apiHelper, $modal) {
-
-        $scope.currentTbView = 'schema';
-
-        apiHelper('getDatabases').then(function(data) {
-            $scope.allDbs = data;
-        });
-
-        $scope.changeDb = function(db) {
-            $scope.currentDb = db;
-            apiHelper('getDbTable', db).then(function(data) {
-                $scope.allTables = data;
-            });
-        };
-
-        $scope.changeTable = function(tb) {
-            var db = $scope.currentDb;
-            $scope.currentTb = tb;
-            $scope.tbInfo = {};
-            apiHelper('getDbSchema', db, tb).then(function(data) {
-                $scope.tbInfo.schema = data;
-            });
-            apiHelper('getDbParts', db, tb).then(function(data) {
-                $scope.tbInfo.partition = data;
-            });
-        };
-
-        $scope.switchTbView = function(view) {
-            $scope.currentTbView = view;
-        };
-
+    muceApp.controller('mqHistoryCtrl', function($scope, apiHelper, $modal) {
         apiHelper('getJobList', {
             from: 'gaohailang'
         }).then(function(data) {
@@ -109,7 +101,7 @@ require([
 
             function open() {
                 $modal.open({
-                    templateUrl: 'templates/mq/job-result.html',
+                    templateUrl: '/templates/mq/job-result.html',
                     size: 'lg',
                     scope: newScope,
                     controller: function($scope) {
@@ -127,7 +119,42 @@ require([
         $scope.downloadJobResultView = function(id) {
             apiHelper('getJobResult', id);
         };
+    });
 
+    muceApp.controller('mqCtrl', function($scope, apiHelper, $modal, $state) {
+
+        $scope.currentTbView = 'schema';
+
+        apiHelper('getDatabases').then(function(data) {
+            $scope.allDbs = data;
+        });
+
+        $scope.changeDb = function(db) {
+            $scope.currentDb = db;
+            apiHelper('getDbTable', db).then(function(data) {
+                $scope.allTables = data;
+            });
+        };
+
+        $scope.changeTable = function(tb) {
+            var db = $scope.currentDb;
+            $scope.currentTb = tb;
+            $scope.tbInfo = {};
+            apiHelper('getDbSchema', db, tb).then(function(data) {
+                $scope.tbInfo.schema = data;
+            });
+            apiHelper('getDbParts', db, tb).then(function(data) {
+                $scope.tbInfo.partition = data;
+            });
+            // change to info state
+            if (!$state.is('mq.info')) {
+                $state.go('mq.info');
+            }
+        };
+
+        $scope.switchTbView = function(view) {
+            $scope.currentTbView = view;
+        };
 
         $scope.editorOptions = {
             autofocus: true,
@@ -144,9 +171,10 @@ require([
             hintOptions: {
                 tables: {
                     users: {
-                        name: null,
                         score: null,
-                        birthDate: null
+                        birthDate: null,
+                        'name.test.test': null,
+                        'name.sxx.test': null
                     },
                     countries: {
                         name: null,
@@ -162,7 +190,7 @@ require([
 
                 _editor.on("change", function(cm, change) {
                     console.log(arguments);
-                    if (change.origin == '+input') return;
+                    if (change.origin != '+input') return;
                     // +input, +delete, complete
                     CodeMirror.showHint(cm);
                 });
