@@ -6,11 +6,16 @@ define([
         $('#highcharts_wrapper').html('Report No Data');
         var uniqCate = _.uniq(_.pluck(currentReport.metrics, 'type'));
         var isMutipleY = currentReport.metrics.length > 1 && uniqCate.length > 1;
+        var periodMap = {
+            0: 'day',
+            1: 'hour'
+        };
+        data.period = periodMap[data.period];
 
         function formatTip() {
             var periodFormatMap = {
-                0: '%A %Y-%m-%e:%H', // hour
-                1: '%A %Y-%m-%e', // day
+                hour: '%A %Y-%m-%e:%H',
+                day: '%A %Y-%m-%e',
                 week: '%A %Y-%m-%e',
                 month: '%Y-%m'
             };
@@ -73,7 +78,6 @@ define([
                         annotationPoint.id = annotation.id;
                         annotationPoints.push(annotationPoint);
                     });
-
                 });
 
                 _.each(retData, function(item, metricIndex) {
