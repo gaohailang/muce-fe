@@ -154,10 +154,10 @@ define([
                     name: fieldNames[i]
                 };
             });
-            // $scope.tableRows = data.result;
             $scope.tableRows = _.map(data.result, function(i) {
                 _.each(_.keys(i), function(k) {
                     if (k !== 'date') {
+                        // we need date filter to format
                         i[k] = +i[k];
                     }
                 });
@@ -172,6 +172,10 @@ define([
             $scope.sortType = type;
             $scope.sortReverse = !$scope.sortReverse;
             var tableRows = _.sortBy($scope.tableRows, function(item) {
+                if ($scope.sortBy === 'date') {
+                    // make date number to sort
+                    return +item[type];
+                }
                 return item[type];
             });
             if ($scope.sortReverse) {

@@ -67,13 +67,19 @@ define(function() {
                 label: 'Metric'
             }, {
                 controlTpl: 'report/_validateMetric.html',
-                label: ''
+                label: '',
+                wrapAttr: {
+                    style: 'margin-top: -20px'
+                }
             }, {
                 controlHtml: '<div multi-chooser choices-list="dimensionList"></div>',
                 label: 'Dimension'
             }, {
                 controlTpl: 'report/_validateDimension.html',
-                label: ''
+                label: '',
+                wrapAttr: {
+                    style: 'margin-top: -20px'
+                }
             },
             dataDict.commentField, {
                 key: 'isEnable',
@@ -102,7 +108,7 @@ define(function() {
                 key: 'condition',
                 type: 'textarea',
                 attrs: {
-                    'placeholder': "(选填) 例 url_normalize like '/explore/%' limit 100",
+                    'placeholder': "(选填) 例 url_normalize like '/explore/%'",
                     validator: 'optional',
                     range: '4,30',
                     'text-area-elastic': true,
@@ -136,20 +142,23 @@ define(function() {
         ]
     };
 
-    // specific handler for postdata parser
+    // specific handler for postData parser
     var addOkMap = {
         group: function($scope, apiHelper) {
-            // this equal $scope
+            var postData = $scope.formlyData;
             apiHelper('addGroup', {
-                data: $scope.formlyData
+                data: postData
             }).then(function(data) {
+                // Todo 区分 add/edit 的后续处理 ($scope._data variable)
                 $scope.$root.groupList.push(data);
                 $scope.$close();
             });
         },
         category: function($scope, apiHelper) {
+            // before send
+            var postData = processIdObj($scope.formlyData, 'group');
             apiHelper('addCategory', {
-                data: processIdObj($scope.formlyData, 'group')
+                data: postData
             }).then(function(data) {
                 $scope.$root.categoryList.push(data);
                 $scope.$close();
@@ -157,10 +166,12 @@ define(function() {
         },
         report: function($scope, apiHelper, $notice) {
             var postData = _.clone($scope.formlyData);
+
+            /* before send */
             postData.metrics = _.map(_.filter($scope.metricList, function(i) {
                 return i.selected;
             }), function(x) {
-                return [x.id, x.type].join(',');
+                return x.id;
             });
             postData.dimensions = _.pluck($scope.dimensionList, 'id');
             postData.periods = [];
@@ -171,7 +182,6 @@ define(function() {
                 delete postData[i];
             });
             // Todo: remove owner
-            // Todo: 输入检查
             // 注：所有Dimensions都可以选择，一次只能选3个 ，Metrics 数量应该 <= 10
             if (postData.dimensions.length > 3) {
                 $notice.warning('Dimensions, 一次只能选3个');
@@ -180,13 +190,18 @@ define(function() {
                 $notice.warning('Metrics 数量应该 <= 10');
             }
             if (!postData.dimensions || !postData.metrics) $notice.warning('请按照要求填写');
-            postData.owner = 'siva'
+            postData.owner = 'siva';
+            /* end before send */
+
             apiHelper('addReport', {
                 data: postData
             }).then(function(data) {
-                $scope.$root.reportList.push(data);
+                // Todo 区分 add/edit 的后续处理
+                // Todo: 被添加的category 和 currentCategory 是一致的
+                if ($scope.$root.currentCategory.id === postData.categoryId) {
+                    $scope.$root.reportList.push(data);
+                }
                 $scope.$close();
-                // Todo: if current is
             });
         },
         metric: function($scope, apiHelper) {
@@ -200,6 +215,7 @@ define(function() {
         },
         combinedMetric: function($scope, apiHelper) {
             var postData = _.clone($scope.formlyData);
+            $scope.expressionErr = '';
             if (postData.metricId1 && postData.metricId2 && postData.operator) {
                 apiHelper('addCombineMetric', {
                     data: postData
@@ -211,7 +227,14 @@ define(function() {
             }
         },
         dimension: function($scope, apiHelper) {
-
+            var postData = processIdObj($scope.formlyData, 'field');
+            // Todo: fieldIds?! []
+            postData.fieldIds = [1, 2];
+            apiHelper('addDimension', {
+                data: postData
+            }).then(function() {
+                $scope.close();
+            });
         }
     };
 
@@ -223,30 +246,53 @@ define(function() {
             }
         },
         category: function($scope, apiHelper) {
-            if ($scope._data) {
-                $scope.formlyData = $scope._data;
-            }
-
             apiHelper('getGroupList').then(function(data) {
-                $scope.formlyData.group = data[0];
                 $scope.formFields[0].options = data;
+
+                if ($scope._data) {
+                    // edit mode
+                    $scope.formlyData = $scope._data;
+                    // id->currentGroup
+                } else {
+                    // hack for ng-options var reset
+                    $scope.formlyData.group = _.find(data, function(i) {
+                        return i.id === $scope.$root.currentGroup.id;
+                    });
+                }
             });
         },
         report: function($scope, apiHelper) {
             if ($scope._data) {
                 $scope.formlyData = $scope._data;
+            } else {
+                apiHelper('getGroupList').then(function(data) {
+                    // $scope.formlyData.group = data[0];
+                    $scope.formFields[0].options = data;
+                    $scope.formlyData.group = _.find(data, function(i) {
+                        return i.id === $scope.$root.currentGroup.id;
+                    });
+                });
             }
 
-            apiHelper('getGroupList').then(function(data) {
-                $scope.formlyData.group = data[0];
-                $scope.formFields[0].options = data;
-            });
+            $scope.$watch('metricList', function(val, old) {
+                // update shadow validtor ngmodel
+                if (!val || !old) return;
+                $scope._validateMetric = new Date().getTime();
+            }, true);
+
+            $scope.$watch('dimensionList', function(val, old) {
+                // update shadow validtor ngmodel
+                if (!val || !old) return;
+                $scope._validateDimension = new Date().getTime();
+            }, true);
+
             apiHelper('getMetricList').then(function(data) {
                 $scope.metricList = data;
             });
             apiHelper('getDimensionList').then(function(data) {
                 $scope.dimensionList = data;
             });
+
             $scope.$watch('formlyData.group', function(val) {
                 if (!val) return;
                 apiHelper('getCategoryList', {
@@ -254,8 +300,15 @@ define(function() {
                         groupId: val.id
                     }
                 }).then(function(data) {
-                    $scope.formlyData.category = data[0];
                     $scope.formFields[1].options = data;
+                    if (val.id === $scope.$root.currentGroup.id) {
+                        $scope.formlyData.category = _.find(data, function(i) {
+                            return i.id === $scope.$root.currentCategory.id;
+                        });
+                    } else {
+                        $scope.formlyData.category = data[0];
+                    }
+
                 });
             }, true);
         },
@@ -264,6 +317,7 @@ define(function() {
             apiHelper('getEventList').then(function(data) {
                 $scope.formFields[0].options = data;
                 $scope.formlyData.event = data[0];
+                $scope.formlyData.type = '0';
             });
 
             // watch event to fetch optional fields
@@ -280,7 +334,7 @@ define(function() {
             }, true);
         },
         combinedMetric: function($scope, apiHelper) {
-            $scope.formlyData.type = 0;
+            $scope.formlyData.type = '0';
             apiHelper('getMetricList').then(function(data) {
                 $scope.metricList = data;
             });
@@ -290,6 +344,7 @@ define(function() {
             apiHelper('getFieldList').then(function(data) {
                 $scope.formFields[0].options = data;
                 $scope.formlyData.field = data[0];
+                $scope.formlyData.type = '0';
             });
         }
     };
@@ -297,7 +352,8 @@ define(function() {
     // Todo: with base tpl for duplicate boilerplate ctrl
     _.each(fieldsDict, function(formFields, key) {
         addModule.controller(key + 'ModalCtrl', function($scope, apiHelper, $notice) {
-            $scope.modalTitle = 'Add ' + _.capitalize(key);
+            var prefix = $scope._data ? '(TEMP) - Edit ' : 'Add ';
+            $scope.modalTitle = prefix + _.capitalize(key);
             $scope.formFields = formFields;
             $scope.formName = 'formly';
             $scope.formlyData = {};

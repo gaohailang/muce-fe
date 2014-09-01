@@ -4,7 +4,7 @@ define([
 ], function(chartPanelCtrl) {
 
     function reportCtrl($scope, $modal) {
-        $scope.openDelModal = function(type, data) {
+        $scope.openEditModal = function(type, data) {
             var newScope = $scope.$new(true);
             $scope._data = data;
 

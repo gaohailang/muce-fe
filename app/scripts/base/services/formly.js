@@ -65,6 +65,9 @@ define([
 
                     $element.html($templateCache.get('formly/basic-field-tpl')
                         .replace('PLACEHOLDER', controlHtml));
+                    if ($scope.options.wrapAttr) {
+                        $element.find('.control-group').attr($scope.options.wrapAttr);
+                    }
                     $compile($element.contents())($scope);
                     $timeout(function() {
                         _ctrl = $element.find('input,textarea,select').data("$ngModelController");
