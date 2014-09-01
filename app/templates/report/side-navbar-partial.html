@@ -4,26 +4,16 @@
     <!--Group-->
     <li>
         <h3>Group:</h3>
-        <div class="btn-group"
-            rel="tooltip" data-placement="top"
-            data-original-title="Double click view Groups">
+        <div class="btn-group" dropdown>
 
-            <!-- data-bind="event: {dblclick: showAllProfile}" -->
-            <button class="btn btn-success dropdown-toggle btn-name"
-                data-toggle="dropdown" ng-mouseenter="isShow=true"
-                ng-mouseleave="isShow=false">
+            <button class="btn btn-success dropdown-toggle btn-name">
                 <span>{{currentGroup.name||'loading...'}}</span>
-                <!-- <i class="icon-pencil edit-report"
-                    ng-show="isShow" ng-click="editReport(report)"></i>
-                <i class="icon-trash delete-report" ng-show="isShow"></i> -->
             </button>
 
-            <button data-toggle="dropdown"
-                class="btn btn-success dropdown-toggle btn-caret">
+            <button class="btn btn-success btn-caret dropdown-toggle">
                 <span class="caret"></span>
             </button>
 
-            <!-- data-bind="text: name, click: $parent.switchProfile" -->
             <ul class="dropdown-menu sidebar-list">
                 <li ng-repeat="group in groupList|orderBy:'name'"
                     ng-mouseenter="isShow=true"
@@ -41,20 +31,17 @@
     <!--Category-->
     <li>
         <h3>Category:</h3>
-        <!-- data-original-title="Double click to edit Categories" -->
-        <div class="btn-group">
-            <button class="btn btn-info btn-name" data-toggle="dropdown">
+        <div class="btn-group" dropdown>
+            <button class="btn btn-info btn-name" dropdown-toggle>
                 <span>
                     {{categoryList?(categoryList.length?currentCategory.name:'No Category'):'loading...'}}
                 </span>
             </button>
 
-            <button data-toggle="dropdown"
-                class="btn btn-info dropdown-toggle btn-caret">
+            <button class="btn btn-info dropdown-toggle btn-caret">
                 <span class="caret"></span>
             </button>
 
-            <!-- data-bind="text: name, click: $parent.switchGroup" -->
             <ul class="dropdown-menu sidebar-list">
                 <li ng-repeat="category in categoryList|orderBy:'name'"
                     ng-mouseenter="isShow=true"
