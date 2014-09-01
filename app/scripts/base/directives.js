@@ -113,6 +113,11 @@ define([
             };
         })
         .directive('multiChooser', multiChooser)
+        .directive('disableAnimate', function($animate) {
+            return function($scope, $element) {
+                $animate.enabled(false, $element);
+            }
+        })
         .directive('shakeThat', function($animate) {
             return {
                 require: '^form',

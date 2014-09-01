@@ -9,14 +9,18 @@ require([
     'use strict';
 
     var muceApp = angular.module('muceApp', [
+        'ngSanitize',
+        'ngAnimate',
+
         'ui.router',
         'ui.bootstrap',
         'ui.codemirror',
         'ui.select',
-        'ngSanitize',
         'ngQuickDate',
+
         'muceApp.api',
         'muceApp.base',
+
         'muceApp.report',
         'muceApp.mq'
     ]);
