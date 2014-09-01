@@ -1,0 +1,106 @@
+// ngShow/ngHide - add and remove, ngIf - enter and leave, ngInclude - enter and leave, ngRepeat - enter and leave, etc
+/* fade */
+
+// add fade-down, fade-down, fade-right,
+
+// default ux
+.ng-enter {-webkit-animation: fadeDownEnter .3s linear;}
+// .ng-leave {-webkit-animation: fadeDownLeave .3s linear;}
+
+.ng-hide-add, .ng-hide-remove {
+    display: block!important;
+}
+// .ng-hide-add {
+//     -webkit-animation: fadeDownLeave .1s linear;
+// }
+.ng-hide-remove {
+    -webkit-animation: fadeDownEnter .3s linear;
+}
+
+.disable-ux {
+    &.ng-enter {-webkit-animation: initial;}
+    &.ng-leave {-webkit-animation: initial;}
+
+    &.ng-hide-add, &.ng-hide-remove {
+        display: block!important;
+    }
+    &.ng-hide-add {
+        -webkit-animation: initial;
+    }
+}
+
+
+.ng-animate-fadedown {
+    &.ng-enter {-webkit-animation: fadeDownEnter .3s linear;}
+    &.ng-leave {-webkit-animation: fadeDownLeave .3s linear;}
+}
+
+.ng-animate-fadedown-noleave {
+    &.ng-enter {-webkit-animation: fadeDownEnter .3s linear;}
+}
+
+.ng-animate-slidedown {
+    &.ng-enter {-webkit-animation: fadeDownEnter .3s linear;}
+    &.ng-leave {-webkit-animation: slideUpLeave .3s linear;}
+    &.ng-hide-add, &.ng-hide-remove {
+        display: block!important;
+    }
+    &.ng-hide-add {
+        -webkit-animation: slideUpLeave .3s linear;
+    }
+}
+
+.pmt-popup {
+    &.ng-hide-add, &.ng-hide-remove {
+        display: block!important;
+    }
+    &.ng-hide-add {
+        -webkit-animation: fadeDownLeave .3s linear;
+    }
+    &.ng-hide-remove {
+        -webkit-animation: fadeDownEnter .3s linear;
+    }
+}
+
+@include keyframes(fadeDownEnter) {
+    from {
+        @include transform(translate3D(0,-15px,0));
+        opacity: 0;
+    }
+    to {
+        @include transform(translate3D(0,0,0));
+        opacity: 1;
+    }
+}
+
+@include keyframes(fadeDownLeave) {
+    from {
+        @include transform(translate3D(0,0,0));
+        opacity: 1;
+    }
+    to {
+        @include transform(translate3D(0,-15px,0));
+        opacity: 0;
+    }
+}
+
+@include keyframes(slideUpLeave) {
+    from {
+        opacity: 1;
+        max-height: 100px;
+    }
+    to {
+        opacity: 0;
+        max-height: 0;
+        margin: 0;
+    }
+}
+
+@keyframes shake {
+    0%, 100% {transform: translateX(0);}
+    10%, 30%, 50%, 70%, 90% {transform: translateX(-10px);}
+    20%, 40%, 60%, 80% {transform: translateX(10px);}
+}
+
+
+
