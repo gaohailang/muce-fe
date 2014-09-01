@@ -20,15 +20,13 @@
                 <h5>DataBases</h5>
                 <ul class="db-list">
                     <li class="dropdown db-item"
-                        ng-repeat="db in allDbs" ng-click="changeDb(db)">
-                        <a class="btn dropdown-toggle">
+                        ng-repeat="db in allDbs">
+                        <a class="btn dropdown-toggle" ng-click="changeDb(db)">
                             <i class="icon-th"></i>{{db}}
                         </a>
                         <ul class="dropdown-menu" ng-if="currentDb==db">
                             <li ng-repeat="tb in allTables">
-                                <a href='#mq' ng-click="changeTable(tb)">
-                                    {{tb}}
-                                </a>
+                                <a href="javascript:void(0)" ng-click="changeTable(tb)">{{tb}}</a>
                             </li>
                         </ul>
                     </li>
@@ -91,19 +89,6 @@
             </div>
 
             <div ui-view></div>
-            <!-- <div id="mq_result_view" class="span6">
-                <table class="table table-striped">
-                    <caption>
-                    </caption>
-                    <thead>
-                        <tr>
-                            Result View
-                        </tr>
-                    </thead>
-                    <tbody class="table table-bordered mq-result-view">
-                    </tbody>
-                </table>
-            </div> -->
         </div>
     </div>
 </div>

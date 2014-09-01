@@ -55,6 +55,7 @@ define(function() {
         });
 
         $scope.changeDb = function(db) {
+            $scope.allTables = [];
             $scope.currentDb = db;
             apiHelper('getDbTable', db).then(function(data) {
                 $scope.allTables = data;
@@ -91,7 +92,7 @@ define(function() {
             // readOnly: 'nocursor',
             mode: 'text/x-hive',
             extraKeys: {
-                // "Ctrl-Space": "autocomplete"
+                "Ctrl-Space": "autocomplete"
             },
             hintOptions: {
                 tables: {
@@ -151,7 +152,6 @@ define(function() {
                 }
             }
         };
-
 
         $scope.$watch('currentMqRaw', function(val) {
             if (!val) return;

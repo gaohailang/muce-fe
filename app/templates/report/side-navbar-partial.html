@@ -44,9 +44,9 @@
         <!-- data-original-title="Double click to edit Categories" -->
         <div class="btn-group">
             <button class="btn btn-info btn-name" data-toggle="dropdown">
-                <span ng-show="categoryList==undefined">loading...</span>
-                <span ng-show="categoryList.length==0">No Category</span>
-                <span ng-show="categoryList.length>0">{{currentCategory.name}}</span>
+                <span>
+                    {{categoryList?(categoryList.length?currentCategory.name:'No Category'):'loading...'}}
+                </span>
             </button>
 
             <button data-toggle="dropdown"

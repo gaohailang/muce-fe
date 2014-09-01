@@ -2,21 +2,28 @@
     <ul class="detail-list">
         <li class="detail-owner">
             <div>
-                <code>Owner: </code>
+                <code>Name: </code>
             </div>
-            <pre class="detail-item">{{currentReportDetail.owner}}</pre>
+            <pre class="detail-item">{{currentReportDetail.name}}</pre>
+        </li>
+        <li class="detail-owner">
+            <div>
+                <code>Info: </code>
+            </div>
+            <!-- Todo: with date filter -->
+            <pre class="detail-item">Created by {{currentReportDetail.owner}} At {{currentReportDetail.createTime}}  <span ng-if="currentReportDetail.modifyTime">Last Modified At {{currentReportDetail.modifyTime}}</span></pre>
         </li>
         <li class="detail-comment">
             <div>
-                <code>Comments: </code>
+                <code>Comment: </code>
             </div>
-            <pre class="detail-item">{{currentReportDetail.comments||'『Owner很懒，连注释都不写』'}}</pre>
+            <pre class="detail-item">{{currentReportDetail.comment||'『Owner很懒，连注释都不写』'}}</pre>
          </li>
         <li class="detail-metrics">
             <code>Metrics:  </code>
             <pre class="detail-item">{{currentReportDetail.metrics|transMetricsDetail}}</pre>
         </li>
-        <li class="detail-dimensions">
+        <li class="detail-dimensions" ng-if="currentReportDetail.dimensions">
             <code>Dimensions:  </code>
             <pre class="detail-item">{{currentReportDetail.dimensions|joinArr:'name'}}</pre>
         </li>

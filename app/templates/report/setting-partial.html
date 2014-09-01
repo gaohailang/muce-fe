@@ -60,17 +60,11 @@
 
     <div class="trigger-wrapper span2" ng-init="isShowDetailInfo = false">
         <button class="btn btn-primary refresh-report" ng-click="fetchReports()">apply</button>
-        <!-- <a ng-click="isShowDetailInfo = !isShowDetailInfo" href="#">
-            <span ng-show="!isShowDetailInfo">Show Report Detail</span>
-            <span ng-show="isShowDetailInfo">Hide Report Detail</span>
-        </a> -->
 
         <span class="report-detail-triiger"
             ng-click="isShowDetailInfo = !isShowDetailInfo">
-            <i ng-show="!isShowDetailInfo"
-                tooltip="show report detail" class="icon-folder-close"></i>
-            <i ng-show="isShowDetailInfo"
-                tooltip="hide report detail" class="icon-folder-open"></i>
+            <i ng-class="{'icon-folder-close': !isShowDetailInfo, 'icon-folder-open': isShowDetailInfo}"
+                tooltip="{{isShowDetailInfo?'Hide Report Detail':'Show Report Detail'}}"></i>
         </span>
     </div>
 </section>
