@@ -77,7 +77,7 @@ define([
 
     /* add modal */
     function addModalCtrl($scope, $modal) {
-        $scope.addTypes = ['group', 'category', 'dimension', 'metric', 'report'];
+        $scope.addTypes = ['group', 'category', 'report', 'metric', 'dimension'];
         $scope.openModal = function(type) {
             if (type !== 'metric') {
                 $modal.open({
@@ -97,7 +97,7 @@ define([
     /* delete widget */
     function delPanelCtrl(apiHelper, $scope, $timeout) {
         // scope: currentDelType, selectedItems, currentDelList, currentQuery
-        $scope.delTypes = ['group', 'category', 'dimension', 'metric'];
+        $scope.delTypes = ['group', 'category', 'metric', 'dimension'];
         $scope.currentDelType = $scope.delTypes[0];
 
         $scope.$watch('currentDelType', function(val) {

@@ -2,7 +2,7 @@ define([
     'report/highchart',
     'report/echarts'
 ], function(highchart, echarts) {
-    function chartPanelCtrl($scope, apiHelper, $rootScope, $modal, $filter, $timeout) {
+    function chartPanelCtrl($scope, apiHelper, $rootScope, $modal, $filter, $timeout, $filter) {
         $scope.form = {};
         $scope.quickChooseList = _.zip('Last day,Last 2 days,Last 3 days,Last 1 week,Last 2 week,Last 1 month'.split(','), [-1, -2, -3, -7, -14, -31]);
         var periodFormatMap = {
@@ -136,41 +136,51 @@ define([
         function buildGridData(currentReport, data) {
             var heads = _.pluck(currentReport.metrics, 'name');
             heads.unshift('Date');
-            var xheads = _.map(heads, function(h) {
+            var heads = _.map(heads, function(h) {
                 return _.slugify(h);
             });
-            $scope.tableHeads = _.object(xheads, heads);
-            var rows = _.map(data.result, function(row) {
-                // Todo: filter date to format
-                return _.object(xheads, [row.date].concat(
-                    _.values(_.omit(row, 'date'))
-                ));
+            var fieldNames = _.pluck(currentReport.metrics, 'name');
+            fieldNames.unshift('Date');
+            fieldNames = _.map(fieldNames, function(h) {
+                return _.slugify(h);
             });
-            $scope.tableRows = rows;
-            // $scope.visableRows = rows;
-            // $scope.visableRows = _.first(rows, 10);
+
+            var fieldIds = _.pluck(currentReport.metrics, 'id');
+            fieldIds.unshift('date');
+
+            $scope.tbFields = _.map(fieldIds, function(id, i) {
+                return {
+                    id: id,
+                    name: fieldNames[i]
+                };
+            });
+            // $scope.tableRows = data.result;
+            $scope.tableRows = _.map(data.result, function(i) {
+                _.each(_.keys(i), function(k) {
+                    if (k !== 'date') {
+                        i[k] = +i[k];
+                    }
+                });
+                return i;
+            });
         }
-        /*$scope.tableVisIdx = 1;
-        $scope.tableAppendMore = _.throttle(function() {
-            if ($scope.visableRows.length >= $scope.tableRows.length) {
-                $scope.isTableNoMoreLoad = true;
-            } else {
-                ++$scope.tableVisIdx;
-                $scope.visableRows = _.first($scope.tableRows, 10 * $scope.tableVisIdx);
-                if (!$scope.$$phase) {
-                    //$digest or $apply
-                    $scope.$apply();
-                }
-            }
-        }, 1000);*/
+
 
         $scope.sortReverse = false;
         $scope.toggleRowSort = function(type) {
+            // use native sort method, instead of angular's filter orderBy
             $scope.sortType = type;
             $scope.sortReverse = !$scope.sortReverse;
+            var tableRows = _.sortBy($scope.tableRows, function(item) {
+                return item[type];
+            });
+            if ($scope.sortReverse) {
+                tableRows.reverse();
+            }
+            $scope.tableRows = tableRows;
         };
 
-        $scope.exportTableAsCsv = function(tableHeads, tableRows) {
+        $scope.exportTableAsCsv = function(tbFields, tableRows) {
             function buildCsvName() {
                 // dirty
                 return '[MUCE REPORT] ' + $scope.currentReportDetail.name + '-' + $filter('date')($scope.startDate, 'yyyymmdd') + '_' + $filter('date')($scope.endDate, 'yyyymmdd');
@@ -179,10 +189,11 @@ define([
             function buildCsvContent() {
                 var resultArr = [],
                     csvContent;
-                resultArr.push(_.values(tableHeads));
+                var ids = _.pluck(tbFields, 'id');
+                resultArr.push(_.pluck(tbFields, 'name'));
 
                 _.each(tableRows, function(row) {
-                    resultArr.push(_.map(_.keys(tableHeads), function(key) {
+                    resultArr.push(_.map(ids, function(key) {
                         return row[key];
                     }));
                 });
