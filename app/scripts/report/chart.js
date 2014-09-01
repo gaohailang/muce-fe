@@ -4,7 +4,7 @@ define([
 ], function(highchart, echarts) {
     function chartPanelCtrl($scope, apiHelper, $rootScope, $modal, $filter, $timeout) {
         $scope.form = {};
-        $scope.quickChooseList = _.object('Last day,Last 2 days,Last 3 days,Last 1 week,Last 2 week,Last 1 month'.split(','), [-1, -2, -3, -7, -14, -31]);
+        $scope.quickChooseList = _.zip('Last day,Last 2 days,Last 3 days,Last 1 week,Last 2 week,Last 1 month'.split(','), [-1, -2, -3, -7, -14, -31]);
         var periodFormatMap = {
             0: 'yyyy-MM-dd',
             1: 'yyyy-MM-dd hh:mm'
@@ -66,7 +66,7 @@ define([
                 delete $scope.currentQuick;
                 $timeout(function() {
                     $scope.currentPeriod = data.periods[0];
-                    $scope.currentQuick = -7; // last week
+                    $scope.currentQuick = -14; // last two week
                 });
                 $scope.currentReportDetail = data;
                 $scope.dimenAdv.dimensions = data.dimensions; // sync for advanced modal

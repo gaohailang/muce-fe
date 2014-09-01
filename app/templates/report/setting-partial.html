@@ -3,7 +3,7 @@
         <div class="date-operator">
             <select id="quickChooseList"
                 ng-model="currentQuick"
-                ng-options="val as key for (key, val) in quickChooseList">
+                ng-options="i[1] as i[0] for i in quickChooseList">
                 <option value="">-- Quick Select --</option>
             </select>
 
