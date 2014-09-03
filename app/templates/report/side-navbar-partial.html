@@ -18,11 +18,11 @@
                 <li ng-repeat="group in groupList|orderBy:'name'"
                     ng-mouseenter="isShow=true"
                     ng-mouseleave="isShow=false">
-                    <a ng-click="switchGroup(group)">{{group.name}}</a>
+                    <a ng-click="switchGroup(group)" dropdown-toggle>{{group.name}}</a>
 
                     <i class="icon-pencil edit-report" ng-show="isShow"
                         ng-click="openEditModal('group', group)"></i>
-                    <i class="icon-trash delete-report" ng-show="isShow"></i>
+                    <!-- <i class="icon-trash delete-report" ng-show="isShow"></i> -->
                 </li>
             </ul>
         </div>
@@ -46,11 +46,11 @@
                 <li ng-repeat="category in categoryList|orderBy:'name'"
                     ng-mouseenter="isShow=true"
                     ng-mouseleave="isShow=false">
-                    <a ng-click="switchCategory(category)">{{category.name}}</a>
+                    <a ng-click="switchCategory(category)" dropdown-toggle>{{category.name}}</a>
 
                     <i class="icon-pencil edit-report" ng-show="isShow"
                         ng-click="openEditModal('category', category)"></i>
-                    <i class="icon-trash delete-report" ng-show="isShow"></i>
+                    <!-- <i class="icon-trash delete-report" ng-show="isShow"></i> -->
                 </li>
             </ul>
         </div>
@@ -72,7 +72,7 @@
                 <a href="#" ng-click="switchReport(report)">{{report.name}}</a>
                 <i class="icon-pencil edit-report" ng-show="isShow"
                 ng-click="openEditModal('report', report)"></i>
-                <i class="icon-trash delete-report" ng-show="isShow"></i>
+                <!-- <i class="icon-trash delete-report" ng-show="isShow"></i> -->
             </li>
         </ul>
     </li>

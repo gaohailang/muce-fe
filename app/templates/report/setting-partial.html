@@ -9,12 +9,14 @@
 
             <!-- Todo: date-range start="" end="" -->
             <quick-datepicker icon-class='fa fa-calendar'
+                on-change="onDateChnage()"
                 label-format="yyyy-MM-dd hh:mm"
                 ng-model='startDate' disable-timepicker="currentPeriod"></quick-datepicker>
             <!-- <input type="text" id="report-start-date"
                 ng-model="startDate" date-time-picker
                 picker="dateOpt"> -->
             <quick-datepicker icon-class='fa fa-calendar'
+                on-change="onDateChnage()"
                 label-format="yyyy-MM-dd HH:mm"
                 ng-model='endDate' disable-timepicker="{{currentPeriod}}"></quick-datepicker>
             <!-- <input type="text" id="report-end-date"

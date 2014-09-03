@@ -70,9 +70,10 @@
     id="report/add_dimension/fields.html">
     <ui-select ng-model="formlyData.field">
       <ui-select-match placeholder="Select or search in the list...">{{$select.selected.name}}</ui-select-match>
-      <ui-select-choices repeat="item in formFields[0].options | filter: $select.search">
+      <ui-select-choices repeat="opt in formFields[0].options | filter: {name: $select.search}">
+      <!-- person in people | propsFilter: {name: $select.search, age: $select.search} -->
         <!-- <span ng-bind-html="item.name | highlight: $select.search"></span> -->
-        <span>{{item.name}}</span>
+        <span>{{opt.name}}</span>
       </ui-select-choices>
     </ui-select>
 </script>

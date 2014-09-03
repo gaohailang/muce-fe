@@ -83,6 +83,11 @@ define([
             $scope.endDate = _tmp;
             fetchReports();
         });
+        $scope.onDateChnage = function() {
+            // reset currentQuick
+            $scope.currentQuick = '';
+        };
+
         // 切换Period
         $scope.$watch('currentPeriod', function(val) {
             if (val === undefined) return;

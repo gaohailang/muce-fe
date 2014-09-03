@@ -74,18 +74,20 @@ define(function() {
             }, {
                 controlHtml: '<div multi-chooser choices-list="dimensionList"></div>',
                 label: 'Dimension'
-            }, {
-                controlTpl: 'report/_validateDimension.html',
-                label: '',
-                wrapAttr: {
-                    style: 'margin-top: -20px'
-                }
             },
+            // {
+            //     controlTpl: 'report/_validateDimension.html',
+            //     label: '',
+            //     wrapAttr: {
+            //         style: 'margin-top: -20px'
+            //     }
+            // },
             dataDict.commentField, {
                 key: 'isEnable',
                 type: 'checkbox'
             }
         ],
+
         metric: [{
                 type: 'select',
                 key: 'event',
@@ -228,8 +230,11 @@ define(function() {
         },
         dimension: function($scope, apiHelper) {
             var postData = processIdObj($scope.formlyData, 'field');
+            postData.fieldIds = postData.fieldId;
+            delete postData.fieldId;
+            // fuck the ugly data interface
             // Todo: fieldIds?! []
-            postData.fieldIds = [1, 2];
+            // postData.fieldIds = [1, 2];
             apiHelper('addDimension', {
                 data: postData
             }).then(function() {
@@ -323,7 +328,7 @@ define(function() {
             // watch event to fetch optional fields
             $scope.$watch('formlyData.event', function(val) {
                 if (!val) return;
-                apiHelper('getFieldList', {
+                apiHelper('getFieldIdList', {
                     params: {
                         eventId: val.id
                     }
@@ -341,13 +346,23 @@ define(function() {
             $scope.metricOperators = _.db.metricOperators;
         },
         dimension: function($scope, apiHelper) {
-            apiHelper('getFieldList').then(function(data) {
+            apiHelper('getFieldIdList').then(function(data) {
+                data = transFieldIds(data);
                 $scope.formFields[0].options = data;
                 $scope.formlyData.field = data[0];
                 $scope.formlyData.type = '0';
             });
         }
     };
+
+    function transFieldIds(data) {
+        return _.map(data, function(val, key) {
+            return {
+                name: key,
+                id: val
+            };
+        });
+    }
 
     // Todo: with base tpl for duplicate boilerplate ctrl
     _.each(fieldsDict, function(formFields, key) {
