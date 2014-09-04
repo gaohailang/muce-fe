@@ -6,7 +6,7 @@
             <!-- mq fisrt-class menu -->
             <div id="mq_job">
                 <div id="mq_compose_query">
-                    <button class="btn btn-primary">Compose Query</button>
+                    <button class="btn btn-primary" ng-click="composeNewQuery()">Compose Query</button>
                 </div>
                 <ul id='mq_user_query' class="nav nav-pills nav-stacked">
                     <li><a class="mq-history" ui-sref="mq.history" ui-sref-active="active">Query History</a></li>
@@ -41,10 +41,10 @@
                 <h4>New Query...</h4>
 
                 <!-- codemirror edtior -->
-                <div ui-codemirror="editorOptions" ng-model="currentMqRaw"></div>
+                <div ui-codemirror="editorOptions" ng-model="form.hql"></div>
 
                 <div id="mq_run_animate" style="margin-bottom: 20px">
-                    <button class="btn btn-danger" id="mq_run">Run Query</button>
+                    <button class="btn btn-danger" ng-click="runQuery()">Run Query</button>
 
                     <span class="icon-time"></span>
                     <span class="mq-run-time label label-info"></span>
@@ -52,9 +52,8 @@
 
                     <div class="mq-task-notification input-append" style="margin-bottom: 0">
                         <span class="add-on">
-                            <input type="checkbox">
-                            <i class="icon-envelope"></i>
-                            Me
+                            <input type="checkbox" ng-model="form.notification">
+                            <i class="icon-envelope"></i>Me
                         </span>
                     </div>
                 </div>

@@ -49,6 +49,7 @@ define(function() {
     function mqCtrl($scope, apiHelper, $modal, $state) {
 
         $scope.currentTbView = 'schema';
+        $scope.form = {};
 
         apiHelper('getDatabases').then(function(data) {
             $scope.allDbs = data;
@@ -80,6 +81,20 @@ define(function() {
 
         $scope.switchTbView = function(view) {
             $scope.currentTbView = view;
+        };
+
+        $scope.runQuery = function() {
+            apiHelper('addJob', {
+                notification: $scope.form.notification
+                hql: $scope.form.hql
+                user: $scope.form.user
+            }).then(function() {
+
+            });
+        };
+
+        $scope.composeNewQuery = function() {
+            $scope.form = {};
         };
 
         $scope.editorOptions = {
