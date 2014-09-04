@@ -46,7 +46,7 @@ require([
             },
             'mq.info': {
                 url: '',
-                templateUrl: '/templates/mq/schema.html'
+                templateUrl: '/templates/mq/tbinfo.html'
             },
             'mq.example': {
                 url: '/example',
@@ -67,7 +67,7 @@ require([
             $stateProvider.state(name, opt);
         });
 
-        $locationProvider.html5Mode(true).hashPrefix('!');
+        // $locationProvider.html5Mode(true).hashPrefix('!');
         // Use $urlRouterProvider to configure any redirects (when) and invalid urls (otherwise).
         $urlRouterProvider.otherwise('/');
     });

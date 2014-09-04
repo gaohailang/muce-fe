@@ -1,55 +1,7 @@
 define(function() {
-    function mqHistoryCtrl($scope, apiHelper, $modal) {
-        apiHelper('getJobList', {
-            from: 'gaohailang'
-        }).then(function(data) {
-            $scope.jobList = data;
-            _.each(data, function(job, i) {
-                if (job.status === 'FAILED') return;
-                apiHelper('getJobResultSize', job.id).then(function(data) {
-                    job.size = data;
-                });
-            });
-        });
-
-        $scope.openJobResultView = function(job) {
-            var newScope = $scope.$new(true);
-            if (job.status === 'FAILED') {
-                newScope.reason = job.reason;
-                open();
-            } else {
-                apiHelper('getJobView', job.id).then(function(data) {
-                    newScope.result = data;
-                    open();
-                });
-            }
-
-            function open() {
-                $modal.open({
-                    templateUrl: '/templates/mq/job-result.html',
-                    size: 'lg',
-                    scope: newScope,
-                    controller: function($scope) {
-                        // Todo: hive result stdout
-                        if ($scope.result) {
-                            $scope.result = _.map($scope.result.split('\n'), function(i) {
-                                return i.split('\t');
-                            });
-                        }
-                    }
-                });
-            }
-        };
-
-        $scope.downloadJobResultView = function(id) {
-            apiHelper('getJobResult', id);
-        };
-    }
-
-    function mqCtrl($scope, apiHelper, $modal, $state) {
+    function mqCtrl($scope, apiHelper, $state, $modal) {
 
         $scope.currentTbView = 'schema';
-        $scope.form = {};
 
         apiHelper('getDatabases').then(function(data) {
             $scope.allDbs = data;
@@ -83,18 +35,99 @@ define(function() {
             $scope.currentTbView = view;
         };
 
-        $scope.runQuery = function() {
-            apiHelper('addJob', {
-                notification: $scope.form.notification
-                hql: $scope.form.hql
-                user: $scope.form.user
-            }).then(function() {
+        $scope.openJobResultView = function(job) {
+            var newScope = $scope.$new(true);
+            if (job.status === 'FAILED') {
+                newScope.reason = job.reason;
+                openModal();
+            } else {
+                apiHelper('getJobView', job.id).then(function(data) {
+                    newScope.result = data;
+                    openModal();
+                });
+            }
 
+            function openModal() {
+                $modal.open({
+                    templateUrl: '/templates/mq/modal-job-result.html',
+                    size: 'lg',
+                    scope: newScope,
+                    controller: function($scope) {
+                        // Todo: hive result stdout
+                        if ($scope.result) {
+                            $scope.result = _.map($scope.result.split('\n'), function(i) {
+                                return i.split('\t');
+                            });
+                        }
+                    }
+                });
+            }
+        };
+
+        $scope.downloadJobResultView = function(id) {
+            apiHelper('getJobResult', id);
+        };
+    }
+
+    function mqHistoryCtrl($scope, apiHelper) {
+        // 支持 选项： order, querys_showed, more_querys
+        apiHelper('getJobList', {
+            params: {
+                user: 'gaohailang'
+            }
+        }).then(function(data) {
+            $scope.jobList = data;
+            /*_.each(data, function(job, i) {
+                if (job.status === 'FAILED') return;
+                apiHelper('getJobResultSize', job.id).then(function(data) {
+                    job.size = data;
+                });
+            });*/
+        });
+    }
+
+    function mqEditorCtrl($scope, $interval) {
+        $scope.form = {};
+
+        $scope.runQuery = function() {
+            $scope.form.user = 'gaohailang';
+
+            // $interval.cancel(stopTime);
+            var curTime = 0;
+            var runTimer = $interval(function() {
+                $scope.runTimeText = getFormatedTimeDelta(curTime);
+                curTime += 7;
+            }, 70);
+
+            apiHelper('addJob', {
+                data: $scope.form
+            }).then(function(data) {
+                // Todo: know the job id
+                $scope.currentJob = data;
+                // $state.go -> history?!
+                var runStatusTimer = $interval(function() {
+                    apiHelper('getJob', data.id).then(function(job) {
+                        $scope.currentJob = job;
+                        if (job.status === 'COMPLETE') {
+                            $interval.cancel(runTimer);
+                            $interval.cancel(runStatusTimer);
+                            // NOTICE BY TOGGLE document.title
+                        }
+                    }, function() {
+                        $interval.cancel(runTimer);
+                        // same with
+                    });
+                }, 3000);
+            }, function() {
+                // error handler
+                // alert-error(error.reason)
+                // label-import - error.responseText
             });
         };
 
         $scope.composeNewQuery = function() {
             $scope.form = {};
+            $scope.currentJob = null;
         };
 
         $scope.editorOptions = {
@@ -176,9 +209,30 @@ define(function() {
                 $('.mq-editor-wrapper .CodeMirror').css('height', '112px');
             }
         });
+
+        function pad(number, length) {
+            var str = '' + number;
+            while (str.length < length) {
+                str = '0' + str;
+            };
+            return str;
+        }
+
+        function getFormatedTimeDelta(curTime) {
+            var min = parseInt(curTime / 6000);
+            var sec = parseInt(curTime / 100) - (min * 60);
+            var micro = pad(curTime - (sec * 100) - (min * 6000), 2);
+            var showTime = "";
+            if (min > 0) {
+                showTime = pad(min, 2) + ':';
+            };
+            showTime = showTime + pad(sec, 2) + ':' + micro;
+            return showTime;
+        }
     }
 
     angular.module('muceApp.mq', [])
+        .controller('mqEditorCtrl', mqEditorCtrl)
         .controller('mqHistoryCtrl', mqHistoryCtrl)
         .controller('mqCtrl', mqCtrl);
-})
+});

@@ -1,5 +1,6 @@
 <div class="span9 mq-job-history">
     <table class="table table-bordered user-query-detail">
+        <!-- Todo: 加上创始时间，job使用的时间 -->
         <thead>
             <tr>
                 <th>Status</th>
@@ -11,15 +12,28 @@
         </thead>
         <tbody>
             <tr ng-repeat="job in jobList"
-                ng-class="{'error': job.status == 'FAILED'}">
+                ng-class="{'error': job.status == 'FAILED',
+                           'info': job.status == 'PENDING',
+                           'info': job.status == 'RUNNING'}">
                 <td>{{job.status}}</td>
-                <td><a ng-click="openJobResultView(job)">VIEW</a></td>
-                <td><a ng-click="downloadJobResultView(job.id)">DOWNLOAD</a></td>
-                <td ng-show="job.size">{{job.size}} Byte</td>
+
+                <td ng-switch on="job.status">
+                    <span ng-switch-when="PENDING">pending... </span>
+                    <span ng-switch-when="RUNNING">running... </span>
+                    <a ng-click="openJobResultView(job)" ng-switch-default>VIEW</a>
+                </td>
+
+                <td ng-switch on="job.status">
+                    <span ng-switch-when="PENDING">pending... </span>
+                    <span ng-switch-when="RUNNING">running... </span>
+                    <a ng-click="downloadJobResultView(job.id)" ng-switch-default>DOWNLOAD</a>
+                </td>
+
+                <td ng-show="job.size">{{job.size|humanBytes}}</td>
                 <td ng-hide="job.size">UNKOWN</td>
+
                 <td>{{job.hql}}</td>
             </tr>
         </tbody>
     </table>
-    <!-- <p><a class="btn mq-more-querys btn-large">more</a></p> -->
 </div>

@@ -2,7 +2,6 @@
     <div class="row-fluid">
         <!-- mq sidebar -->
         <div class="span3" >
-
             <!-- mq fisrt-class menu -->
             <div id="mq_job">
                 <div id="mq_compose_query">
@@ -14,7 +13,6 @@
                     <!-- <li><a href="#mq" class="share-query">Query Share</a></li> -->
                 </ul>
             </div>
-
             <!-- database list -->
             <div class="mq-db-list">
                 <h5>DataBases</h5>
@@ -37,20 +35,27 @@
         <!-- mq content -->
         <div id="mq_detail" class="span9">
             <!-- mq editor -->
-            <div class="mq-editor-wrapper">
+            <div class="mq-editor-wrapper" ng-controller="mqEditorCtrl">
                 <h4>New Query...</h4>
 
                 <!-- codemirror edtior -->
                 <div ui-codemirror="editorOptions" ng-model="form.hql"></div>
 
                 <div id="mq_run_animate" style="margin-bottom: 20px">
-                    <button class="btn btn-danger" ng-click="runQuery()">Run Query</button>
+                    <button class="btn btn-danger"
+                        ng-disabled="currentJob" ng-click="runQuery()">Run Query</button>
 
-                    <span class="icon-time"></span>
-                    <span class="mq-run-time label label-info"></span>
-                    <span class="mq-run-status label label-warning"></span>
+                    <span class="icon-time" ng-show="runTimeText"></span>
+                    <span class="label label-info">{{runTimeText}}</span>
 
-                    <div class="mq-task-notification input-append" style="margin-bottom: 0">
+                    <span class="label" ng-class="
+                        {'label-warning': (currentJob.status !== 'FAILED' && currentJob.status !== 'COMPLETED'),
+                        'label-important': (currentJob.status === 'FAILED'),
+                        'label-success': (currentJob.status === 'COMPLETED')}">
+                        {{currentJob.status}}
+                    </span>
+
+                    <div class="input-append" style="margin-bottom: 0" ng-hide="currentJob">
                         <span class="add-on">
                             <input type="checkbox" ng-model="form.notification">
                             <i class="icon-envelope"></i>Me
@@ -65,7 +70,7 @@
                     </div>
                 </div> -->
 
-                <div class="bs-docs-example success-example">
+                <div class="bs-docs-example success-example" ng-show="currentJob.status === 'COMPLETED'">
                     <div class="mq-run-success-alert">
                         <div class="alert alert-block alert-success fade in">
                             <h4 class="alert-heading">Well done!</h4>
@@ -75,10 +80,12 @@
                             <p>
                                 <a class="btn btn-success mq-download-btn">
                                     <span class="icon-cloud-download"></span>
+                                    <!-- Todo: /muce-webapp/muce/mq/job/' + id + '/result -->
                                     Download
                                 </a>
                                 <a class="btn btn-primary mq-show-run-result">
                                     <span class="icon-list"></span>
+                                    <!-- Todo: click to show result list -->
                                     View
                                 </a>
                             </p>
@@ -87,40 +94,9 @@
                 </div>
             </div>
 
+            <!-- mq detail content -->
             <div ui-view></div>
         </div>
     </div>
+    <div muce-include="templates/mq/snippet.html"></div>
 </div>
-
-
-
-<script type="text/template" id="mq_history_view_fail_modal">
-    <div class="modal hide fade" id="mq_history_view">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h5>Failed Reason</h5>
-        </div>
-        <div class="modal-body" style="background:#f2dede">
-            <%= reason %>
-        </div>
-    </div>
-</script>
-
-<script type="text/template" id="mq_history_view_modal">
-    <div class="modal hide fade" id="mq_history_view">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        </div>
-        <div class="modal-body">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        Result View
-                    </tr>
-                </thead>
-                <tbody class="table table-bordered mq-result-view">
-                </tbody>
-            </table>
-        </div>
-    </div>
-</script>

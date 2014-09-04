@@ -38,5 +38,18 @@ define(['base/muceCom'], function(muceCom) {
             var array = date.match(/(\d{4})(\d{2})(\d{2})/);
             return array[1] + spliter + array[2] + spliter + array[3];
         }
+    }).filter('humanBytes', function() {
+        // trans long bytes to human readable format
+        return function(bytes, precision) {
+            if (isNaN(parseFloat(bytes)) || !isFinite(bytes)) {
+                return '';
+            }
+            if (typeof precision === 'undefined') {
+                precision = 1;
+            }
+            var units = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB'],
+                number = Math.floor(Math.log(bytes) / Math.log(1024));
+            return (bytes / Math.pow(1024, Math.floor(number))).toFixed(precision) + ' ' + units[number];
+        };
     });
 });
