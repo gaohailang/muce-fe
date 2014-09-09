@@ -19,7 +19,8 @@
                 <td ng-repeat="i in tbFields" ng-switch on="i.id">
                     <span ng-switch-when="date">{{row[i.id]|dateNumFormat}}</span>
                     <span ng-switch-default>
-                        {{row[i.id] | number}}
+                        <b ng-show="row[i.id] == '0.00'" style="color: red">0</b>
+                        <b ng-show="row[i.id] != '0.00'">{{row[i.id] | number}}</b>
                         <!-- <i tooltip="Row Value: {{row[key]}}"
                             ng-show="(row[key]+'').split('.')[1].length > 3">...</i> -->
                     </span>

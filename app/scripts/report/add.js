@@ -117,6 +117,12 @@ define(function() {
                     'rows': '4',
                     'cols': '50'
                 }
+            }, {
+                controlTpl: 'report/_whereConditionTip.html',
+                label: '',
+                wrapAttr: {
+                    style: 'margin-top: -20px'
+                }
             },
             dataDict.metricTypeField, dataDict.commentField, {
                 label: 'Across Day?',
