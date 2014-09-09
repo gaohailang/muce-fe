@@ -118,7 +118,11 @@ define(function() {
                     'cols': '50'
                 }
             },
-            dataDict.metricTypeField, dataDict.commentField
+            dataDict.metricTypeField, dataDict.commentField, {
+                label: 'Across Day?',
+                key: 'isAcrossDay',
+                type: 'checkbox'
+            }
         ],
         combinedMetric: [{
                 label: 'Metric Name',
@@ -328,7 +332,7 @@ define(function() {
             // watch event to fetch optional fields
             $scope.$watch('formlyData.event', function(val) {
                 if (!val) return;
-                apiHelper('getFieldIdList', {
+                apiHelper('getFieldList', {
                     params: {
                         eventId: val.id
                     }

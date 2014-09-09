@@ -86,7 +86,7 @@ define(function() {
         });
     }
 
-    function mqEditorCtrl($scope, $interval) {
+    function mqEditorCtrl($scope, $interval, apiHelper) {
         $scope.form = {};
 
         $scope.runQuery = function() {

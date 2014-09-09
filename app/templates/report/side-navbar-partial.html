@@ -15,7 +15,7 @@
             </button>
 
             <ul class="dropdown-menu sidebar-list">
-                <li ng-repeat="group in groupList|orderBy:'name'"
+                <li ng-repeat="group in groupList"
                     ng-mouseenter="isShow=true"
                     ng-mouseleave="isShow=false">
                     <a ng-click="switchGroup(group)" dropdown-toggle>{{group.name}}</a>
@@ -43,7 +43,7 @@
             </button>
 
             <ul class="dropdown-menu sidebar-list">
-                <li ng-repeat="category in categoryList|orderBy:'name'"
+                <li ng-repeat="category in categoryList"
                     ng-mouseenter="isShow=true"
                     ng-mouseleave="isShow=false">
                     <a ng-click="switchCategory(category)" dropdown-toggle>{{category.name}}</a>
@@ -65,7 +65,7 @@
             No Report Created!
         </p>
         <ul class="nav nav-list sidebar-list report-list">
-            <li ng-repeat="report in reportList|orderBy:'name'"
+            <li ng-repeat="report in reportList"
                 ng-mouseenter="isShow=true"
                 ng-mouseleave="isShow=false"
                 ng-class="{'active': (currentReport == report)}">
