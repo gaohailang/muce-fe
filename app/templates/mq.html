@@ -35,64 +35,7 @@
         <!-- mq content -->
         <div id="mq_detail" class="span9">
             <!-- mq editor -->
-            <div class="mq-editor-wrapper" ng-controller="mqEditorCtrl">
-                <h4>New Query...</h4>
-
-                <!-- codemirror edtior -->
-                <div ui-codemirror="editorOptions" ng-model="form.hql"></div>
-
-                <div id="mq_run_animate" style="margin-bottom: 20px">
-                    <button class="btn btn-danger"
-                        ng-disabled="currentJob" ng-click="runQuery()">Run Query</button>
-
-                    <span class="icon-time" ng-show="runTimeText"></span>
-                    <span class="label label-info">{{runTimeText}}</span>
-
-                    <span class="label" ng-class="
-                        {'label-warning': (currentJob.status !== 'FAILED' && currentJob.status !== 'COMPLETED'),
-                        'label-important': (currentJob.status === 'FAILED'),
-                        'label-success': (currentJob.status === 'COMPLETED')}">
-                        {{currentJob.status}}
-                    </span>
-
-                    <div class="input-append" style="margin-bottom: 0" ng-hide="currentJob">
-                        <span class="add-on">
-                            <input type="checkbox" ng-model="form.notification">
-                            <i class="icon-envelope"></i>Me
-                        </span>
-                    </div>
-                </div>
-
-                <!-- <div class="mq-run-error-alert">
-                    <div class="alert alert-block alert-error">
-                        <button type="button" class="close" data-dismiss="alert">x</button>
-                        <p></p>
-                    </div>
-                </div> -->
-
-                <div class="bs-docs-example success-example" ng-show="currentJob.status === 'COMPLETED'">
-                    <div class="mq-run-success-alert">
-                        <div class="alert alert-block alert-success fade in">
-                            <h4 class="alert-heading">Well done!</h4>
-                            <p>
-                                Successfully run your query.You can download the result data to your local computer or view at most <em>100</em> lines of result.
-                            </p>
-                            <p>
-                                <a class="btn btn-success mq-download-btn">
-                                    <span class="icon-cloud-download"></span>
-                                    <!-- Todo: /muce-webapp/muce/mq/job/' + id + '/result -->
-                                    Download
-                                </a>
-                                <a class="btn btn-primary mq-show-run-result">
-                                    <span class="icon-list"></span>
-                                    <!-- Todo: click to show result list -->
-                                    View
-                                </a>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <div muce-include="templates/mq/editor.html"></div>
 
             <!-- mq detail content -->
             <div ui-view></div>

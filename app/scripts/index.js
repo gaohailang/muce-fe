@@ -17,6 +17,7 @@ require([
         'ui.codemirror',
         'ui.select',
         'ngQuickDate',
+        'pasvaz.bindonce',
 
         'muceApp.api',
         'muceApp.base',

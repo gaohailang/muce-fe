@@ -94,9 +94,6 @@ define(function() {
                 label: 'From Event',
                 options: []
             }, {
-                controlTpl: 'report/add_metric/fileds.html',
-                label: 'Optional Fields'
-            }, {
                 label: 'Metric Name',
                 key: 'name'
             }, {
@@ -128,6 +125,8 @@ define(function() {
                 label: 'Across Day?',
                 key: 'isAcrossDay',
                 type: 'checkbox'
+            }, {
+                referTpl: 'report/add_metric/fileds.html'
             }
         ],
         combinedMetric: [{
@@ -222,7 +221,7 @@ define(function() {
             apiHelper('addMetric', {
                 data: processIdObj(postData, 'event')
             }).then(function() {
-                $scope.close();
+                $scope.$close();
             });
         },
         combinedMetric: function($scope, apiHelper) {

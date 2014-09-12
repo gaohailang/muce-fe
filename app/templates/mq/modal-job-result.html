@@ -6,8 +6,8 @@
 <div class="modal-body" ng-class="{'i-bg-red': reason}">
     <table class="table table-striped" ng-if="result">
         <tbody>
-            <tr ng-repeat="i in result">
-                <td ng-repeat="ii in i">{{ii}}</td>
+            <tr ng-repeat="i in result track by $index">
+                <td ng-repeat="ii in i track by $index">{{ii}}</td>
             </tr>
         </tbody>
     </table>

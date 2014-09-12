@@ -6,9 +6,9 @@ define([], function() {
         $notice.add = function(msgObj) {
             $rootScope._notices = $rootScope._notices || [];
             $rootScope._notices.push(msgObj);
-            $timeout(function() {
+            /*$timeout(function() {
                 $rootScope._notices = _.without($rootScope._notices, msgObj);
-            }, msgObj.timeout || 3000);
+            }, msgObj.timeout || 3000);*/
         };
 
         _.each(['error', 'info', 'success', 'warning'], function(type) {
@@ -40,9 +40,9 @@ define([], function() {
 
     .run(function($templateCache) {
         $templateCache.put("snippet/notices.html",
-            "<div class='muce-notices'>" +
+            "<div class='mc-notices'>" +
             "<div ng-repeat='notice in $root._notices' class='alert alert-dismissible' role='alert' ng-class='\"alert-\" + (type || \"warning\")'>\n" +
-            '    <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>\n' +
+            '    <button type="button" class="close" data-dismiss="alert"><span ng-click="close(notice)">&times;</span></button>\n' +
             "    {{notice.msg}}\n" +
             "</div></div>"
         );
