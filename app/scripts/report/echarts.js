@@ -1,4 +1,4 @@
-define(['base/muceCom'], function(MuceCom) {
+define([], function() {
 
     function getLegend(detail) {
         // get dimension name
