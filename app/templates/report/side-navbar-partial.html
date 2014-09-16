@@ -70,9 +70,9 @@
                 ng-mouseleave="isShow=false"
                 ng-class="{'active': (currentReport == report)}">
                 <a href="#" ng-click="switchReport(report)">{{report.name}}</a>
-                <i class="icon-pencil edit-report" ng-show="isShow"
-                ng-click="openEditModal('report', report)"></i>
-                <!-- <i class="icon-trash delete-report" ng-show="isShow"></i> -->
+                <!-- <i class="icon-pencil edit-report" ng-show="isShow"
+                ng-click="openEditModal('report', report)"></i> -->
+                <i class="icon-trash delete-report" ng-click="delReport(report)" ng-show="isShow"></i>
             </li>
         </ul>
     </li>

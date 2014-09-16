@@ -45,6 +45,18 @@ define([
             $rootScope.currentReport = report;
         };
 
+        $scope.delReport = function(item) {
+            apiHelper('delCategorytReportRelation', {
+                params: {
+                    categoryId: $rootScope.currentCategory.id,
+                    reportId: item.id
+                }
+            }).then(function(data) {
+                // remove from list
+                $rootScope.reportList = _.without($rootScope.reportList, item);
+            });
+        };
+
         $rootScope.$watch('currentGroup', function(val) {
             if (!val) return;
             apiHelper('getCategoryList', {
