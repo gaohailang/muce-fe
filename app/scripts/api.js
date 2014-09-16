@@ -30,7 +30,9 @@ define([], function() {
             'getDatabases': 'GET /mq/databases',
             'getDbTable': 'GET /mq/:db/tables',
             'getDbSchema': 'GET /mq/:db/:tb/schema',
-            'getDbParts': 'GET /mq/:db/:table/partitions'
+            'getDbParts': 'GET /mq/:db/:table/partitions',
+
+            'getEventAbbr': 'GET /meta/eventAbb'
         });
     });
 })

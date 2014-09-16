@@ -1,11 +1,9 @@
 require([
-    './misc',
-    'base/muceCom',
-    './base',
-    './api',
+    'base/index',
+    'api',
     'report/index',
-    'mq'
-], function(misc, MuceCom) {
+    'mq/index'
+], function() {
     'use strict';
 
     var muceApp = angular.module('muceApp', [
@@ -18,6 +16,7 @@ require([
         'ui.select',
         'ngQuickDate',
         'pasvaz.bindonce',
+        'toaster',
 
         'muceApp.api',
         'muceApp.base',
@@ -75,11 +74,6 @@ require([
 
     muceApp.config(function(uiSelectConfig) {
         uiSelectConfig.theme = 'select2';
-    });
-
-    muceApp.run(function() {
-        // set window.userName which is required by ...
-        window.userName = MuceCom.getNameFromCookie();
     });
 
     muceApp.controller('feedbackCtrl', function($scope) {

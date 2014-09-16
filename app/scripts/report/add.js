@@ -124,7 +124,10 @@ define(function() {
             dataDict.metricTypeField, dataDict.commentField, {
                 label: 'Across Day?',
                 key: 'isAcrossDay',
-                type: 'checkbox'
+                type: 'checkbox',
+                attrs: {
+                    validator: 'optional'
+                }
             }, {
                 referTpl: 'report/add_metric/fileds.html'
             }

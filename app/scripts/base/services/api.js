@@ -90,6 +90,12 @@ define([
             this.config(processMaps);
         };
 
+        helper.getUrl = function(endpoint) {
+            arguments = _.toArray(arguments);
+            var apiStr = _maps[arguments.shift()];
+            return _urlPrfix + _buildUrl(apiStr.split(' ')[1], arguments)
+        };
+
         return helper;
     }
 

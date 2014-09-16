@@ -1,6 +1,6 @@
 define([
-    'base/muceCom'
-], function(MuceCom) {
+    'base/helper'
+], function(helper) {
     // Fuck. date format(humanable, or timestamp etc)
     var buildLineChart = function(currentReport, data) {
         $('#highcharts_wrapper').html('Report No Data');
@@ -23,7 +23,7 @@ define([
             function getAnnotationStr(point) {
                 var retStr, date, metric;
                 _.each(data.annotations, function(item) {
-                    date = MuceCom.getUTCDateByDateAndPeriod(item.xAxis + '');
+                    date = helper.getUTCDateByDateAndPeriod(item.xAxis + '');
                     metric = _.find(currentReport.metrics, function(m) {
                         return m.id == item.metric;
                     });
@@ -59,8 +59,8 @@ define([
                         name: item.name,
                         data: [],
                         id: item.id,
-                        pointStart: MuceCom.getUTCDateByDateAndPeriod(data.result[0].date, data.period),
-                        pointInterval: MuceCom.getIntervalByPeriod(data.period)
+                        pointStart: helper.getUTCDateByDateAndPeriod(data.result[0].date, data.period),
+                        pointInterval: helper.getIntervalByPeriod(data.period)
                     };
                     // change percent to 2
                     if (isMutipleY && item.type === 2) {
@@ -74,7 +74,7 @@ define([
                     _.each(annotationArray, function(annotation) {
                         var annotationPoint = {};
                         annotationPoint.metricIndex = index;
-                        annotationPoint.index = (MuceCom.getUTCDateByDateAndPeriod(annotation.xAxis, data.period) - detailData.pointStart) / detailData.pointInterval;
+                        annotationPoint.index = (helper.getUTCDateByDateAndPeriod(annotation.xAxis, data.period) - detailData.pointStart) / detailData.pointInterval;
                         annotationPoint.id = annotation.id;
                         annotationPoints.push(annotationPoint);
                     });
@@ -187,9 +187,9 @@ define([
                         return item.name === this.name;
                     }.bind(this)).id,
                     x_axis: Highcharts.dateFormat('%Y%m%d%H', event.point.x),
-                    period: MuceCom.getCurrentPeriod(),
+                    // period: MuceCom.getCurrentPeriod(),
                     filters: undefined, // MuceCom.stringifyObj(currentData.table_filters)
-                    user: MuceCom.getNameFromCookie(),
+                    user: helper.getNameFromCookie(),
                     comment: $('.annotation-container .textarea').val(),
                     type: 'put'
                 };
@@ -210,7 +210,7 @@ define([
                 events: {
                     click: function(event) {
                         // 清理 annotation click popover
-                        $('.annotation-container').alert('close');
+                        // $('.annotation-container').alert('close');
                     }
                 }
             },

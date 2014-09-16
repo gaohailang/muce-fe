@@ -5,7 +5,7 @@ define([], function() {
             function($timeout, $window) {
                 return {
                     require: 'ngModel',
-                    restrict: 'A, C',
+                    restrict: 'AC',
                     link: function(scope, element, attrs, ngModel) {
 
                         // cache a reference to the DOM element

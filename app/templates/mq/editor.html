@@ -8,6 +8,8 @@
         <button class="btn btn-danger"
             ng-disabled="currentJob || !form.hql" ng-click="runQuery()">Run Query</button>
 
+        <button class="btn btn-primary" ng-click="composeNewQuery()">Compose Query</button>
+
         <span class="icon-time" ng-show="runTimeText"></span>
         <span class="label label-info">{{runTimeText}}</span>
 

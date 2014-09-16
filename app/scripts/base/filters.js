@@ -44,7 +44,7 @@ define([], function() {
         .filter('dateNumFormat', dateNumFormat)
         .filter('humanBytes', humanBytes);
 
-    anular.module('muceApp.base.filters')
+    angular.module('muceApp.base.filters')
         .filter('transMetricsDetail', function() {
             function buildExp(metric) {
                 return metric.target + (metric.conditions ? ' where ' + metric.conditions : '');

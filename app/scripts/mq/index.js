@@ -36,7 +36,7 @@ define(function() {
         };
     }
 
-    function mqHistoryCtrl($scope, apiHelper, $modal) {
+    function mqHistoryCtrl($scope, apiHelper, $modal, downloadFile) {
         // 支持 选项： order, querys_showed, more_querys
         apiHelper('getJobList', {
             params: {
@@ -54,15 +54,10 @@ define(function() {
 
         $scope.openJobResultView = function(job) {
             var newScope = $scope.$new(true);
-            if (job.status === 'FAILED') {
-                newScope.reason = job.reason;
+            apiHelper('getJobView', job.id).then(function(data) {
+                newScope.result = data;
                 openModal();
-            } else {
-                apiHelper('getJobView', job.id).then(function(data) {
-                    newScope.result = data;
-                    openModal();
-                });
-            }
+            });
 
             function openModal() {
                 $modal.open({
@@ -82,7 +77,7 @@ define(function() {
         };
 
         $scope.downloadJobResultView = function(id) {
-            apiHelper('getJobResult', id);
+            downloadFile(apiHelper.getUrl('getJobResult', id));
         };
     }
 
@@ -142,12 +137,12 @@ define(function() {
             indentWithTabs: true,
             smartIndent: true,
             matchBrackets: true,
-            // readOnly: 'nocursor',
             mode: 'text/x-hive',
             extraKeys: {
                 "Ctrl-Space": "autocomplete"
             },
             hintOptions: {
+                completeSingle: false,
                 tables: {
                     users: {
                         score: null,
@@ -164,7 +159,6 @@ define(function() {
             },
             onLoad: function(_editor) {
                 // Editor part
-                var _doc = _editor.getDoc();
                 _editor.focus();
 
                 _editor.on("change", function(cm, change) {
@@ -176,17 +170,12 @@ define(function() {
 
                 _editor.on("change", autoReplace);
 
+                var replacements = {};
+                apiHelper('getEventAbbr').then(function(data) {
+                    _.extend(replacements, data);
+                });
+
                 function autoReplace(cm, change) {
-                    var replacements = {
-                        "lambda": "λ",
-                        "mc": "muce",
-                        "wdj": "wandoujia",
-                        "*": "×",
-                        "/": "÷",
-                        "<=": "≤",
-                        ">=": "≥",
-                        "!=": "≠",
-                    };
 
                     if (change.text[0] !== ".") return; // todo: replace space to comma
                     var type = cm.getTokenTypeAt(change.from);

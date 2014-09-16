@@ -1,4 +1,5 @@
 define([
+    'base/helper',
     'base/services',
     'base/filters',
     'base/directives'

@@ -3,6 +3,7 @@
         <!-- Todo: 加上创始时间，job使用的时间 -->
         <thead>
             <tr>
+                <th>Id</th>
                 <th>Status</th>
                 <th>View</th>
                 <th>Download</th>
@@ -11,15 +12,17 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="job in jobList"
+            <tr ng-repeat="job in jobList track by $index"
                 ng-class="{'error': job.status == 'FAILED',
                            'info': job.status == 'PENDING',
                            'info': job.status == 'RUNNING'}">
+                <td>{{job.sTime|date}}</td>
                 <td>{{job.status}}</td>
 
                 <td ng-switch on="job.status">
                     <span ng-switch-when="PENDING">pending... </span>
                     <span ng-switch-when="RUNNING">running... </span>
+                    <a ng-href="job.reason" target="_blank" ng-switch-when="FAILED">VIEW</a>
                     <a ng-click="openJobResultView(job)" ng-switch-default>VIEW</a>
                 </td>
 

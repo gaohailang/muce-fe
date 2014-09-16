@@ -1,4 +1,9 @@
-define(function() {
+define([], function() {
+    _.db = {
+        dimensionTypes: ['string', 'int', 'float', 'percent'],
+        metricOperators: ['+', '-', '*', '/']
+    };
+
     // extend underscore functionality
     _.capitalize = function(str) {
         return str[0].toUpperCase() + str.slice(1);
@@ -16,11 +21,6 @@ define(function() {
         return name.replace(/[A-Z]/g, function(letter) {
             return '-' + letter.toLowerCase();
         })
-    };
-
-    _.db = {
-        dimensionTypes: ['string', 'int', 'float', 'percent'],
-        metricOperators: ['+', '-', '*', '/']
     };
 
     // self-invoke when dom ready
@@ -74,4 +74,63 @@ define(function() {
             $('.global-error-msg').hide();
         })
     });
-});
+
+
+    return {
+        getNameFromCookie: function() {
+            var cookie = document.cookie;
+            var arr = cookie.split('; ');
+            var name = "";
+            _.each(arr, function(item) {
+                if (item.indexOf('name=') != -1) {
+                    name = item.replace('name=', '');
+                }
+            });
+            // Todo
+            return name || 'gaohailang';
+        },
+
+        getUTCDateByDateAndPeriod: function(date, period) {
+            var retDate;
+            var dateAry = [];
+            switch (period) {
+                case 'second':
+                    dateAry = date.match(/(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/);
+                    retDate = Date.UTC(dateAry[1], dateAry[2] - 1, dateAry[3], dateAry[4], dateAry[5], dateAry[6]);
+                    break;
+                case 'minute':
+                    dateAry = date.match(/(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})/);
+                    retDate = Date.UTC(dateAry[1], dateAry[2] - 1, dateAry[3], dateAry[4], dateAry[5]);
+                    break;
+                case 'hour':
+                    dateAry = date.match(/(\d{4})(\d{2})(\d{2})(\d{2})/);
+                    retDate = Date.UTC(dateAry[1], dateAry[2] - 1, dateAry[3], dateAry[4]);
+                    break;
+                default:
+                    dateAry = date.match(/(\d{4})(\d{2})(\d{2})/);
+                    retDate = Date.UTC(dateAry[1], dateAry[2] - 1, dateAry[3]);
+            }
+
+            return retDate;
+        },
+        getIntervalByPeriod: function(period) {
+            var retVal;
+            switch (period) {
+                case 'hour':
+                    retVal = 3600 * 1000;
+                    break;
+                case 'day':
+                    retVal = 24 * 3600 * 1000;
+                    break;
+                case 'week':
+                    retVal = 7 * 24 * 3600 * 1000;
+                    break;
+                case 'month':
+                    retVal = 31 * 24 * 3600 * 1000;
+                    break;
+            }
+
+            return retVal;
+        }
+    }
+})
