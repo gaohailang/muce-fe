@@ -1,0 +1,36 @@
+<section class="chart-wrapper">
+    <div class="chart-canvas" id="highcharts_wrapper"></div>
+</section>
+
+<section class="table-wrapper" ng-controller="tableCtrl">
+    <button class="btn" style="float: right;"
+        ng-click="exportTableAsCsv(tbFields, tableRows)"> 导出 CSV </button>
+    <!-- Todo: one-bind to save watchers -->
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr class="header-row">
+                <td ng-repeat="i in tbFields"
+                    ng-click="toggleRowSort(i.id)">{{i.name}}
+                    <i ng-class="{
+                        'icon-sort': i.id !== sortType,
+                        'icon-arrow-up': i.id == sortType && !sortReverse,
+                        'icon-arrow-down': i.id == sortType && sortReverse}"></i>
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="row in tableRows track by $index">
+                <td ng-repeat="i in tbFields" ng-switch on="i.id">
+                    <span ng-switch-when="date">{{row[i.id]|dateNumFormat}}</span>
+                    <span ng-switch-default>
+                        <b ng-show="row[i.id] == '0.00'" style="color: red">0</b>
+                        <b ng-show="row[i.id] != '0.00'">{{row[i.id] | number}}</b>
+                        <!-- <i tooltip="Row Value: {{row[key]}}"
+                            ng-show="(row[key]+'').split('.')[1].length > 3">...</i> -->
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <!-- <double-bounce-spinner></double-bounce-spinner> -->
+</section>

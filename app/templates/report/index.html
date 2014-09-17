@@ -1,0 +1,15 @@
+<div class="row-fluid mc-report-container">
+    <div class="span2">
+        <div ui-view="sidebar"></div>
+    </div>
+    <div class="span10" ng-controller="chartPanelCtrl">
+        <div ui-view="setting"></div>
+
+        <div ng-show="isShowDetailInfo"
+            muce-include="templates/report/detail-partial.html"></div>
+
+        <div ui-view></div>
+    </div>
+</div>
+
+<div muce-include="templates/report/snippet.html"></div>

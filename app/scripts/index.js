@@ -28,11 +28,6 @@ require([
     muceApp.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
 
         var routeInfo = {
-            'report': {
-                url: '/report',
-                templateUrl: 'templates/report.html',
-                controller: 'reportCtrl'
-            },
             'feedback': {
                 url: '/feedback',
                 templateUrl: 'templates/feedback.html'

@@ -1,23 +1,24 @@
-define([
-    'report/highchart',
-    'report/echarts'
-], function(highchart, echarts) {
+define(function() {
+    return function tableCtrl($scope, $rootScope, $filter) {
+        var _state = $rootScope.state;
+        $rootScope.$on('report:renderReportData', function(event, opt) {
+            buildGridData.apply(null, opt);
+        });
 
-    function tableCtrl() {
         /* Data Table */
-        function buildGridData(currentReport, data) {
-            var heads = _.pluck(currentReport.metrics, 'name');
+        function buildGridData(reportDetail, data) {
+            var heads = _.pluck(reportDetail.metrics, 'name');
             heads.unshift('Date');
             var heads = _.map(heads, function(h) {
                 return _.slugify(h);
             });
-            var fieldNames = _.pluck(currentReport.metrics, 'name');
+            var fieldNames = _.pluck(reportDetail.metrics, 'name');
             fieldNames.unshift('Date');
             fieldNames = _.map(fieldNames, function(h) {
                 return _.slugify(h);
             });
 
-            var fieldIds = _.pluck(currentReport.metrics, 'id');
+            var fieldIds = _.pluck(reportDetail.metrics, 'id');
             fieldIds.unshift('date');
 
             $scope.tbFields = _.map(fieldIds, function(id, i) {
@@ -57,8 +58,11 @@ define([
 
         $scope.exportTableAsCsv = function(tbFields, tableRows) {
             function buildCsvName() {
-                // dirty
-                return '[MUCE REPORT] ' + $scope.currentReportDetail.name + '-' + $filter('date')($scope.startDate, 'yyyymmdd') + '_' + $filter('date')($scope.endDate, 'yyyymmdd');
+                return _.template(Config.csvFileNameTpl, {
+                    report: _state.report.name,
+                    start: $filter('date')(_state.startDate, 'yyyymmdd'),
+                    end: $filter('date')(_state.endDate, 'yyyymmdd')
+                });
             }
 
             function buildCsvContent() {
@@ -109,78 +113,5 @@ define([
 
             return dict;
         }
-    }
-
-    function advDimenCtrl() {
-        // $scope.dimenAdv = {};
-        // $scope.dimenAdv.dimensions = data.dimensions; // sync for advanced modal
-
-        /* Dimen Advanced Modal */
-        var dimenAdvModal;
-        $scope.openAdvancedPanel = function() {
-            dimenAdvModal = $modal.open({
-                templateUrl: 'report/dimen-adv-modal.html',
-                scope: $scope
-            });
-        };
-        $scope.dimenAdv = {
-            dimensions: [],
-            filters: null,
-            filterTypes: ['', 'EQUAL', 'NOT_EQUAL', 'CONTAINING', 'STARTSWITH', 'ENDSWITH', 'NOT_CONTAINING', 'NOT_STARTSWITH', 'NOT_ENDSWITH'],
-            nowDimensionsType: [],
-            nowDimensionsVal: [],
-            saveFilters: function() {
-                var self = this;
-                self.filters = [];
-                _.each(self.dimensions, function(i, idx) {
-                    // {"value":"1.0.0","key":"d1","operator":"EQUAL"}
-                    if (self.nowDimensionsType[idx] && self.nowDimensionsVal[idx]) {
-                        self.filters.push({
-                            value: self.nowDimensionsVal[idx],
-                            operator: self.nowDimensionsType[idx],
-                            key: 'd' + i.id
-                        });
-                    }
-                });
-                // Tdo: move to chartStateDiff
-                self.filters ? fetchReports() : '';
-                dimenAdvModal.close();
-            },
-            removeFilters: function() {
-                this.filters = null;
-            }
-        };
-    }
-
-    function detailCtrl() {
-
-        function fetchReports() {
-            if (isFetchReport) return;
-            isFetchReport = true;
-            // Todo: check form validate
-            var postData = {
-                period: $scope.currentPeriod || 0,
-                startDate: $scope.startDate,
-                endDate: $scope.endDate,
-                filters: $scope.dimenAdv.filters || [],
-                cache: 1,
-                dimensions: []
-            };
-            postData = transDateFormatByPeriod(postData);
-            apiHelper('getReport', $scope.currentReport.id, postData, {
-                busy: 'global'
-            }).then(function(data) {
-                highchart.buildLineChart($scope.currentReportDetail, data);
-                // echarts.buildLineChart($scope.currentReportDetail, data);
-                buildGridData($scope.currentReportDetail, data);
-                isFetchReport = false;
-            }, function() {});
-        };
-    }
-
-    function chartPanelCtrl($scope, apiHelper, $rootScope, $modal, $filter, $timeout) {
-
-    }
-
-    return chartPanelCtrl;
+    };
 });

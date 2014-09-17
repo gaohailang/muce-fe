@@ -1,4 +1,4 @@
-<div class="nav nav-sidebar mc-report-sidebar" ng-controller="navbarCtrl">
+<div class="nav nav-sidebar mc-report-sidebar">
     <!-- Todo: inline loading indicator -->
 
     <!--Group-->
@@ -7,7 +7,7 @@
         <div class="btn-group" dropdown>
 
             <button class="btn btn-success dropdown-toggle btn-name">
-                <span>{{currentGroup.name||'loading...'}}</span>
+                <span>{{state.group.name||'loading...'}}</span>
             </button>
 
             <button class="btn btn-success btn-caret dropdown-toggle">
@@ -15,10 +15,10 @@
             </button>
 
             <ul class="dropdown-menu sidebar-list">
-                <li ng-repeat="group in groupList"
+                <li ng-repeat="group in state.groupList"
                     ng-mouseenter="isShow=true"
                     ng-mouseleave="isShow=false">
-                    <a ng-click="switchGroup(group)" dropdown-toggle>{{group.name}}</a>
+                    <a ng-click="switchTypeVal('group', group)" dropdown-toggle>{{group.name}}</a>
 
                     <i class="icon-pencil edit-report" ng-show="isShow"
                         ng-click="openEditModal('group', group)"></i>
@@ -34,7 +34,7 @@
         <div class="btn-group" dropdown>
             <button class="btn btn-info btn-name" dropdown-toggle>
                 <span>
-                    {{categoryList?(categoryList.length?currentCategory.name:'No Category'):'loading...'}}
+                    {{state.categoryList ? (state.categoryList.length ? state.category.name : 'No Category') : 'loading...'}}
                 </span>
             </button>
 
@@ -43,10 +43,10 @@
             </button>
 
             <ul class="dropdown-menu sidebar-list">
-                <li ng-repeat="category in categoryList"
+                <li ng-repeat="category in state.categoryList"
                     ng-mouseenter="isShow=true"
                     ng-mouseleave="isShow=false">
-                    <a ng-click="switchCategory(category)" dropdown-toggle>{{category.name}}</a>
+                    <a ng-click="switchTypeVal('category', category)" dropdown-toggle>{{category.name}}</a>
 
                     <i class="icon-pencil edit-report" ng-show="isShow"
                         ng-click="openEditModal('category', category)"></i>
@@ -59,17 +59,17 @@
     <li>
         <h3>Report:</h3>
         <!--Report List-->
-        <p class="text-warning orange" ng-show="!reportList"
+        <p class="text-warning orange" ng-show="!state.reportList"
             style="padding-left: 10px;">
             <i class="icon-warning-sign"></i>
             No Report Created!
         </p>
         <ul class="nav nav-list sidebar-list report-list">
-            <li ng-repeat="report in reportList"
+            <li ng-repeat="report in state.reportList"
                 ng-mouseenter="isShow=true"
                 ng-mouseleave="isShow=false"
-                ng-class="{'active': (currentReport == report)}">
-                <a href="#" ng-click="switchReport(report)">{{report.name}}</a>
+                ng-class="{'active': (state.report == report)}">
+                <a href="#" ng-click="switchTypeVal('report', report)">{{report.name}}</a>
                 <!-- <i class="icon-pencil edit-report" ng-show="isShow"
                 ng-click="openEditModal('report', report)"></i> -->
                 <i class="icon-trash delete-report" ng-click="delReport(report)" ng-show="isShow"></i>
@@ -82,7 +82,7 @@
         <!-- Add List -->
         <ul class="nav nav-list sidebar-list">
             <li ng-repeat="type in addTypes">
-                <a href="#" ng-click="openModal(type)">Add {{type|capitalize}}</a>
+                <a ng-click="openModal(type)">Add {{type|capitalize}}</a>
             </li>
         </ul>
     </li>
