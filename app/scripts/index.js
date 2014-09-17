@@ -28,34 +28,10 @@ require([
     muceApp.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
 
         var routeInfo = {
-            'index': {
-                url: '/',
-                templateUrl: 'templates/report.html',
-                controller: 'reportCtrl'
-            },
             'report': {
                 url: '/report',
                 templateUrl: 'templates/report.html',
                 controller: 'reportCtrl'
-            },
-            'mq': {
-                url: '/mq',
-                abstract: true,
-                templateUrl: 'templates/mq.html',
-                controller: 'mqCtrl'
-            },
-            'mq.info': {
-                url: '',
-                templateUrl: '/templates/mq/tbinfo.html'
-            },
-            'mq.example': {
-                url: '/example',
-                templateUrl: '/templates/mq/example.html'
-            },
-            'mq.history': {
-                url: '/history',
-                templateUrl: '/templates/mq/history.html',
-                controller: 'mqHistoryCtrl'
             },
             'feedback': {
                 url: '/feedback',
@@ -69,7 +45,7 @@ require([
 
         // $locationProvider.html5Mode(true).hashPrefix('!');
         // Use $urlRouterProvider to configure any redirects (when) and invalid urls (otherwise).
-        $urlRouterProvider.otherwise('/');
+        $urlRouterProvider.otherwise('/report');
     });
 
     muceApp.config(function(uiSelectConfig) {

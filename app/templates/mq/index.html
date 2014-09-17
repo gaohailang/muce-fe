@@ -1,0 +1,22 @@
+<div class="container-fluid mc-mq-container">
+    <div class="row-fluid">
+        <!-- mq sidebar -->
+        <div class="span3" >
+            <!-- mq fisrt-class menu -->
+            <div ui-view="menu"></div>
+
+            <!-- database list -->
+            <div ui-view="dblist"></div>
+        </div>
+
+        <!-- mq content -->
+        <div id="mq_detail" class="span9">
+            <!-- mq editor -->
+            <div ui-view="editor"></div>
+
+            <!-- mq content -->
+            <div ui-view></div>
+        </div>
+    </div>
+    <div muce-include="templates/mq/snippet.html"></div>
+</div>

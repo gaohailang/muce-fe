@@ -1,0 +1,16 @@
+<div class="mq-db-list">
+    <h5>DataBases</h5>
+    <ul class="db-list">
+        <li class="dropdown db-item"
+            ng-repeat="db in allDbs">
+            <a class="btn dropdown-toggle" ng-click="changeDb(db)">
+                <i class="icon-th"></i>{{db}}
+            </a>
+            <ul class="dropdown-menu" ng-if="currentDb==db">
+                <li ng-repeat="tb in allTables">
+                    <a href="javascript:void(0)" ng-click="changeTable(tb)">{{tb}}</a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>

@@ -2,7 +2,7 @@ define([
     'report/highchart',
     'report/echarts'
 ], function(highchart, echarts) {
-    function chartPanelCtrl($scope, apiHelper, $rootScope, $modal, $filter, $timeout, $filter) {
+    function chartPanelCtrl($scope, apiHelper, $rootScope, $modal, $filter, $timeout) {
         $scope.form = {};
         $scope.quickChooseList = _.zip('Last day,Last 2 days,Last 3 days,Last 1 week,Last 2 week,Last 1 month'.split(','), [-1, -2, -3, -7, -14, -31]);
         var periodFormatMap = {

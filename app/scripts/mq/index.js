@@ -1,12 +1,42 @@
 define(function() {
-    function mqCtrl($scope, apiHelper, $state) {
 
-        $scope.currentTbView = 'schema';
+    var routeInfo = {
+        'mq': {
+            url: '/mq',
+            abstract: true,
+            views: {
+                'menu@mq': {
+                    templateUrl: 'templates/mq/partials/menu.html'
+                },
+                'dblist@mq': {
+                    templateUrl: 'templates/mq/partials/dblist.html'
+                },
+                'editor@mq': {
+                    templateUrl: 'templates/mq/editor.html',
+                    controller: 'mqEditorCtrl'
+                },
+                '@': {
+                    templateUrl: 'templates/mq/index.html',
+                    controller: 'mqCtrl'
+                }
+            }
+        },
+        'mq.info': {
+            url: '/tbinfo/:database/:table/:view',
+            templateUrl: 'templates/mq/tbinfo.html'
+        },
+        'mq.example': {
+            url: '/example',
+            templateUrl: 'templates/mq/example.html'
+        },
+        'mq.history': {
+            url: '/history',
+            templateUrl: 'templates/mq/history.html',
+            controller: 'mqHistoryCtrl'
+        }
+    };
 
-        apiHelper('getDatabases').then(function(data) {
-            $scope.allDbs = data;
-        });
-
+    function mqCtrl($scope, apiHelper, $state, $stateParams) {
         $scope.changeDb = function(db) {
             $scope.allTables = [];
             $scope.currentDb = db;
@@ -27,13 +57,27 @@ define(function() {
             });
             // change to info state
             if (!$state.is('mq.info')) {
-                $state.go('mq.info');
+                $state.go('mq.info', {
+                    database: db,
+                    table: tb
+                });
             }
         };
 
         $scope.switchTbView = function(view) {
             $scope.currentTbView = view;
         };
+
+        $scope.currentTbView = 'schema';
+
+        apiHelper('getDatabases').then(function(data) {
+            $scope.allDbs = data;
+        });
+
+        if ($state.params.database && $state.params.table) {
+            $scope.currentDb = $state.params.database;
+            $scope.changeTable($state.params.table);
+        }
     }
 
     function mqHistoryCtrl($scope, apiHelper, $modal, downloadFile) {
@@ -228,5 +272,10 @@ define(function() {
     angular.module('muceApp.mq', [])
         .controller('mqEditorCtrl', mqEditorCtrl)
         .controller('mqHistoryCtrl', mqHistoryCtrl)
-        .controller('mqCtrl', mqCtrl);
+        .controller('mqCtrl', mqCtrl)
+        .config(function($stateProvider) {
+            _.each(routeInfo, function(opt, name) {
+                $stateProvider.state(name, opt);
+            });
+        });
 });

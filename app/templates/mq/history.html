@@ -1,42 +1,41 @@
-<div class="span9 mq-job-history">
-    <table class="table table-bordered user-query-detail">
-        <!-- Todo: 加上创始时间，job使用的时间 -->
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Status</th>
-                <th>View</th>
-                <th>Download</th>
-                <th>Size</th>
-                <th>Hql</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr ng-repeat="job in jobList track by $index"
-                ng-class="{'error': job.status == 'FAILED',
-                           'info': job.status == 'PENDING',
-                           'info': job.status == 'RUNNING'}">
-                <td>{{job.sTime|date}}</td>
-                <td>{{job.status}}</td>
+<table class="table table-bordered user-query-detail">
+    <thead>
+        <tr>
+            <th>Job Id</th>
+            <td>Submit Time</td>
+            <th>Status</th>
+            <th>View</th>
+            <th>Download</th>
+            <th>Size</th>
+            <th>Hql</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="job in jobList track by $index"
+            ng-class="{'error': job.status == 'FAILED',
+                       'info': job.status == 'PENDING',
+                       'info': job.status == 'RUNNING'}">
+            <td>{{job.id}}</td>
+            <td>{{job.sTime|date: 'yyyy/MM/dd HH:mm:ss'}}</td>
+            <td>{{job.status}}</td>
 
-                <td ng-switch on="job.status">
-                    <span ng-switch-when="PENDING">pending... </span>
-                    <span ng-switch-when="RUNNING">running... </span>
-                    <a ng-href="job.reason" target="_blank" ng-switch-when="FAILED">VIEW</a>
-                    <a ng-click="openJobResultView(job)" ng-switch-default>VIEW</a>
-                </td>
+            <td ng-switch on="job.status">
+                <span ng-switch-when="PENDING">pending... </span>
+                <span ng-switch-when="RUNNING">running... </span>
+                <a ng-href="job.reason" target="_blank" ng-switch-when="FAILED">VIEW</a>
+                <a ng-click="openJobResultView(job)" ng-switch-default>VIEW</a>
+            </td>
 
-                <td ng-switch on="job.status">
-                    <span ng-switch-when="PENDING">pending... </span>
-                    <span ng-switch-when="RUNNING">running... </span>
-                    <a ng-click="downloadJobResultView(job.id)" ng-switch-default>DOWNLOAD</a>
-                </td>
+            <td ng-switch on="job.status">
+                <span ng-switch-when="PENDING">pending... </span>
+                <span ng-switch-when="RUNNING">running... </span>
+                <a ng-click="downloadJobResultView(job.id)" ng-switch-default>DOWNLOAD</a>
+            </td>
 
-                <td ng-show="job.size">{{job.size|humanBytes}}</td>
-                <td ng-hide="job.size">UNKOWN</td>
+            <td ng-show="job.size">{{job.size|humanBytes}}</td>
+            <td ng-hide="job.size">UNKOWN</td>
 
-                <td ng-click="resetHqlEditor(job.hql)">{{job.hql}}</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+            <td ng-click="resetHqlEditor(job.hql)">{{job.hql}}</td>
+        </tr>
+    </tbody>
+</table>
