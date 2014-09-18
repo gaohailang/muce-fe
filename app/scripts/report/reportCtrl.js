@@ -25,7 +25,7 @@ define(function() {
                 }
             }).then(function(data) {
                 _state.categoryList = data;
-                if ($state.params.category) {
+                if ($state.params.category && !_state.category) {
                     _state.category = _.find(data, function(i) {
                         return i.name === $state.params.category;
                     });
@@ -44,7 +44,7 @@ define(function() {
                 }
             }).then(function(data) {
                 _state.reportList = data;
-                if ($state.params.report) {
+                if ($state.params.report && !_state.report) {
                     _state.report = _.find(data, function(i) {
                         return i.name === $state.params.report;
                     });
