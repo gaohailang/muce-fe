@@ -1,13 +1,6 @@
 define(function() {
 
-    //$scope.groupList, categoryList, eventList, FieldList
-    // todo: 对于 multi-select(列出所有 options etc) widget
-    // todo: 如何设置 options 的值为 deferred 对象
-    // todo: dataDict 中的 option 的默认值
-    // todo: add category, 默认的当前的 group report etc
-    // done: 默认全是 required 的
-    // todo: 给外围 referTpl 设定 validator?
-    var addModule = angular.module('muceApp.report.add', []);
+    var resModalModule = angular.module('muceApp.report.resModal', []);
     var dataDict = {
         commentField: {
             key: 'comment',
@@ -157,14 +150,14 @@ define(function() {
     };
 
     // specific handler for postData parser
-    var addOkMap = {
+    var submitMap = {
         group: function($scope, apiHelper) {
             var postData = $scope.formlyData;
             apiHelper('addGroup', {
                 data: postData
             }).then(function(data) {
                 // Todo 区分 add/edit 的后续处理 ($scope._data variable)
-                $scope.$root.groupList.push(data);
+                $scope.$root.state.groupList.push(data);
                 $scope.$close();
             });
         },
@@ -174,7 +167,7 @@ define(function() {
             apiHelper('addCategory', {
                 data: postData
             }).then(function(data) {
-                $scope.$root.categoryList.push(data);
+                $scope.$root.state.categoryList.push(data);
                 $scope.$close();
             });
         },
@@ -212,8 +205,8 @@ define(function() {
             }).then(function(data) {
                 // Todo 区分 add/edit 的后续处理
                 // Todo: 被添加的category 和 currentCategory 是一致的
-                if ($scope.$root.currentCategory.id === postData.categoryId) {
-                    $scope.$root.reportList.push(data);
+                if ($scope.$root.state.category.id === postData.categoryId) {
+                    $scope.$root.state.reportList.push(data);
                 }
                 $scope.$close();
             });
@@ -255,7 +248,7 @@ define(function() {
         }
     };
 
-    // specific handler for init add modal
+    // specific handler for init res modal
     var initMap = {
         group: function($scope) {
             if ($scope._data) {
@@ -273,7 +266,7 @@ define(function() {
                 } else {
                     // hack for ng-options var reset
                     $scope.formlyData.group = _.find(data, function(i) {
-                        return i.id === $scope.$root.currentGroup.id;
+                        return i.id === $scope.$root.state.group.id;
                     });
                 }
             });
@@ -286,26 +279,15 @@ define(function() {
                     // $scope.formlyData.group = data[0];
                     $scope.formFields[0].options = data;
                     $scope.formlyData.group = _.find(data, function(i) {
-                        return i.id === $scope.$root.currentGroup.id;
+                        return i.id === $scope.$root.state.group.id;
                     });
                 });
             }
 
-            $scope.$watch('metricList', function(val, old) {
-                // update shadow validtor ngmodel
-                if (!val || !old) return;
-                $scope._validateMetric = new Date().getTime();
-            }, true);
-
-            $scope.$watch('dimensionList', function(val, old) {
-                // update shadow validtor ngmodel
-                if (!val || !old) return;
-                $scope._validateDimension = new Date().getTime();
-            }, true);
-
             apiHelper('getMetricList').then(function(data) {
                 $scope.metricList = data;
             });
+
             apiHelper('getDimensionList').then(function(data) {
                 $scope.dimensionList = data;
             });
@@ -318,15 +300,27 @@ define(function() {
                     }
                 }).then(function(data) {
                     $scope.formFields[1].options = data;
-                    if (val.id === $scope.$root.currentGroup.id) {
+                    if (val.id === $scope.$root.state.group.id) {
                         $scope.formlyData.category = _.find(data, function(i) {
-                            return i.id === $scope.$root.currentCategory.id;
+                            return i.id === $scope.$root.state.category.id;
                         });
                     } else {
                         $scope.formlyData.category = data[0];
                     }
 
                 });
+            }, true);
+
+            $scope.$watch('metricList', function(val, old) {
+                // update shadow validtor ngmodel
+                if (!val || !old) return;
+                $scope._validateMetric = new Date().getTime();
+            }, true);
+
+            $scope.$watch('dimensionList', function(val, old) {
+                // update shadow validtor ngmodel
+                if (!val || !old) return;
+                $scope._validateDimension = new Date().getTime();
             }, true);
         },
         metric: function($scope, apiHelper) {
@@ -376,9 +370,8 @@ define(function() {
         });
     }
 
-    // Todo: with base tpl for duplicate boilerplate ctrl
     _.each(fieldsDict, function(formFields, key) {
-        addModule.controller(key + 'ModalCtrl', function($scope, apiHelper, $notice) {
+        resModalModule.controller(key + 'ModalCtrl', function($scope, apiHelper, $notice) {
             var prefix = $scope._data ? '(TEMP) - Edit ' : 'Add ';
             $scope.modalTitle = prefix + _.capitalize(key);
             $scope.formFields = formFields;
@@ -386,15 +379,15 @@ define(function() {
             $scope.formlyData = {};
 
             initMap[key]($scope, apiHelper);
-            $scope.ok = function() {
+            $scope.submit = function() {
                 console.log($scope.formlyData);
-                addOkMap[key]($scope, apiHelper, $notice);
+                submitMap[key]($scope, apiHelper, $notice);
             };
         });
     });
 
 
-    addModule.config(function($validationProvider) {
+    resModalModule.config(function($validationProvider) {
         // 第一次如何 trigger(onSubmit)
         $validationProvider.setExpression({
             periodChooser: function(value, scope, element, attrs) {

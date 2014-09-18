@@ -66,7 +66,7 @@
         <tr ng-repeat="item in optionalFileds">
             <td>{{item.name}}</td>
             <td>{{item.id}}</td>
-            <td>{{item.type|castDimensionType}}</td>
+            <td>{{item.type}}</td>
         </tr>
     </table>
 </script>
@@ -119,7 +119,7 @@
             Close
         </button>
         <button class="btn btn-primary"
-            formly-submit="formly" ng-click="ok()" target="{{currentMetricTab}}">
+            formly-submit="formly" ng-click="submit()" target="{{currentMetricTab}}">
             Save Changes
         </button>
     </div>
