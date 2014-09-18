@@ -52,19 +52,23 @@ define([
 
     function detailCtrl($scope, $state, apiHelper, $timeout, $filter, $rootScope) {
         var _state = $rootScope.state;
+        _state.isAjaxFetching = false;
         $rootScope.$on('report:fetchReportData', function() {
             var defaultParams = {
                 filters: [],
                 cache: 1,
                 dimensions: []
             };
+            if (_state.isAjaxFetching) return;
+            _state.isAjaxFetching = true;
             apiHelper('getReport', _state.report.id, {
                 busy: 'global',
                 params: _.extend(defaultParams, _.pick($state.params, 'period', 'startDate', 'endDate'))
             }).then(function(data) {
                 highchart.buildLineChart(_state.reportDetail, data);
                 $rootScope.$emit('report:renderReportData', [_state.reportDetail, data]);
-                isFetchReport = false;
+                _state.isFetching = false;
+                _state.isAjaxFetching = false;
             }, function() {});
         });
     }

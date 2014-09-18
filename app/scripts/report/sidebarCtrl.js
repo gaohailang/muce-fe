@@ -29,7 +29,7 @@ define(function() {
             if (!window.confirm(Config.delAlertPrefix + 'report ' + item.name)) return;
             apiHelper('delCategorytReportRelation', {
                 params: {
-                    categoryId: $scope.currentCategory.id,
+                    categoryId: _state.category.id,
                     reportId: item.id
                 }
             }).then(function(data) {

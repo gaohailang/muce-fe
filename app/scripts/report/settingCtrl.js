@@ -10,13 +10,14 @@ define(function() {
             apiHelper('getReportDetail', report.id, {
                 busy: 'global'
             }).then(function(data) {
-                if($state.params.startDate && $state.params.endDate && $state.params.period) {
+                if ($state.params.startDate && $state.params.endDate && $state.params.period) {
                     _.each(['startDate', 'endDate'], function(type) {
                         _state[type] = Helper.deSerApiDate($state.params[type], $state.params.period);
                     });
                     _state.period = $state.params.period;
                     fetchReports();
                 } else {
+                    $scope.currentQuick = 0;
                     $timeout(function() {
                         _state.period = data.periods[0];
                         $scope.currentQuick = -14; // last two week
@@ -42,7 +43,7 @@ define(function() {
                 _tmp.disableTimepicker = val ? false : true;
                 _tmp.labelFormat = Config.periodFormatMap[val];
             });
-            // fetchReports();
+            fetchReports();
         });
 
         $scope.onDateChnage = function() {
@@ -50,7 +51,13 @@ define(function() {
             $scope.currentQuick = '';
         };
 
+        _state.isFetching = false;
+
         function fetchReports() {
+            if (!_state.startDate) return;
+            if (_.isUndefined(_state.period)) return;
+            if (_state.isFetching) return;
+            _state.isFetching = true;
             $state.go('report.detail', {
                 group: _state.group.name,
                 category: _state.category.name,
@@ -59,7 +66,9 @@ define(function() {
                 endDate: Helper.serApiDate(_state.endDate, _state.period),
                 period: _state.period
             });
-            $rootScope.$emit('report:fetchReportData');
+            $timeout(function() {
+                $rootScope.$emit('report:fetchReportData');
+            });
             // $rootScope.emit
         }
 
@@ -70,17 +79,17 @@ define(function() {
             deSerApiDate: function(datetime, period) {
                 var parseMap = {
                     '0': function(str) {
-                        var y = str.substr(0,4),
-                            m = str.substr(4,2) - 1,
-                            d = str.substr(6,2);
-                        return new Date(y,m,d);
+                        var y = str.substr(0, 4),
+                            m = str.substr(4, 2) - 1,
+                            d = str.substr(6, 2);
+                        return new Date(y, m, d);
                     },
                     '1': function(str) {
-                        var y = str.substr(0,4),
-                            m = str.substr(4,2) - 1,
-                            d = str.substr(6,2),
-                            h = str.substr(8,2);
-                        return new Date(y,m,d, h);
+                        var y = str.substr(0, 4),
+                            m = str.substr(4, 2) - 1,
+                            d = str.substr(6, 2),
+                            h = str.substr(8, 2);
+                        return new Date(y, m, d, h);
                     }
                 }
                 return parseMap[period](datetime)

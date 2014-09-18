@@ -22,7 +22,7 @@
             <td ng-switch on="job.status">
                 <span ng-switch-when="PENDING">pending... </span>
                 <span ng-switch-when="RUNNING">running... </span>
-                <a ng-href="job.reason" target="_blank" ng-switch-when="FAILED">VIEW</a>
+                <a ng-href="{{job.reason}}" target="_blank" ng-switch-when="FAILED">VIEW</a>
                 <a ng-click="openJobResultView(job)" ng-switch-default>VIEW</a>
             </td>
 
