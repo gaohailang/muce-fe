@@ -10,15 +10,23 @@
 
         <button class="btn btn-primary" ng-click="composeNewQuery()">Compose Query</button>
 
-        <span class="icon-time" ng-show="runTimeText"></span>
-        <span class="label label-info">{{runTimeText}}</span>
+        <div style="display: inline-block;"
+            ng-style="{'visibility': currentJob ? 'visible' : 'hidden'}">
+            <i class="icon-time"></i>
+            <span class="label label-info">
+                {{runTimeText}}
+            </span>
 
-        <span class="label" ng-class="
-            {'label-warning': (currentJob.status !== 'FAILED' && currentJob.status !== 'COMPLETED'),
-            'label-important': (currentJob.status === 'FAILED'),
-            'label-success': (currentJob.status === 'COMPLETED')}">{{currentJob.status}}</span>
+            <span class="label" ng-class="
+                {'label-warning': (currentJob.status !== 'FAILED' && currentJob.status !== 'COMPLETED'),
+                'label-important': (currentJob.status === 'FAILED'),
+                'label-success': (currentJob.status === 'COMPLETED')}">
+                {{currentJob.status}}
+            </span>
+        </div>
 
-        <div class="input-append" style="margin-bottom: 0; float: right" ng-hide="currentJob">
+        <div class="input-append" ng-hide="currentJob"
+            style="margin-bottom: 0; float: right">
             <label class="add-on">
                 <input type="checkbox" ng-model="form.notification">
                 <i class="icon-envelope"></i>Me
@@ -43,12 +51,10 @@
                 <p>
                     <a class="btn btn-success mq-download-btn">
                         <span class="icon-cloud-download"></span>
-                        <!-- Todo: /muce-webapp/muce/mq/job/' + id + '/result -->
                         Download
                     </a>
                     <a class="btn btn-primary mq-show-run-result">
                         <span class="icon-list"></span>
-                        <!-- Todo: click to show result list -->
                         View
                     </a>
                 </p>

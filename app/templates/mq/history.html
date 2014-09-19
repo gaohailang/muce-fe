@@ -35,7 +35,7 @@
             <td ng-show="job.size">{{job.size|humanBytes}}</td>
             <td ng-hide="job.size">UNKOWN</td>
 
-            <td ng-click="resetHqlEditor(job.hql)">{{job.hql}}</td>
+            <td ng-click="setHqlEditor(job.hql)">{{job.hql}}</td>
         </tr>
     </tbody>
 </table>

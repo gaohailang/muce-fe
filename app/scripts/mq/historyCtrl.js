@@ -1,19 +1,24 @@
 define(function() {
-    return function mqHistoryCtrl($scope, apiHelper, $modal, downloadFile) {
+    return function mqHistoryCtrl($scope, $rootScope, apiHelper, $modal, downloadFile) {
         // 支持 选项： order, querys_showed, more_querys
-        apiHelper('getJobList', {
-            params: {
-                user: 'gaohailang'
-            }
-        }).then(function(data) {
-            $scope.jobList = data ? data.reverse() : [];
-            /*_.each(data, function(job, i) {
-                if (job.status === 'FAILED') return;
-                apiHelper('getJobResultSize', job.id).then(function(data) {
-                    job.size = data;
-                });
-            });*/
+        function fetchHistory() {
+            apiHelper('getJobList', {
+                params: {
+                    user: 'gaohailang'
+                }
+            }).then(function(data) {
+                $scope.jobList = data ? data.reverse() : [];
+            });
+        }
+
+        fetchHistory();
+        $rootScope.$on('mq:fetchHistory', function(e) {
+            fetchHistory();
         });
+
+        $scope.setHqlEditor = function(hql) {
+            $rootScope.$emit('mq:setHqlEditor', hql);
+        };
 
         $scope.openJobResultView = function(job) {
             var newScope = $scope.$new(true);
@@ -24,7 +29,7 @@ define(function() {
 
             function openModal() {
                 $modal.open({
-                    templateUrl: '/templates/mq/modal-job-result.html',
+                    templateUrl: '/templates/mq/partials/job-result-modal.html',
                     size: 'lg',
                     scope: newScope,
                     controller: function($scope) {

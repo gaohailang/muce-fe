@@ -1,11 +1,12 @@
 define(function() {
-    return function mqEditorCtrl($scope, $rootScope, $interval, apiHelper) {
+    return function mqEditorCtrl($scope, $rootScope, $interval, apiHelper, $state) {
         $scope.form = {};
 
+
+        var runTimer, runStatusTimer;
         $scope.runQuery = function() {
             $scope.form.user = 'gaohailang';
 
-            // $interval.cancel(stopTime);
             var curTime = 0;
 
             apiHelper('addJob', {
@@ -13,21 +14,24 @@ define(function() {
             }).then(function(data) {
                 // Todo: know the job id
                 $scope.currentJob = data;
-                // $state.go -> history?!
-                var runTimer = $interval(function() {
+                if (!$state.is('mq.history')) {
+                    $state.go('mq.history');
+                }
+                $rootScope.$emit('mq:fetchHistory');
+                runTimer = $interval(function() {
                     $scope.runTimeText = getFormatedTimeDelta(curTime);
                     curTime += 7;
                 }, 70);
-                var runStatusTimer = $interval(function() {
+                runStatusTimer = $interval(function() {
+                    $rootScope.$emit('mq:fetchHistory');
                     apiHelper('getJob', data.id).then(function(job) {
                         $scope.currentJob = job;
-                        if (job.status === 'COMPLETED') {
-                            $interval.cancel(runTimer);
-                            $interval.cancel(runStatusTimer);
+                        if ((job.status === 'COMPLETED') || (job.status === 'FAILED')) {
+                            cancelCurrentJob();
                             // NOTICE BY TOGGLE document.title
                         }
                     }, function() {
-                        $interval.cancel(runTimer);
+                        cancelCurrentJob();
                         // same with
                     });
                 }, 3000);
@@ -38,16 +42,23 @@ define(function() {
             });
         };
 
-        $scope.resetHqlEditor = function(hql) {
+        $scope.composeNewQuery = function() {
+            $scope.form = {};
+            cancelCurrentJob();
+        };
+
+        $rootScope.$on('mq:setHqlEditor', function(e, hql) {
             if ($scope.currentJob) return;
             $scope.form.hql = hql;
-        };
+        });
 
-        $rootScope.composeNewQuery = function() {
-            $scope.form = {};
+        function cancelCurrentJob() {
             $scope.currentJob = null;
-        };
+            $interval.cancel(runTimer);
+            $interval.cancel(runStatusTimer);
+        }
 
+        /* code-mirror setting */
         $scope.editorOptions = {
             autofocus: true,
             lineWrapping: true,
