@@ -32,6 +32,11 @@ define(function() {
             url: '/history',
             templateUrl: 'templates/mq/history.html',
             controller: 'mqHistoryCtrl'
+        },
+        'mq.share': {
+            url: '/share',
+            templateUrl: 'templates/mq/share.html',
+            controller: 'mqShareCtrl'
         }
     };
 })
