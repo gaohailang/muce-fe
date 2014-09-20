@@ -7,22 +7,16 @@ define(function() {
         };
 
         $scope.openEditModal = function(type, data) {
+            // edit for group, category, report
             var newScope = $scope.$new(true);
             $scope._data = data;
 
-            if (type !== 'metric') {
-                $modal.open({
-                    templateUrl: 'templates/report/modal.html',
-                    controller: type + 'ModalCtrl',
-                    scope: $scope,
-                    size: 'lg'
-                });
-            } else {
-                $modal.open({
-                    templateUrl: 'report/metric-tabs-modal.html',
-                    size: 'lg'
-                });
-            }
+            $modal.open({
+                templateUrl: 'templates/report/modal.html',
+                controller: type + 'ModalCtrl',
+                scope: $scope,
+                size: 'lg'
+            });
         };
 
         $scope.delReport = function(item) {

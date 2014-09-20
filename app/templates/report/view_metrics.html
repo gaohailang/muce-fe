@@ -1,0 +1,31 @@
+<div>
+    <table class="table table-bordered table-striped">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Hql</th>
+            <th>type</th>
+            <th>Event Id</th>
+            <th>Combined</th>
+            <th>Create Time</th>
+            <th>Modified Time</th>
+            <th>Comment</th>
+            <th>Operate</th>
+        </tr>
+        <tr ng-repeat="metric in metricList">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                <a ng-click="editMetric(metric)">Edit</a>
+                <a ng-click="delMetric(metric)">Delete</a>
+            </td>
+        </tr>
+    </table>
+</div>

@@ -47,8 +47,40 @@ define([
             url: '/:group/:category/:report?startDate&endDate&period',
             templateUrl: 'templates/report/chart-table.html',
             controller: 'detailCtrl'
+        },
+        'view_metrics': {
+            url: '/view_metrics',
+            templateUrl: 'templates/report/view_metrics.html',
+            controller: 'viewMetricsCtrl'
         }
     };
+
+    function viewMetricsCtrl($scope, apiHelper, $rootScope) {
+        apiHelper('getDetailMetricsList').then(function(data) {
+            $scope.metricList = data;
+        });
+
+        $scope.delMetric = function(metric) {
+            apiHelper('delMetric', metric.id).then(function() {
+                var alertTip = Config.delAlertPrefix + 'metric ' + metric.name;
+                if (!window.confirm(alertTip)) return;
+                // remove metric from list
+                $scope.metricList = _.without($scope.metricList, metric);
+            });
+        };
+
+        $scope.editMetric = function(metric) {
+            var newScope = $scope.$new(true);
+            $scope._data = metric;
+
+            $modal.open({
+                templateUrl: 'templates/report/metric-tabs-modal.html',
+                controller: 'metricModalCtrl',
+                scope: $scope,
+                size: 'lg'
+            });
+        };
+    }
 
     function detailCtrl($scope, $state, apiHelper, $timeout, $filter, $rootScope) {
         var _state = $rootScope.state;
