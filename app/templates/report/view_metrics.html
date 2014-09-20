@@ -5,23 +5,28 @@
             <th>Name</th>
             <th>Hql</th>
             <th>type</th>
+            <th>Data Type</th>
             <th>Event Id</th>
-            <th>Combined</th>
             <th>Create Time</th>
             <th>Modified Time</th>
+            <th>Owner</th>
             <th>Comment</th>
             <th>Operate</th>
         </tr>
         <tr ng-repeat="metric in metricList">
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>{{metric.id}}</td>
+            <td>{{metric.name}}</td>
+            <td ng-show="metric.type='combined'">{{metric.hql}}</td>
+            <td ng-show="metric.type='normal'">
+                <div tip-marker content="metric.hql"></div>
+            </td>
+            <td>{{metric.metricType}}</td>
+            <td>{{metric.dataType}}</td>
+            <td>{{metric.eventId}}</td>
+            <td>{{metric.createTime}}</td>
+            <td>{{metric.modifyTime}}</td>
+            <td>{{metric.owner}}</td>
+            <td>{{metric.comment}}</td>
             <td>
                 <a ng-click="editMetric(metric)">Edit</a>
                 <a ng-click="delMetric(metric)">Delete</a>
