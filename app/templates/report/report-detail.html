@@ -1,0 +1,31 @@
+<div>
+    <ul class="detail-list">
+        <li class="detail-owner">
+            <div>
+                <code>Name: </code>
+            </div>
+            <pre class="detail-item">{{state.reportDetail.name}}</pre>
+        </li>
+        <li class="detail-owner">
+            <div>
+                <code>Info: </code>
+            </div>
+            <!-- Todo: with date filter -->
+            <pre class="detail-item">Created by {{state.reportDetail.owner}} At {{state.reportDetail.createTime}}  <span ng-if="state.reportDetail.modifyTime">Last Modified At {{state.reportDetail.modifyTime}}</span></pre>
+        </li>
+        <li class="detail-comment">
+            <div>
+                <code>Comment: </code>
+            </div>
+            <pre class="detail-item">{{state.reportDetail.comment||'『Owner很懒，连注释都不写』'}}</pre>
+         </li>
+        <li class="detail-metrics">
+            <code>Metrics:  </code>
+            <pre class="detail-item">{{state.reportDetail.metrics|transMetricsDetail}}</pre>
+        </li>
+        <li class="detail-dimensions" ng-if="state.reportDetail.dimensions">
+            <code>Dimensions:  </code>
+            <pre class="detail-item">{{state.reportDetail.dimensions|joinArr:'name'}}</pre>
+        </li>
+    </ul>
+</div>

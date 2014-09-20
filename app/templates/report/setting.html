@@ -1,67 +1,70 @@
-<section class="setting-wrapper row-fluid">
-    <div class="operator-wrapper span10">
-        <div class="date-operator">
+<section class="setting-wrapper">
+    <div class="row-fluid">
+        <div class="operator-wrapper span10">
+            <div class="date-operator">
 
-            <select id="quickChooseList"
-                ng-model="currentQuick"
-                ng-options="i[1] as i[0] for i in quickChooseList">
-                <option value="">-- Quick Select --</option>
-            </select>
+                <select id="quickChooseList"
+                    ng-model="currentQuick"
+                    ng-options="i[1] as i[0] for i in quickChooseList">
+                    <option value="">-- Quick Select --</option>
+                </select>
 
-            <quick-datepicker icon-class='fa fa-calendar'
-                on-change="onDateChnage()"
-                label-format="yyyy-MM-dd hh:mm"
-                ng-model='state.startDate' disable-timepicker="state.period"></quick-datepicker>
+                <quick-datepicker icon-class='fa fa-calendar'
+                    on-change="onDateChnage()"
+                    label-format="yyyy-MM-dd hh:mm"
+                    ng-model='state.startDate' disable-timepicker="state.period"></quick-datepicker>
 
-            <quick-datepicker icon-class='fa fa-calendar'
-                on-change="onDateChnage()"
-                label-format="yyyy-MM-dd HH:mm"
-                ng-model='state.endDate' disable-timepicker="{{state.period}}"></quick-datepicker>
+                <quick-datepicker icon-class='fa fa-calendar'
+                    on-change="onDateChnage()"
+                    label-format="yyyy-MM-dd HH:mm"
+                    ng-model='state.endDate' disable-timepicker="{{state.period}}"></quick-datepicker>
 
-            <div class="btn-group">
-              <button type="button" class="btn btn-default"
-                ng-repeat="i in state.reportDetail.periods"
-                ng-class="{'active': (state.period === i)}"
-                ng-click="state.period = i">{{i|transPeriod}}</button>
+                <div class="btn-group">
+                  <button type="button" class="btn btn-default"
+                    ng-repeat="i in state.reportDetail.periods"
+                    ng-class="{'active': (state.period === i)}"
+                    ng-click="state.period = i">{{i|transPeriod}}</button>
+                </div>
             </div>
+
+            <!-- <div class="dimension-operator">
+                <label for="dimensions_1"
+                    ng-show="state.reportDetail.dimensions.length>0">1st Dimen:
+                    <select id="dimensions_1" ng-model="dimensions.1st"
+                        ng-options="i as i.name for i in current.reportDetail.dimensions">
+                    </select>
+                </label>
+                <label for="dimensions_2"
+                    ng-show="current.reportDetail.dimensions.length>1">2nd Dimen:
+                    <select id="dimensions_2"  ng-model="dimensions.2nd"
+                        ng-options="i as i.name for i in current.reportDetail.dimensions">
+                    </select>
+                </label>
+                <label for="dimensions_3"
+                    ng-show="current.reportDetail.dimensions.length>2">3rd Dimen:
+                    <select id="dimensions_3" ng-model="dimensions.3rd"
+                        ng-options="i as i.name for i in current.reportDetail.dimensions">
+                    </select>
+                </label>
+                <button class="btn"
+                    ng-show="current.reportDetail.dimensions.length"
+                    ng-class="{'active': dimenAdv.filters}"
+                    ng-click="openAdvancedPanel()">
+                    <span ng-if="!dimenAdv.filters">Advanced</span>
+                    <span ng-if="dimenAdv.filters">Advanced Filter ON</span>
+                </button>
+            </div> -->
         </div>
 
-        <!-- <div class="dimension-operator">
-            <label for="dimensions_1"
-                ng-show="state.reportDetail.dimensions.length>0">1st Dimen:
-                <select id="dimensions_1" ng-model="dimensions.1st"
-                    ng-options="i as i.name for i in current.reportDetail.dimensions">
-                </select>
-            </label>
-            <label for="dimensions_2"
-                ng-show="current.reportDetail.dimensions.length>1">2nd Dimen:
-                <select id="dimensions_2"  ng-model="dimensions.2nd"
-                    ng-options="i as i.name for i in current.reportDetail.dimensions">
-                </select>
-            </label>
-            <label for="dimensions_3"
-                ng-show="current.reportDetail.dimensions.length>2">3rd Dimen:
-                <select id="dimensions_3" ng-model="dimensions.3rd"
-                    ng-options="i as i.name for i in current.reportDetail.dimensions">
-                </select>
-            </label>
-            <button class="btn"
-                ng-show="current.reportDetail.dimensions.length"
-                ng-class="{'active': dimenAdv.filters}"
-                ng-click="openAdvancedPanel()">
-                <span ng-if="!dimenAdv.filters">Advanced</span>
-                <span ng-if="dimenAdv.filters">Advanced Filter ON</span>
+        <div class="trigger-wrapper span2" ng-init="isShowDetailInfo = false">
+            <button class="btn btn-primary refresh-report" ng-click="fetchReports()">apply</button>
+
+            <button class="report-detail-triiger"
+                ng-click="isShowDetailInfo = !isShowDetailInfo">
+                <i ng-class="{'icon-folder-close': !isShowDetailInfo, 'icon-folder-open': isShowDetailInfo}"
+                    tooltip="{{isShowDetailInfo?'Hide Report Detail':'Show Report Detail'}}"></i>
             </button>
-        </div> -->
+        </div>
     </div>
-
-    <div class="trigger-wrapper span2" ng-init="isShowDetailInfo = false">
-        <button class="btn btn-primary refresh-report" ng-click="fetchReports()">apply</button>
-
-        <span class="report-detail-triiger"
-            ng-click="isShowDetailInfo = !isShowDetailInfo">
-            <i ng-class="{'icon-folder-close': !isShowDetailInfo, 'icon-folder-open': isShowDetailInfo}"
-                tooltip="{{isShowDetailInfo?'Hide Report Detail':'Show Report Detail'}}"></i>
-        </span>
-    </div>
+    <div ng-show="isShowDetailInfo" muce-include="templates/report/report-detail.html"></div>
 </section>

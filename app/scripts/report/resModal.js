@@ -7,7 +7,7 @@ define(function() {
             type: 'textarea',
             attrs: {
                 // validator: 'required,lengthRange',
-                validator: 'optional',
+                // validator: 'optional',
                 range: '4,30',
                 'text-area-elastic': true,
                 'rows': '4',
