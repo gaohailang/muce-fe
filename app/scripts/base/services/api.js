@@ -78,6 +78,9 @@ define([
             _.each(maps.add, function(endpoint) {
                 processMaps['add' + _.slugify(endpoint)] = 'POST ' + opt.prefix + endpoint;
             });
+            _.each(maps.edit, function(endpoint) {
+                processMaps['edit' + _.slugify(endpoint)] = 'PUT ' + opt.prefix + endpoint;
+            });
             _.each(maps.del, function(endpoint) {
                 processMaps['del' + _.slugify(endpoint)] = 'DELETE ' + opt.prefix + endpoint;
             });
@@ -106,7 +109,7 @@ define([
                 responseError: function(response) {
                     try {
                         $notice.error('error-' + response.status + ': ' +
-                            (response.config.url || '') + (response.data.msg || ', 接口出问题啦!'));
+                            (response.config.url || '') + ' ' + (response.data.msg || ', 接口出问题啦!'));
                     } catch (e) {
                         console.log('Err in apiHelperInterceptor: ' + e);
                     }

@@ -1,17 +1,18 @@
 @import "compass";
 @import "component/misc";
 
-@import "main";
-// @import "mq";
-@import "login";
-
 @import "component/loader";
 @import "component/animate";
 
 /* global setting */
 a {
     cursor: pointer;
+    &.active {
+        color: #005580;
+        background: #EEE;
+    }
 }
+
 label > input[type=checkbox] {
     margin: 0;
     top: -1px;
@@ -67,6 +68,32 @@ textarea {
     .alert {
         max-width: 400px;
         word-wrap: break-word;
+    }
+}
+
+/*scroll button*/
+.scroll-key {
+    position: fixed;
+    right: 2px;
+    top: 200px;
+}
+.scroll-key span {
+    cursor: pointer;
+    padding: 2px;
+    color: rgb(70, 136, 71);
+    background-color: rgb(223, 240, 216);
+    border: 1px solid rgb(214, 233, 198);
+    display: block;
+    text-align: center;
+    margin: 5px 0;
+    border-right: 4px;
+}
+
+.container-wrapper {
+    margin-top: 60px;
+
+    @media (max-width: 980px) {
+        margin-top: 10px;
     }
 }
 
@@ -149,18 +176,22 @@ textarea {
     }
 
     .table-wrapper {
-        thead td {
-            cursor: pointer;
-            i {
-                padding-left: 10px;
-            }
-        }
-        margin: 20px 0;
+        min-height: 500px;
+        /*margin: 20px 0;*/
         border: none;
         min-height: initial;
 
         td {
             text-align: center;
+            max-width: 300px;
+            word-break: break-all;
+        }
+
+        thead td {
+            cursor: pointer;
+            i {
+                padding-left: 10px;
+            }
         }
     }
 }
@@ -177,6 +208,39 @@ textarea {
 
 .mc-report-sidebar {
     padding: 0;
+
+    > li {
+        margin-top: 5px;
+    }
+
+    .sidebar-list {
+        & > li {
+            position: relative;
+
+            a {
+                padding: 8px 14px;
+                margin: 0 0 -1px;
+                padding-right: 4px;
+            }
+
+            i[class*="icon-"] {
+                font-size: 14px;
+                position: absolute;
+                top: 8px;
+                right: 5px;
+            }
+        }
+    }
+
+    .nav-list {
+        margin-top: 10px;
+        border-radius: 6px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
+
+        & > li > a {
+            border: 1px solid #E5E5E5;
+        }
+    }
 
     .btn-group {
         width: 100%;
@@ -195,9 +259,16 @@ textarea {
             overflow: auto;
         }
     }
+
     .report-list {
         max-height: 400px;
         overflow: auto;
+
+        & > li {
+            i.icon-pencil {
+                right: 20px!important;
+            }
+        }
     }
 
     h3 {

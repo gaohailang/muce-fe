@@ -1,13 +1,5 @@
 
-.container-wrapper {
-    margin-top: 60px;
-}
 
-@media (max-width: 980px) {
-    .container-wrapper {
-        margin-top: 10px;
-    }
-}
 
 .chart-wrapper, .table-wrapper {
     border: 1px solid #ccc;
@@ -16,95 +8,9 @@
     position: relative;
 }
 
-.chart-wrapper {
-    height: 500px;
-    max-height: 500px;
-    overflow: auto;
-
-    .pie-container {
-        margin-bottom: 10px;
-    }
-}
-
 .table-wrapper {
-    min-height: 500px;
-    margin: 20px 0;
 
-    table th {
-        cursor: pointer;
-    }
-    table th, table td {
-        max-width: 300px;
-        word-break: break-all;
-    }
 }
-
-a.active {
-    color: #005580;
-    background: #EEE;
-}
-
-// .common-filter-wrapper {
-//     label {
-//         margin-right: 10px;
-//         padding-bottom: 10px;
-//     }
-//     .period-btn, .quick-select-btn, .dropdown-toggle {
-//         margin-top: -9px;
-//     }
-
-//     .quick-select-wrapper .dropdown-menu .quick-select-btn {
-//         padding: 4px 0px 4px 10px;
-//         width: 117px;
-//     }
-
-//     .common-filter-content {
-//         display: inline-block;
-//         text-align: right;
-//     }
-
-//     .periods-wrapper, .quick-select-wrapper {
-//         display: inline-block;
-//         margin-right: 10px;
-//     }
-
-//     .quick-select-wrapper .btn-group li span {
-//         display: inline-block;
-//         padding: 4px 0 4px 10px;
-//         cursor: pointer;
-//     }
-
-//     .quick-select-wrapper .btn-group ul {
-//         width: 127px;
-//         min-width: 127px;
-//         text-align: left;
-//     }
-
-//     .quick-select-wrapper li:hover {
-//         background-color: #08C;
-//         color: #fff;
-//     }
-
-
-//     .filter-wrapper {
-//         position: relative;
-//     }
-
-//     .filter-dimension {
-//         width: 130px;
-//         margin-bottom: 0;
-//     }
-
-//     .filter-input {
-//         position: absolute;
-//         top: -3px;
-//         left: 1px;
-//         width: 100px;
-//         height: 22px;
-//         padding: 1px 0;
-//         border-radius: 5px;
-//     }
-// }
 
 .nav-list.group-list li {
     position: relative;
@@ -307,55 +213,6 @@ input.check-periods {
     }
 }
 
-.nav-list {
-    margin-top: 10px;
-    padding: 0;
-    border-radius: 6px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
-
-    & > li > a {
-        border: 1px solid #E5E5E5;
-        padding: 8px 14px;
-        margin: 0 0 -1px;
-    }
-}
-
-.sidebar-list {
-    & > li:first-child > a {
-        border-radius: 6px 6px 0 0;
-    }
-
-    li {
-        position: relative;
-        overflow: hidden;
-
-        i[class*="icon-"] {
-            position: absolute;
-            top: 10px;
-            z-index: 3;
-            cursor: pointer;
-        }
-
-        .realtime-report-icon.show {
-            display: block;
-            left: -11px;
-            top: 0px;
-            color: #468847;
-        }
-
-        .delete-report {
-            right: 3px;
-        }
-
-        .edit-report {
-            right: 20px;
-        }
-
-        .rerun-report {
-            right: 25px;
-        }
-    }
-}
 
 /*Dashboard*/
 
@@ -389,34 +246,7 @@ input.check-periods {
 }
 
 
-/*scroll button*/
-.scroll-key {
-    position: fixed;
-    right: 2px;
-    top: 200px;
-}
-.scroll-key span {
-    cursor: pointer;
-    padding: 2px;
-    color: rgb(70, 136, 71);
-    background-color: rgb(223, 240, 216);
-    border: 1px solid rgb(214, 233, 198);
-    display: block;
-    text-align: center;
-    margin: 5px 0;
-    border-right: 4px;
-}
 
-/*view event*/
-.control-group.fields .controls {
-    width: 215px;
-    height: 100px;
-    border: 1px solid #ccc;
-    overflow: auto;
-    word-wrap: break-word;
-}
 
-.detail-list {
-    list-style: none;
-}
+
 

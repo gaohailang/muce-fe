@@ -1,5 +1,5 @@
 define(function() {
-    return function sidebarCtrl(apiHelper, $scope, $rootScope) {
+    return function sidebarCtrl(apiHelper, $scope, $rootScope, $modal) {
         var _state = $rootScope.state;
 
         $scope.switchTypeVal = function(type, val) {
@@ -21,7 +21,7 @@ define(function() {
 
         $scope.delReport = function(item) {
             if (!window.confirm(Config.delAlertPrefix + 'report ' + item.name)) return;
-            apiHelper('delCategorytReportRelation', {
+            apiHelper('delCategoryReportRelation', {
                 params: {
                     categoryId: _state.category.id,
                     reportId: item.id

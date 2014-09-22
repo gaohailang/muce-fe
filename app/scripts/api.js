@@ -4,6 +4,7 @@ define([], function() {
         // Meta
         apiHelper.configByType({
             add: ['group', 'category', 'dimension', 'metric', 'combineMetric', 'report'],
+            edit: ['group', 'category', 'dimension', 'metric', 'combineMetric', 'report'],
             del: ['group', 'category', 'dimension', 'metric', 'categoryReportRelation', 'report'],
             list: ['group', 'category', 'report', 'event', 'field', 'fieldId', 'metric', 'dimension']
         }, {

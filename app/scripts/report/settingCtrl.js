@@ -71,6 +71,7 @@ define(function() {
             });
             // $rootScope.emit
         }
+        $scope.fetchReports = fetchReports;
 
         var Helper = {
             serApiDate: function(datetime, period) {
