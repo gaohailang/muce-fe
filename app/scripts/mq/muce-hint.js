@@ -20,7 +20,7 @@
 
     function getKeywords(editor) {
         // by siva
-        var list = 'select, and, between, and, where, from, if, limit, like'.split(',');
+        var list = 'select,and,between,where,from,if,limit,like'.split(',');
         var _ret = {};
         _.each(list, function(i) {
             _ret[i] = true;
@@ -35,11 +35,11 @@
         return string.toUpperCase() === sub.toUpperCase();
     }
 
-    function addMatches(result, search, wordlist, formatter) {
+    function addMatches(result, search, wordlist, formatter, type) {
         // by siva
         if (!_currentTable) {
             // 匹配 abbr
-        } else if (search) {
+        } else if (search && (type !== 'keyword')) {
             // 匹配 colId ，并且并入 result
             var matchedKeys = _.filter(_.keys(_muceHintFieldsRef[_currentTable]), function(key) {
                 return match(search, key);
@@ -58,7 +58,11 @@
                 word = wordlist[word];
             }
             if (match(search, word)) {
-                result.push(formatter(word));
+                if (type === 'keyword') {
+                    result.splice(0, 0, formatter(word));
+                } else {
+                    result.push(formatter(word));
+                }
             }
         }
 
@@ -191,7 +195,7 @@
             });
             addMatches(result, search, keywords, function(w) {
                 return w.toUpperCase();
-            });
+            }, 'keyword');
         }
 
         return {
