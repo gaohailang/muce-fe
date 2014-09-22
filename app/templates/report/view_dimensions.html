@@ -13,12 +13,13 @@
     <tr ng-repeat="dimension in dimensionList">
         <td>{{dimension.id}}</td>
         <td>{{dimension.name}}</td>
-        <td>
+        <td>{{dimension.fields}}</td>
+        <!-- <td>
             <div tip-marker content="metric.fields"></div>
-        </td>
-        <td>{{dimension.dataType}}</td>
-        <td>{{dimension.createTime}}</td>
-        <td>{{dimension.modifyTime}}</td>
+        </td> -->
+        <td>{{dimension.dataType|castDimensionType}}</td>
+        <td>{{dimension.createTime|date:'yyyy-MM-dd'}}</td>
+        <td>{{dimension.modifyTime|date:'yyyy-MM-dd'}}</td>
         <td>{{dimension.owner}}</td>
         <td>{{dimension.comment}}</td>
         <td>

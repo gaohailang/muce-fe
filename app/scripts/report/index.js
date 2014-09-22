@@ -52,35 +52,52 @@ define([
             url: '/view_metrics',
             templateUrl: 'templates/report/view_metrics.html',
             controller: 'viewMetricsCtrl'
+        },
+        'view_dimensions': {
+            url: '/view_dimensions',
+            templateUrl: 'templates/report/view_dimensions.html',
+            controller: 'viewDimensionsCtrl'
         }
     };
 
-    function viewMetricsCtrl($scope, apiHelper, $rootScope) {
-        apiHelper('getDetailMetricsList').then(function(data) {
-            $scope.metricList = data;
+    var viewCtrls;
+    (function buildViewCtrls() {
+        viewCtrls = _.map(['metric', 'dimension'], function(type) {
+            return function($scope, apiHelper, $rootScope, $modal) {
+                var capitalizeType = _.capitalize(type);
+                apiHelper('getDetail'+capitalizeType+'sList').then(function(data) {
+                    $scope[type+'List'] = data;
+                });
+
+                $scope['del'+capitalizeType] = function(item) {
+                    apiHelper('del'+capitalizeType, item.id).then(function() {
+                        var alertTip = Config.delAlertPrefix + type+' ' + item.name;
+                        if (!window.confirm(alertTip)) return;
+                        // remove metric from list
+                        $scope[type+'List'] = _.without($scope[type+'List'], item);
+                    });
+                }
+
+                $scope['edit'+capitalizeType] = function(item) {
+                    var newScope = $scope.$new(true);
+                    $scope._data = item;
+
+                    var templateUrl;
+                    if(!$scope.delMetric) {
+                        templateUrl = 'templates/report/modal.html';
+                    } else {
+                        templateUrl = 'report/metric-tabs-modal.html';
+                    }
+                    $modal.open({
+                        templateUrl: templateUrl,
+                        controller: type+'ModalCtrl',
+                        scope: $scope,
+                        size: 'lg'
+                    });
+                };
+            }
         });
-
-        $scope.delMetric = function(metric) {
-            apiHelper('delMetric', metric.id).then(function() {
-                var alertTip = Config.delAlertPrefix + 'metric ' + metric.name;
-                if (!window.confirm(alertTip)) return;
-                // remove metric from list
-                $scope.metricList = _.without($scope.metricList, metric);
-            });
-        };
-
-        $scope.editMetric = function(metric) {
-            var newScope = $scope.$new(true);
-            $scope._data = metric;
-
-            $modal.open({
-                templateUrl: 'templates/report/metric-tabs-modal.html',
-                controller: 'metricModalCtrl',
-                scope: $scope,
-                size: 'lg'
-            });
-        };
-    }
+    })();
 
     function detailCtrl($scope, $state, apiHelper, $timeout, $filter, $rootScope) {
         var _state = $rootScope.state;
@@ -132,6 +149,8 @@ define([
         .controller('settingCtrl', settingCtrl)
         .controller('detailCtrl', detailCtrl)
         .controller('tableCtrl', tableCtrl)
+        .controller('viewMetricsCtrl', viewCtrls[0])
+        .controller('viewDimensionsCtrl', viewCtrls[1])
         .config(function($stateProvider) {
             _.each(routeInfo, function(opt, name) {
                 $stateProvider.state(name, opt);

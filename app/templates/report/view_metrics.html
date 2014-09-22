@@ -16,15 +16,16 @@
         <tr ng-repeat="metric in metricList">
             <td>{{metric.id}}</td>
             <td>{{metric.name}}</td>
-            <td ng-show="metric.type='combined'">{{metric.hql}}</td>
-            <td ng-show="metric.type='normal'">
+            <td>{{metric.hql}}</td>
+            <!-- <td ng-show="metric.metricType=='COMBINE'">{{metric.hql}}</td>
+            <td ng-show="metric.metricType=='NORMAL'">
                 <div tip-marker content="metric.hql"></div>
-            </td>
+            </td> -->
             <td>{{metric.metricType}}</td>
-            <td>{{metric.dataType}}</td>
+            <td>{{metric.dataType|castDimensionType}}</td>
             <td>{{metric.eventId}}</td>
-            <td>{{metric.createTime}}</td>
-            <td>{{metric.modifyTime}}</td>
+            <td>{{metric.createTime|date:'yyyy-MM-dd'}}</td>
+            <td>{{metric.modifyTime|date:'yyyy-MM-dd'}}</td>
             <td>{{metric.owner}}</td>
             <td>{{metric.comment}}</td>
             <td>

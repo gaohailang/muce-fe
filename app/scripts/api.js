@@ -13,7 +13,9 @@ define([], function() {
         // Report
         apiHelper.config({
             'getReport': 'GET /report/:id',
-            'getReportDetail': 'GET /meta/report/:id'
+            'getReportDetail': 'GET /meta/report/:id',
+            'getDetailMetricsList': 'GET /meta/viewMetrics',
+            'getDetailDimensionsList': 'GET /meta/viewDimensions'
         });
 
         // Muce Query
