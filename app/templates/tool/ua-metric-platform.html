@@ -1,0 +1,63 @@
+
+
+<div class="main-container container-fluid">
+    <div class="sidebar">
+        <ul class="nav nav-list">
+            <li ng-repeat="report in state.reportList">
+                <a ng-href="">{{report.name}}</a>
+            </li>
+        </ul>
+    </div>
+    <div class="main-content">
+        <!-- export: state.period -->
+        <div data-toggle="buttons-radio" class="btn-group">
+            <button class="btn btn-primary" type="button"
+                ng-class="{'active': state.period==i}"
+                ng-click="state.period=i;"
+                ng-repeat="i in ['day', 'week', 'month']">
+                {{i}}
+            </button>
+        </div>
+
+        <!-- config: [state.period] -->
+        <div date-picker></div>
+
+        <!-- config: [report] -->
+        <div ng-repeat="dimension in report.dimensions" dimension-checkbox></div>
+        <!-- label+input-select2-multi -->
+
+        <button class="btn">Apply</button>
+        <!-- sync 刚才的东西和 junxiu -->
+
+        <!-- todo 支持child字段的级联渲染 config: [report, state.period, state.start|end|Date, state.dimensions] -->
+        <table class="table">
+            <tr></tr>
+        </table>
+
+        <!-- chart config: [state.metric-list] -->
+        <div chart></div>
+    </div>
+</div>
+
+<!-- List UI widget
+    // Setting Panel
+    day/week/year
+    datepicker (被外部影响)
+
+    dimensionMultiSelect
+
+    apply button to trigger
+
+    初始化怎么做？！
+
+    // Sidebar
+    type list (可以 toggle 关掉)
+
+    // table
+    metric list (纵向) 横向是日期和环比差值等
+    选择查看趋势的 checkbos
+
+    // chart
+    // 可以被外部初始化
+    // 内部可以切换时间等？！
+ -->

@@ -11,7 +11,7 @@
                 <code>Info: </code>
             </div>
             <!-- Todo: with date filter -->
-            <pre class="detail-item">Created by {{state.reportDetail.owner}} At {{state.reportDetail.createTime}}  <span ng-if="state.reportDetail.modifyTime">Last Modified At {{state.reportDetail.modifyTime}}</span></pre>
+            <pre class="detail-item">Created by {{state.reportDetail.owner}} At {{state.reportDetail.createTime|date}}  <span ng-if="state.reportDetail.modifyTime">Last Modified At {{state.reportDetail.modifyTime|date}}</span></pre>
         </li>
         <li class="detail-comment">
             <div>

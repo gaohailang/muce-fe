@@ -2,7 +2,8 @@ require([
     'base/index',
     'api',
     'report/index',
-    'mq/index'
+    'mq/index',
+    'tool/index'
 ], function() {
     'use strict';
 
@@ -22,7 +23,8 @@ require([
         'muceApp.base',
 
         'muceApp.report',
-        'muceApp.mq'
+        'muceApp.mq',
+        'muceApp.tool'
     ]);
 
     muceApp.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
