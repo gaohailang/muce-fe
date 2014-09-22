@@ -2,11 +2,7 @@ define(function() {
     return function mqHistoryCtrl($scope, $rootScope, apiHelper) {
         // 支持 选项： order, querys_showed, more_querys
         function fetchHistory() {
-            apiHelper('getJobList', {
-                params: {
-                    user: 'gaohailang'
-                }
-            }).then(function(data) {
+            apiHelper('getJobList').then(function(data) {
                 $scope.jobList = data ? data.reverse() : [];
             });
         }

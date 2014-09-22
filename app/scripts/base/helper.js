@@ -77,19 +77,6 @@ define([], function() {
 
 
     return {
-        getNameFromCookie: function() {
-            var cookie = document.cookie;
-            var arr = cookie.split('; ');
-            var name = "";
-            _.each(arr, function(item) {
-                if (item.indexOf('name=') != -1) {
-                    name = item.replace('name=', '');
-                }
-            });
-            // Todo
-            return name || 'gaohailang';
-        },
-
         getUTCDateByDateAndPeriod: function(date, period) {
             var retDate;
             var dateAry = [];

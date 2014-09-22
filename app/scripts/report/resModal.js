@@ -188,7 +188,6 @@ define(function() {
             _.each(['group', 'category', 'hour', 'day'], function(i) {
                 delete postData[i];
             });
-            // Todo: remove owner
             // 注：所有Dimensions都可以选择，一次只能选3个 ，Metrics 数量应该 <= 10
             if (postData.dimensions.length > 3) {
                 $notice.warning('Dimensions, 一次只能选3个');
@@ -197,7 +196,6 @@ define(function() {
                 $notice.warning('Metrics 数量应该 <= 10');
             }
             if (!postData.dimensions || !postData.metrics) $notice.warning('请按照要求填写');
-            postData.owner = 'siva';
             /* end before send */
 
             apiHelper('addReport', {

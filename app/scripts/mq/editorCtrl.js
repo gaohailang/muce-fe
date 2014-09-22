@@ -5,8 +5,6 @@ define(function() {
 
         var runTimer, runStatusTimer;
         $scope.runQuery = function() {
-            $scope.form.user = 'gaohailang';
-
             var curTime = 0;
 
             apiHelper('addJob', {

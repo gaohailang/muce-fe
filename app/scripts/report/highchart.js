@@ -189,7 +189,7 @@ define([
                     x_axis: Highcharts.dateFormat('%Y%m%d%H', event.point.x),
                     // period: MuceCom.getCurrentPeriod(),
                     filters: undefined, // MuceCom.stringifyObj(currentData.table_filters)
-                    user: helper.getNameFromCookie(),
+                    // user: helper.getNameFromCookie(),
                     comment: $('.annotation-container .textarea').val(),
                     type: 'put'
                 };
