@@ -13,7 +13,7 @@
     <tr ng-repeat="dimension in dimensionList">
         <td>{{dimension.id}}</td>
         <td>{{dimension.name}}</td>
-        <td>{{dimension.fields}}</td>
+        <td>{{dimension.fields|linizeArray}}</td>
         <!-- <td>
             <div tip-marker content="metric.fields"></div>
         </td> -->

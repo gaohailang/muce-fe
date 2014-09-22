@@ -38,11 +38,18 @@ define([], function() {
         }
     }
 
+    function linizeArray() {
+        return function(arr) {
+            return arr.join('\n');
+        }
+    }
+
     angular.module('muceApp.base.filters', [])
         .filter('capitalize', capitalize)
         .filter('joinArr', joinArr)
         .filter('dateNumFormat', dateNumFormat)
-        .filter('humanBytes', humanBytes);
+        .filter('humanBytes', humanBytes)
+        .filter('linizeArray', linizeArray);
 
     angular.module('muceApp.base.filters')
         .filter('transMetricsDetail', function() {
