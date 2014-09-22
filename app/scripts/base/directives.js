@@ -65,21 +65,6 @@ define([
         return function(scope, elem, attr) {
             // filter events, metrics for navbar
             scope.navs = ['report', 'mq', 'feedback'];
-
-            scope.loginIt = function() {
-                $modal.open({
-                    templateUrl: 'templates/login.html',
-                    controller: function($scope) {
-
-                        $scope.doLogin = function() {
-                            console.log($scope);
-                            $scope.isLoginError = true;
-                        }
-                        console.log($scope);
-                    },
-                    size: 'sm'
-                });
-            }
         }
     }
 

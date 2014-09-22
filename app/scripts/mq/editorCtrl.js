@@ -1,4 +1,4 @@
-define(function() {
+define(['mq/muce-hint'], function() {
     return function mqEditorCtrl($scope, $rootScope, $interval, apiHelper, $state) {
         $scope.form = {};
 
@@ -69,20 +69,8 @@ define(function() {
                 "Ctrl-Space": "autocomplete"
             },
             hintOptions: {
-                completeSingle: false,
-                tables: {
-                    users: {
-                        score: null,
-                        birthDate: null,
-                        'name.test.test': null,
-                        'name.sxx.test': null
-                    },
-                    countries: {
-                        name: null,
-                        population: null,
-                        size: null
-                    }
-                }
+                tables: {},
+                completeSingle: false
             },
             onLoad: function(_editor) {
                 // Editor part
@@ -121,6 +109,26 @@ define(function() {
                 }
             }
         };
+
+        apiHelper('getEventFields').then(function(data0) {
+            var tableHint = {};
+            _.each(data0, function(data, key) {
+                _.each(data, function(tableArr, colKey) {
+                    if (!tableHint[key]) tableHint[key] = {};
+                    _.each(tableArr, function(i) {
+                        tableHint[key][i] = null;
+                    });
+                });
+            });
+
+            $scope.editorOptions = {
+                hintOptions: {
+                    completeSingle: false,
+                    tables: tableHint,
+                    muceHintFieldsRef: data0
+                }
+            };
+        });
 
         $scope.$watch('form.hql', function(val) {
             if (!val) return;

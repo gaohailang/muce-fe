@@ -35,7 +35,8 @@ define([], function() {
             'getDbSchema': 'GET /mq/:db/:tb/schema',
             'getDbParts': 'GET /mq/:db/:table/partitions',
 
-            'getEventAbbr': 'GET /meta/eventAbb'
+            'getEventAbbr': 'GET /meta/eventAbb',
+            'getEventFields': 'GET /meta/eventFields'
         });
 
         // Tools - ua metric platform - prefix UAMP

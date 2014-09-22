@@ -56,6 +56,15 @@ textarea {
     }
 }
 
+.CodeMirror-hints {
+    overflow: scroll;
+    width: 500px;
+    .CodeMirror-hint {
+        max-width: none;
+        overflow: visible;
+    }
+}
+
 /* 外部组件设置 */
 
 
