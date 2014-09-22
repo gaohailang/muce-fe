@@ -28,7 +28,7 @@ define(function() {
                 }
             }).then(function(data) {
                 // remove from list
-                $scope.reportList = _.without($scope.reportList, item);
+                _state.reportList = _.without(_state.reportList, item);
             });
         };
     };

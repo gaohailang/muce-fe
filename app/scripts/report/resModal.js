@@ -322,7 +322,12 @@ define(function() {
             }, true);
         },
         metric: function($scope, apiHelper) {
-            $scope.$root.currentMetricTab = 'normal_metric';
+            if ($scope._data) {
+                if ($scope._data.metricType != 'NORMAL') return;
+                $scope.$root.currentMetricTab = 'normal_metric';
+            } else {
+                $scope.$root.currentMetricTab = 'normal_metric';
+            }
             apiHelper('getEventList').then(function(data) {
                 $scope.formFields[0].options = data;
                 $scope.formlyData.event = data[0];
@@ -343,6 +348,11 @@ define(function() {
             }, true);
         },
         combinedMetric: function($scope, apiHelper) {
+            if ($scope._data) {
+                if ($scope._data.metricType != 'COMBINE') return;
+                $scope.$root.currentMetricTab = 'combine_metric';
+            }
+
             $scope.formlyData.type = '0';
             apiHelper('getMetricList').then(function(data) {
                 $scope.metricList = data;
@@ -369,7 +379,7 @@ define(function() {
     }
 
     _.each(fieldsDict, function(formFields, key) {
-        resModalModule.controller(key + 'ModalCtrl', function($scope, apiHelper, $notice) {
+        resModalModule.controller(key + 'ModalCtrl', function($scope, apiHelper, $notice, $rootScope) {
             var prefix = $scope._data ? '(TEMP) - Edit ' : 'Add ';
             $scope.modalTitle = prefix + _.capitalize(key);
             $scope.formFields = formFields;

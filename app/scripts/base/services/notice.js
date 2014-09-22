@@ -7,7 +7,7 @@ define([], function() {
             // trustedHtml - <ul><li>Render html</li></ul>
             // template - myTpl.html
             $notice[type] = function(msg, title, timeout, msgType) {
-                toaster.pop(type, title, msg, timeout, msgType);
+                toaster.pop(type, title, msg, timeout, 'trustedHtml');
             };
         });
         return $notice;

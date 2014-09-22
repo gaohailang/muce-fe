@@ -48,15 +48,23 @@ define([
             templateUrl: 'templates/report/chart-table.html',
             controller: 'detailCtrl'
         },
-        'view_metrics': {
+        'report.view_metrics': {
             url: '/view_metrics',
-            templateUrl: 'templates/report/view_metrics.html',
-            controller: 'viewMetricsCtrl'
+            views: {
+                '@': {
+                    templateUrl: 'templates/report/view_metrics.html',
+                    controller: 'viewMetricsCtrl'
+                }
+            }
         },
-        'view_dimensions': {
+        'report.view_dimensions': {
             url: '/view_dimensions',
-            templateUrl: 'templates/report/view_dimensions.html',
-            controller: 'viewDimensionsCtrl'
+            views: {
+                '@': {
+                    templateUrl: 'templates/report/view_dimensions.html',
+                    controller: 'viewDimensionsCtrl'
+                }
+            }
         }
     };
 
@@ -65,32 +73,32 @@ define([
         viewCtrls = _.map(['metric', 'dimension'], function(type) {
             return function($scope, apiHelper, $rootScope, $modal) {
                 var capitalizeType = _.capitalize(type);
-                apiHelper('getDetail'+capitalizeType+'sList').then(function(data) {
-                    $scope[type+'List'] = data;
+                apiHelper('getDetail' + capitalizeType + 'sList').then(function(data) {
+                    $scope[type + 'List'] = data;
                 });
 
-                $scope['del'+capitalizeType] = function(item) {
-                    apiHelper('del'+capitalizeType, item.id).then(function() {
-                        var alertTip = Config.delAlertPrefix + type+' ' + item.name;
+                $scope['del' + capitalizeType] = function(item) {
+                    apiHelper('del' + capitalizeType, item.id).then(function() {
+                        var alertTip = Config.delAlertPrefix + type + ' ' + item.name;
                         if (!window.confirm(alertTip)) return;
                         // remove metric from list
-                        $scope[type+'List'] = _.without($scope[type+'List'], item);
+                        $scope[type + 'List'] = _.without($scope[type + 'List'], item);
                     });
                 }
 
-                $scope['edit'+capitalizeType] = function(item) {
+                $scope['edit' + capitalizeType] = function(item) {
                     var newScope = $scope.$new(true);
                     $scope._data = item;
 
                     var templateUrl;
-                    if(!$scope.delMetric) {
+                    if (!$scope.delMetric) {
                         templateUrl = 'templates/report/modal.html';
                     } else {
                         templateUrl = 'report/metric-tabs-modal.html';
                     }
                     $modal.open({
                         templateUrl: templateUrl,
-                        controller: type+'ModalCtrl',
+                        controller: type + 'ModalCtrl',
                         scope: $scope,
                         size: 'lg'
                     });

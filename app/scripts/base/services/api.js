@@ -109,7 +109,7 @@ define([
                 responseError: function(response) {
                     try {
                         $notice.error('error-' + response.status + ': ' +
-                            (response.config.url || '') + ' ' + (response.data.msg || ', 接口出问题啦!'));
+                            (response.config.url || '') + '<br>' + (response.data.msg || ', 接口出问题啦!'));
                     } catch (e) {
                         console.log('Err in apiHelperInterceptor: ' + e);
                     }
