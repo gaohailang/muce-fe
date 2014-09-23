@@ -44,12 +44,24 @@ define([], function() {
         }
     }
 
+    function percentize() {
+        return function(input) {
+            var rounded = Math.round(input * 10000) / 100;
+            if (isNaN(rounded)) {
+                return '';
+            }
+            var percentage = '' + rounded + '%';
+            return percentage;
+        };
+    }
+
     angular.module('muceApp.base.filters', [])
         .filter('capitalize', capitalize)
         .filter('joinArr', joinArr)
         .filter('dateNumFormat', dateNumFormat)
         .filter('humanBytes', humanBytes)
-        .filter('linizeArray', linizeArray);
+        .filter('linizeArray', linizeArray)
+        .filter('percentize', percentize);
 
     angular.module('muceApp.base.filters')
         .filter('transMetricsDetail', function() {
