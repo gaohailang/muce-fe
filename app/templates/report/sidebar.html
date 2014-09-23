@@ -59,7 +59,7 @@
     <li>
         <h3>Report:</h3>
         <!--Report List-->
-        <p class="text-warning orange" ng-show="!state.reportList"
+        <p class="text-warning orange" ng-show="!state.reportList || !state.reportList.length"
             style="padding-left: 10px;">
             <i class="icon-warning-sign"></i>
             No Report Created!
@@ -69,7 +69,7 @@
                 ng-mouseenter="isShow=true"
                 ng-mouseleave="isShow=false"
                 ng-class="{'active': (state.report == report)}">
-                <a href="#" ng-click="switchTypeVal('report', report)">
+                <a ng-click="switchTypeVal('report', report)">
                     {{report.name}}
                 </a>
                 <i class="icon-pencil" ng-show="isShow"

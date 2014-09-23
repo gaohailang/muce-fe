@@ -203,6 +203,13 @@ textarea {
             }
         }
     }
+
+    .chart-wrapper, .table-wrapper {
+        border: 1px solid #ccc;
+        padding: 4px;
+        margin: 4px;
+        position: relative;
+    }
 }
 
 // advanced dimension modal
@@ -225,6 +232,7 @@ textarea {
     .sidebar-list {
         & > li {
             position: relative;
+            overflow: hidden;
 
             a {
                 padding: 8px 14px;
@@ -328,10 +336,19 @@ textarea {
     .mq-job-history {
         table {
             tr > td:last-of-type {
-                cusror: pointer;
+                cursor: pointer;
             }
         }
     }
+}
+
+
+/* tool - UAMP */
+.metric-minus-up {
+    color: green;
+}
+.metric-minus-down {
+    color: red;
 }
 
 

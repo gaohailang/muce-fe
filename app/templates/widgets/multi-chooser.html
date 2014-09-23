@@ -1,7 +1,6 @@
 <div class="i-multi-choose-wrapper">
     <header class="selected-wrapper">
         <span>Selected Items:
-            <!-- ({{(choicesList|filter:{'selected': true}).length}} Num) -->
             &nbsp;&nbsp;
             <i class="icon-trash"
                 ng-show="trash"
@@ -20,7 +19,7 @@
         <div class="checkbox-wrapper">
             <label class="suggestion-item" ng-repeat="i in choicesList|filter: currentQuery">
                 <input type="checkbox" ng-model="i.selected" class="select-checkbox">
-                # {{i.name}}
+                {{i.name}}
             </label>
         </div>
     </div>
