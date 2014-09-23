@@ -14,9 +14,9 @@ define(function() {
             });
             var fieldNames = _.pluck(reportDetail.metrics, 'name');
             fieldNames.unshift('Date');
-            fieldNames = _.map(fieldNames, function(h) {
-                return _.slugify(h);
-            });
+            // fieldNames = _.map(fieldNames, function(h) {
+            //     return _.slugify(h);
+            // });
 
             var fieldIds = _.pluck(reportDetail.metrics, 'id');
             fieldIds.unshift('date');

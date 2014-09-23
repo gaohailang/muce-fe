@@ -42,7 +42,6 @@
                     {{th.disp_name}}
                 </td>
             </tr>
-
             <tr ng-repeat="metric in flatMetricsData"
                 ng-show="inferFromParent(metric)">
                 <td ng-show="inferFromParent(metric)" ng-style="setMetricLevelStyle(metric)">

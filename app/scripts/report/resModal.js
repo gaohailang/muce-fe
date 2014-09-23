@@ -115,13 +115,6 @@ define(function() {
                 }
             },
             dataDict.metricTypeField, dataDict.commentField, {
-                label: 'Across Day?',
-                key: 'isAcrossDay',
-                type: 'checkbox',
-                attrs: {
-                    validator: 'optional'
-                }
-            }, {
                 referTpl: 'report/add_metric/fileds.html'
             }
         ],
@@ -180,7 +173,9 @@ define(function() {
             }), function(x) {
                 return x.id;
             });
-            postData.dimensions = _.pluck($scope.dimensionList, 'id');
+            postData.dimensions = _.pluck(_.filter($scope.dimensionList, function(i) {
+                return i.selected;
+            }), 'id');
             postData.periods = [];
             if (postData.hour) postData.periods.push(1);
             if (postData.day) postData.periods.push(0);
