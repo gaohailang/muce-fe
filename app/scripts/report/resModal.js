@@ -97,7 +97,7 @@ define(function() {
                 }
             }, {
                 label: 'Where Condition',
-                key: 'condition',
+                key: 'conditions',
                 type: 'textarea',
                 attrs: {
                     'placeholder': "(选填) 例 url_normalize like '/explore/%'",
