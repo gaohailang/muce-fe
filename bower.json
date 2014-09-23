@@ -17,6 +17,7 @@
     "angular-animate": "~1.2.23",
     "angular-timer": "~1.1.6",
     "angular-bindonce": "~0.3.1",
-    "AngularJS-Toaster": "~0.4.7"
+    "AngularJS-Toaster": "~0.4.7",
+    "highcharts-ng": "https://github.com/pablojim/highcharts-ng"
   }
 }
