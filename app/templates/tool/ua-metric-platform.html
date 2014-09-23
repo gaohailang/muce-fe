@@ -1,9 +1,7 @@
-
-
 <div class="main-container container-fluid">
     <div class="sidebar">
         <ul class="nav nav-list">
-            <li ng-repeat="report in state.reportList">
+            <li ng-repeat="report in reportList">
                 <a ng-href="">{{report.name}}</a>
             </li>
         </ul>
@@ -24,14 +22,42 @@
 
         <!-- config: [report] -->
         <div ng-repeat="dimension in report.dimensions" dimension-checkbox></div>
+
+        <!-- <ui-select multiple ng-model="multipleDemo.colors" theme="select2" style="width: 300px;">
+          <ui-select-match placeholder="Select colors...">{{$item}}</ui-select-match>
+          <ui-select-choices repeat="color in availableColors | filter:$select.search">
+            {{color}}
+          </ui-select-choices>
+        </ui-select> -->
+
+
         <!-- label+input-select2-multi -->
 
         <button class="btn">Apply</button>
-        <!-- sync 刚才的东西和 junxiu -->
 
         <!-- todo 支持child字段的级联渲染 config: [report, state.period, state.start|end|Date, state.dimensions] -->
         <table class="table">
-            <tr></tr>
+            <tr>
+                <td ng-repeat="th in reportData.tableTitle">
+                    {{th.disp_name}}
+                </td>
+            </tr>
+
+            <tr ng-repeat="metric in flatMetricsData"
+                ng-show="inferFromParent(metric)">
+                <td ng-show="inferFromParent(metric)" ng-style="setMetricLevelStyle(metric)">
+                    <i class="icon-plus"
+                        ng-click="toggleMetricOpenStatus(metric)"
+                        ng-show="metric.haschild"
+                        ng-class='{"icon-plus": !metric.isopened,
+                                    "icon-minus": metric.isopened}'>
+                    </i>
+                    {{metric.name}}
+                </td>
+
+                <td ng-repeat="val in metric.data track by $index"
+                    ng-bind-html="formatByType(val, $index)"></td>
+            </tr>
         </table>
 
         <!-- chart config: [state.metric-list] -->

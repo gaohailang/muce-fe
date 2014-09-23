@@ -25,7 +25,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="ii in tbInfo[currentTbView]">
+                <tr ng-repeat="ii in tbInfo[currentTbView] track by $index">
                     <td>{{ii}}</td>
                 </tr>
             </tbody>

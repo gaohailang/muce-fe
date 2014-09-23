@@ -1,25 +1,21 @@
 
-<script type="text/ng-template"
-    id="report/_whereConditionTip.html">
+<script type="text/ng-template" id="report/_whereConditionTip.html">
     <span><a href="https://docs.google.com/a/wandoujia.com/document/d/1qVbj6d_lHIuFKzxnSPchCAZHtzkJX069EzZ2cJe3-o4/edit" target="_blank">预定义日期变量说明</a></span>
 </script>
 
-<script type="text/ng-template"
-    id="report/_validateMetric.html">
+<script type="text/ng-template" id="report/_validateMetric.html">
     <input type="text" name="validate-metric" ng-model="_validateMetric" style="display: none"
         multi-choose-checker-error-message="Metrics 数量应该 <= 10"
         validator="multiChooseChecker" key="metricList" gt="0" lt="4">
 </script>
 
-<script type="text/ng-template"
-    id="report/_validateDimension.html">
+<script type="text/ng-template" id="report/_validateDimension.html">
     <input type="text" name="validate-dimension" ng-model="_validateDimension" style="display: none"
         multi-choose-checker-error-message="Dimensions都可以选择，一次只能选不大于3个"
         validator="multiChooseChecker" key="dimensionList" gt="0" lt="11">
 </script>
 
-<script type="text/ng-template"
-    id="report/add_report/period.html">
+<script type="text/ng-template" id="report/add_report/period.html">
     <label for="hour" style="display: none;">Hour
         <input type="checkbox" value="1" name="hour"
             validator="periodChooser" ng-model="formlyData.hour">
@@ -29,8 +25,7 @@
     </label>
 </script>
 
-<script type="text/ng-template"
-    id="report/add_metric/expression.html">
+<script type="text/ng-template" id="report/add_metric/expression.html">
 
     <div class="control-group x-control-stack-select">
         <label class="control-label">
@@ -55,24 +50,22 @@
     </div>
 </script>
 
-<script type="text/ng-template"
-    id="report/add_metric/fileds.html">
+<script type="text/ng-template" id="report/add_metric/fileds.html">
     <table class="table table-striped">
         <tr>
             <th>Name</th>
-            <th>Id</th>
+            <!-- <th>Id</th> -->
             <th>Type</th>
         </tr>
         <tr ng-repeat="item in optionalFileds">
             <td>{{item.name}}</td>
-            <td>{{item.id}}</td>
-            <td>{{item.type}}</td>
+            <!-- <td>{{item.id}}</td> -->
+            <td>{{item.type_name}}</td>
         </tr>
     </table>
 </script>
 
-<script type="text/ng-template"
-    id="report/add_dimension/fields.html">
+<script type="text/ng-template" id="report/add_dimension/fields.html">
     <ui-select ng-model="formlyData.field">
       <ui-select-match placeholder="Select or search in the list...">{{$select.selected.name}}</ui-select-match>
       <ui-select-choices repeat="opt in formFields[0].options | filter: {name: $select.search}">
@@ -83,8 +76,7 @@
     </ui-select>
 </script>
 
-<script type="text/ng-template"
-    id="report/metric-tabs-modal.html">
+<script type="text/ng-template" id="report/metric-tabs-modal.html">
 
     <div class="modal-header">
         <button type="button" class="close" ng-click="$close()"
@@ -125,8 +117,7 @@
     </div>
 </script>
 
-<script type="text/ng-template"
-    id="report/dimen-adv-modal.html">
+<script type="text/ng-template" id="report/dimen-adv-modal.html">
     <div class="modal-header">
         <button type="button" class="close" ng-click="$close()"
             data-dismiss="modal" aria-hidden="true">×</button>
@@ -162,6 +153,5 @@
         <button class="btn" data-dismiss="modal" ng-click="$close()">Close</button>
         <button class="btn btn-primary" ng-click="dimenAdv.saveFilters()">Save Changes</button>
     </div>
-
 </script>
 
