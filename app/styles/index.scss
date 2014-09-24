@@ -111,7 +111,9 @@ textarea {
 
     // Todo: check
     .detail-list {
+        list-style: none;
         padding-left: 0;
+        margin: 0;
     }
     .report-detail-triiger {
         cursor: pointer;
@@ -130,9 +132,12 @@ textarea {
         vertical-align: middle;
         line-height: 440px;
         font-size: 30px;
+        border: 1px solid #ccc;
+        position: relative;
     }
 
     .setting-wrapper {
+        margin-bottom: 10px;
         // quick compoent
         .quickdate {
             width: 200px;
@@ -146,6 +151,10 @@ textarea {
         .date-operator, .dimension-operator {
             & > * {
                 margin-right: 10px;
+            }
+            & > * {
+                margin-bottom: 0!important;
+                vertical-align: middle;
             }
         }
         .date-operator {
@@ -175,8 +184,8 @@ textarea {
             }
         }
         .trigger-wrapper {
-            vertical-align: middle;
-            margin-top: 10px;
+            /* vertical-align: middle;
+            margin-top: 10px; */
         }
 
         select {
@@ -203,12 +212,13 @@ textarea {
             }
         }
     }
+}
 
-    .chart-wrapper, .table-wrapper {
-        border: 1px solid #ccc;
-        padding: 4px;
-        margin: 4px;
-        position: relative;
+.mc-report-filter-table {
+    table-layout: fixed;
+
+    td > select, td > input {
+        width: 95%;
     }
 }
 
@@ -318,6 +328,16 @@ textarea {
       overflow-x: auto;
     }
 
+    .mq-tb-view {
+        position: relative;
+
+        .tbinfo-db-tb-name {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+        }
+    }
+
     .mq-db-list {
         .db-list{
             list-style: none;
@@ -334,10 +354,8 @@ textarea {
     }
 
     .mq-job-history {
-        table {
-            tr > td:last-of-type {
-                cursor: pointer;
-            }
+        tr > td:last-of-type {
+            cursor: pointer;
         }
     }
 }

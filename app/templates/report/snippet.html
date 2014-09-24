@@ -121,37 +121,43 @@
     <div class="modal-header">
         <button type="button" class="close" ng-click="$close()"
             data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 class="modal-title">Advanced</h3>
+        <h3 class="modal-title">Filter Setting</h3>
     </div>
     <div class="modal-body">
-        <form class="form-horizontal mc-report-dimenAdv-form">
-            <div class="control-group"
-                ng-repeat="dimen in dimenAdv.dimensions track by $index">
-                <label class="control-label" for="dimension-{{$index}}">
-                    {{dimen.name}}</label>
-                <div class="controls"
-                    ng-init="dimenAdv.nowDimensionsType[$index]=dimenAdv.filterTypes[0]">
-                    <select id="dimension-{{$index}}"
-                        ng-model="dimenAdv.nowDimensionsType[$index]"
-                        ng-options="i for i in dimenAdv.filterTypes"></select>
+        <!-- Todo: 加个提示说不能超过三个！！ -->
+        <table class="mc-report-filter-table">
+            <tr>
+                <th width="33%">Dimension</th>
+                <th width="33%">Filter Type</th>
+                <th width="34%">Filter Value</th>
+            </tr>
+            <tr ng-repeat="i in [1,2,3] track by $index">
+                <td>
+                    <select ng-model="state.dimenAdv.dimensions[$index]"
+                        ng-options="i as i.name for i in state.reportDetail.dimensions">
+                    </select>
+                </td>
+                <td>
+                    <select ng-model="state.dimenAdv.nowDimensionsType[$index]"
+                        ng-options="i for i in state.dimenAdv.filterTypes"></select>
+                </td>
+                <td>
                     <input type="text"
-                        ng-model="dimenAdv.nowDimensionsVal[$index]"
-                        ng-show="dimenAdv.nowDimensionsType[$index]">
-                </div>
-            </div>
-        </form>
+                        ng-model="state.dimenAdv.nowDimensionsVal[$index]"
+                        ng-show="state.dimenAdv.nowDimensionsType[$index]">
+                </td>
+            </tr>
+        </table>
     </div>
     <div class="modal-footer">
-        <a target="_blank">
+        <!-- <a target="_blank">
             <i class="icon-question-sign modal-help"
                 rel="tooltip" data-placement="right"
                 data-original-title="Help Document">
             </i>
-        </a>
-        <i ng-show="dimenAdv.filters"
-            ng-click="dimenAdv.removeFilters()" class="icon-trash"></i>
+        </a> -->
         <button class="btn" data-dismiss="modal" ng-click="$close()">Close</button>
-        <button class="btn btn-primary" ng-click="dimenAdv.saveFilters()">Save Changes</button>
+        <button class="btn btn-primary" ng-click="state.dimenAdv.saveFilters()">Save Changes</button>
     </div>
 </script>
 

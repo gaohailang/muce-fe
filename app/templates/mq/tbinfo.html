@@ -1,34 +1,32 @@
 <div class="mq-tb-view" ng-show="currentDb">
-    <div id="mq_db_tb_des">
+    <div class="tbinfo-db-tb-name">
         <i class="icon-th"></i>
         <span class="label label-important">{{currentDb}}</span>
         <i class="icon-table"></i>
         <span class="label label-info">{{currentTb}}</span>
-
-        <div class="btn-group">
-            <button class="btn"
-                ng-repeat="i in ['schema', 'partition']"
-                ng-click="switchTbView(i)"
-                ng-class="{'active': currentTbView==i}">
-                {{i}}
-            </button>
-        </div>
     </div>
-
-    <div ng-show="currentTb">
-        <table class="table table-striped"
-            ng-show="i == currentTbView"
-            ng-repeat="i in ['schema', 'partition']">
-            <thead>
-                <tr>
-                    <th>{{i}}</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="ii in tbInfo[currentTbView] track by $index">
-                    <td>{{ii}}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <tabset ng-show="currentTb">
+        <tab heading="shema">
+            <table class="table table-striped">
+                <tbody>
+                    <tr bindonce quick-ng-repeat="ii in tbInfo.schema track by $index"
+                        quick-repeat-list="tbInfo.schema">
+                        <td bo-text="ii"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </tab>
+        <tab heading="partition">
+            <table class="table table-striped">
+                <tbody>
+                    <tr bindonce quick-ng-repeat="ii in tbInfo.partition track by $index"
+                        quick-repeat-list="tbInfo.partition">
+                        <td bo-text="ii"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </tab>
+    </tabset>
 </div>
+
+

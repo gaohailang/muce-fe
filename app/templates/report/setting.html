@@ -1,6 +1,6 @@
 <section class="setting-wrapper">
     <div class="row-fluid">
-        <div class="operator-wrapper span10">
+        <div class="operator-wrapper span9">
             <div class="date-operator">
 
                 <select id="quickChooseList"
@@ -25,44 +25,24 @@
                     ng-class="{'active': (state.period === i)}"
                     ng-click="state.period = i">{{i|transPeriod}}</button>
                 </div>
-            </div>
 
-            <!-- <div class="dimension-operator">
-                <label for="dimensions_1"
-                    ng-show="state.reportDetail.dimensions.length>0">1st Dimen:
-                    <select id="dimensions_1" ng-model="dimensions.1st"
-                        ng-options="i as i.name for i in current.reportDetail.dimensions">
-                    </select>
-                </label>
-                <label for="dimensions_2"
-                    ng-show="current.reportDetail.dimensions.length>1">2nd Dimen:
-                    <select id="dimensions_2"  ng-model="dimensions.2nd"
-                        ng-options="i as i.name for i in current.reportDetail.dimensions">
-                    </select>
-                </label>
-                <label for="dimensions_3"
-                    ng-show="current.reportDetail.dimensions.length>2">3rd Dimen:
-                    <select id="dimensions_3" ng-model="dimensions.3rd"
-                        ng-options="i as i.name for i in current.reportDetail.dimensions">
-                    </select>
-                </label>
-                <button class="btn"
-                    ng-show="current.reportDetail.dimensions.length"
-                    ng-class="{'active': dimenAdv.filters}"
+                <!-- <button class="btn"
+                    ng-show="state.reportDetail.dimensions.length"
+                    ng-class="{'active': state.dimenAdv.filters}"
                     ng-click="openAdvancedPanel()">
-                    <span ng-if="!dimenAdv.filters">Advanced</span>
-                    <span ng-if="dimenAdv.filters">Advanced Filter ON</span>
-                </button>
-            </div> -->
+                    <span ng-show="!state.dimenAdv.filters">Filter</span>
+                    <span ng-show="state.dimenAdv.filters">Filter ON</span>
+                </button> -->
+            </div>
         </div>
 
-        <div class="trigger-wrapper span2" ng-init="isShowDetailInfo = false">
+        <div class="trigger-wrapper span3" ng-init="isShowDetailInfo = false">
             <button class="btn btn-primary refresh-report" ng-click="fetchReports()">apply</button>
 
             <button class="report-detail-triiger"
                 ng-click="isShowDetailInfo = !isShowDetailInfo">
                 <i ng-class="{'icon-folder-close': !isShowDetailInfo, 'icon-folder-open': isShowDetailInfo}"
-                    tooltip="{{isShowDetailInfo?'Hide Report Detail':'Show Report Detail'}}"></i>
+                    tooltip="{{isShowDetailInfo?'Hide Report Detail':'Show Report Detail'}}">&nbsp;Report Detail</i>
             </button>
         </div>
     </div>

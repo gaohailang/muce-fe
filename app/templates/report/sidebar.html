@@ -7,7 +7,7 @@
         <div class="btn-group" dropdown>
 
             <button class="btn btn-success dropdown-toggle btn-name">
-                <span>{{state.group.name||'loading...'}}</span>
+                <span tooltip="{{state.group.name}}">{{state.group.name||'loading...'}}</span>
             </button>
 
             <button class="btn btn-success btn-caret dropdown-toggle">
@@ -33,7 +33,7 @@
         <h3>Category:</h3>
         <div class="btn-group" dropdown>
             <button class="btn btn-info btn-name" dropdown-toggle>
-                <span>
+                <span tooltip="{{state.category.name}}">
                     {{state.categoryList ? (state.categoryList.length ? state.category.name : 'No Category') : 'loading...'}}
                 </span>
             </button>

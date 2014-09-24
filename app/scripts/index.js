@@ -18,6 +18,7 @@ require([
         'ngQuickDate',
         'pasvaz.bindonce',
         'toaster',
+        'QuickList',
 
         'muceApp.api',
         'muceApp.base',

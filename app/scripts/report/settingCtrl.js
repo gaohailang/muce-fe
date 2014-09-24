@@ -1,5 +1,5 @@
 define(function() {
-    return function settingCtrl($scope, apiHelper, $timeout, $state, $rootScope, $filter) {
+    return function settingCtrl($scope, apiHelper, $timeout, $state, $rootScope, $filter, $modal) {
         var _state = $rootScope.state;
 
         $scope.quickChooseList = Config.quickDataList;
@@ -49,6 +49,44 @@ define(function() {
         $scope.onDateChnage = function() {
             // reset currentQuick
             $scope.currentQuick = '';
+        };
+
+
+        /* Dimen Advanced Modal */
+        var dimenAdvModal;
+        $scope.openAdvancedPanel = function() {
+            dimenAdvModal = $modal.open({
+                templateUrl: 'report/dimen-adv-modal.html',
+                scope: $scope
+            });
+        };
+
+        _state.dimenAdv = {
+            dimensions: [],
+            filters: null,
+            filterTypes: ['', 'EQUAL', 'NOT_EQUAL', 'CONTAINING', 'STARTSWITH', 'ENDSWITH', 'NOT_CONTAINING', 'NOT_STARTSWITH', 'NOT_ENDSWITH'],
+            nowDimensionsType: [],
+            nowDimensionsVal: [],
+            saveFilters: function() {
+                var self = this;
+                self.filters = [];
+                _.each(self.dimensions, function(i, idx) {
+                    // {"value":"1.0.0","key":"d1","operator":"EQUAL"}
+                    if (self.nowDimensionsType[idx] && self.nowDimensionsVal[idx]) {
+                        self.filters.push({
+                            value: self.nowDimensionsVal[idx],
+                            operator: self.nowDimensionsType[idx],
+                            key: 'd' + i.id
+                        });
+                    }
+                });
+                // Tdo: move to chartStateDiff
+                self.filters ? fetchReports() : '';
+                dimenAdvModal.close();
+            },
+            removeFilters: function() {
+                this.filters = null;
+            }
         };
 
         _state.isFetching = false;

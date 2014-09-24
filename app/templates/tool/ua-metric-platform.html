@@ -38,12 +38,16 @@
         <!-- todo 支持child字段的级联渲染 config: [report, state.period, state.start|end|Date, state.dimensions] -->
         <table class="table">
             <tr>
+                <td ng-show="state.isSelectMetricMode">选择</td>
+
                 <td ng-repeat="th in reportData.tableTitle">
                     {{th.disp_name}}
                 </td>
             </tr>
             <tr ng-repeat="metric in flatMetricsData"
                 ng-show="inferFromParent(metric)">
+                <td ng-show="state.isSelectMetricMode"><input type="checkbox"></td>
+
                 <td ng-show="inferFromParent(metric)" ng-style="setMetricLevelStyle(metric)">
                     <i class="icon-plus"
                         ng-click="toggleMetricOpenStatus(metric)"
@@ -59,8 +63,16 @@
             </tr>
         </table>
 
+        <button type="button" class="btn" btn-checkbox
+            ng-model="state.isSelectMetricMode">{{state.isSelectMetricMode?'取消':'确定'}}</button>
+        <button type="button" class="btn"
+            ng-show="state.isSelectMetricMode" ng-click="renderChart()">确定</button>
+
         <!-- chart config: [state.metric-list] -->
-        <div chart></div>
+        <div class="chart" ng-show="state.isShowChart">
+            <highchart config="chartConfig"></highchart>
+        </div>
+
     </div>
 </div>
 

@@ -34,6 +34,7 @@ define([], function() {
 
         $rootScope.state = {};
         var _state = $rootScope.state;
+        _state.isSelectMetricMode = false;
         apiHelper('getUAMPReportList').then(function(data) {
             $scope.reportList = data;
             // first or from url
@@ -121,11 +122,39 @@ define([], function() {
             }
             return ret;
         };
+
+
+        // Todo: 加个 Date Range 选择器在页面中~~
+
+        $scope.renderChart = function() {
+            var _state = $rootScope.state;
+
+            _state.isShowChart = true;
+        };
+
+        $scope.chartConfig = {
+            options: {
+                chart: {
+                    type: 'line', // spline
+                    zoomType: 'x'
+                }
+            },
+            series: [{
+                data: [5146747.0000, 5616327.0000, 5628277.0000, 5632576.0000, 5974986.0000, 5127350.0000, 5158867.0000, 5127709.0000]
+            }],
+            xAxis: {
+                categories: ["20140910", "20140911", "20140912", "20140913", "20140914", "20140915", "20140916", "20140917"],
+            },
+            title: {
+                text: 'Hello' // 标题
+            },
+            loading: false
+        };
     }
 
     // 1?timespan=1440&dateTime=20140921&dimensions=[{"id": 1, "value": ["", "1"]}, {"id": 2, "value": [""]}]
 
-    angular.module('muceApp.tool', [])
+    angular.module('muceApp.tool', ['highcharts-ng'])
         .controller('UAMPCtrl', UAMPCtrl)
         .config(function($stateProvider) {
             _.each(routeInfo, function(opt, name) {

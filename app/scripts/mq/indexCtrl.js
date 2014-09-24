@@ -15,7 +15,9 @@ define(function() {
             apiHelper('getDbSchema', db, tb).then(function(data) {
                 $scope.tbInfo.schema = data;
             });
-            apiHelper('getDbParts', db, tb).then(function(data) {
+            apiHelper('getDbParts', db, tb, {
+                busy: 'global'
+            }).then(function(data) {
                 $scope.tbInfo.partition = data ? data.reverse() : [];
             });
             // change to info state
