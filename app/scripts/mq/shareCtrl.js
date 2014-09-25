@@ -1,6 +1,12 @@
 define(function() {
     return function($scope, apiHelper) {
 
+        $scope.mqShareInputHandler = function(e) {
+            if (e.keyCode === 13) {
+                $scope.queryUserJobList();
+            }
+        };
+
         $scope.queryUserJobList = function() {
             apiHelper('getJobList', {
                 params: {

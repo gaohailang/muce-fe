@@ -113,7 +113,7 @@ define([
         $rootScope.$on('report:fetchReportData', function() {
             var defaultParams = {
                 filters: [],
-                cache: 1,
+                cache: true,
                 dimensions: []
             };
             if (_state.isAjaxFetching) return;

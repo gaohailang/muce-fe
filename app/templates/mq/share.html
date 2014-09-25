@@ -1,9 +1,11 @@
 <div id="mq_user_query_share">
-    <div class="navbar-div pull-right">
-        <div class="alert alert-info">
-            <strong>Heads up!</strong> The search needs wiki account name. For example, if you want to dig chengzhidao's querys, you should type <strong>cheng</strong>.
-        </div>
-        <input type="text" class="span5" ng-model="userName">
+    <div class="navbar-div">
+        <p>
+            <span class="alert alert-info">
+                <strong>Heads up!</strong> The search needs wiki account name.
+            </span>
+        </p>
+        <input type="text" class="span3" ng-model="userName" ng-keydown="mqShareInputHandler($event)">
         <button type="submit" class="btn btn-primary mq-search"
             ng-click="queryUserJobList()">Search</button>
     </div>
