@@ -120,7 +120,7 @@ define([
                 response: function(response) {
                     // config be closed
                     if (response.config.url.indexOf('/api/') > -1) {
-                        if (response.config.method === 'POST') {
+                        if (_.contains(['PUT', 'POST', 'DELETE'], response.config.method)) {
                             $notice.success('操作成功！');
                         }
                         return response.data.data;

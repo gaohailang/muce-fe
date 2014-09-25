@@ -9,7 +9,7 @@ define(function() {
         $scope.openEditModal = function(type, data) {
             // edit for group, category, report
             var newScope = $scope.$new(true);
-            $scope._data = data;
+            $scope._data = _.clone(data);
 
             $modal.open({
                 templateUrl: 'templates/report/modal.html',

@@ -133,6 +133,7 @@ define([
         }
 
         function addAnotation(event) {
+            return;
             $('.annotation-container').remove();
             var annotationId; // Todo: fix annotation edit(not found?!)
             if (event.point.marker) {

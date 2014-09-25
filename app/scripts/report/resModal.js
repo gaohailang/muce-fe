@@ -6,8 +6,6 @@ define(function() {
             key: 'comment',
             type: 'textarea',
             attrs: {
-                // validator: 'required,lengthRange',
-                // validator: 'optional',
                 range: '4,30',
                 'text-area-elastic': true,
                 'rows': '4',
@@ -26,6 +24,30 @@ define(function() {
             options: ['int', 'float', 'percent'],
             attrs: {
                 validator: 'required'
+            }
+        },
+
+        // modifyTime, createTime, owner fields for edit mode
+        modifyTimeField: {
+            key: 'modifyTime',
+            label: 'Modified Time',
+            attrs: {
+                disabled: true
+            }
+        },
+        createTimeField: {
+            key: 'createTime',
+            label: 'Created Time',
+            attrs: {
+                disabled: true
+            }
+        },
+
+        ownerField: {
+            key: 'owner',
+            label: 'Owner',
+            attrs: {
+                disabled: true
             }
         }
     };
@@ -68,13 +90,13 @@ define(function() {
                 controlHtml: '<div multi-chooser choices-list="dimensionList"></div>',
                 label: 'Dimension'
             },
-            // {
-            //     controlTpl: 'report/_validateDimension.html',
-            //     label: '',
-            //     wrapAttr: {
-            //         style: 'margin-top: -20px'
-            //     }
-            // },
+            /*{
+                controlTpl: 'report/_validateDimension.html',
+                label: '',
+                wrapAttr: {
+                    style: 'margin-top: -20px'
+                }
+            },*/
             dataDict.commentField, {
                 key: 'isEnable',
                 type: 'checkbox'
@@ -146,23 +168,40 @@ define(function() {
     var submitMap = {
         group: function($scope, apiHelper) {
             var postData = $scope.formlyData;
-            apiHelper('addGroup', {
-                data: postData
-            }).then(function(data) {
-                // Todo 区分 add/edit 的后续处理 ($scope._data variable)
-                $scope.$root.state.groupList.push(data);
-                $scope.$close();
-            });
+            if ($scope._data) {
+                apiHelper('editGroup', {
+                    data: postData
+                }).then(function(data) {
+                    replaceInCollection($scope.$root.state.groupList, postData, 'id');
+                    $scope.$close();
+                });
+            } else {
+                apiHelper('addGroup', {
+                    data: postData
+                }).then(function(data) {
+                    $scope.$root.state.groupList.push(data);
+                    $scope.$close();
+                });
+            }
         },
         category: function($scope, apiHelper) {
             // before send
             var postData = processIdObj($scope.formlyData, 'group');
-            apiHelper('addCategory', {
-                data: postData
-            }).then(function(data) {
-                $scope.$root.state.categoryList.push(data);
-                $scope.$close();
-            });
+            if ($scope._data) {
+                apiHelper('editCategory', {
+                    data: postData
+                }).then(function(data) {
+                    replaceInCollection($scope.$root.state.categoryList, postData, 'id');
+                    $scope.$close();
+                });
+            } else {
+                apiHelper('addCategory', {
+                    data: postData
+                }).then(function(data) {
+                    $scope.$root.state.categoryList.push(data);
+                    $scope.$close();
+                });
+            }
         },
         report: function($scope, apiHelper, $notice) {
             var postData = _.clone($scope.formlyData);
@@ -207,11 +246,20 @@ define(function() {
         metric: function($scope, apiHelper) {
             var postData = _.clone($scope.formlyData);
             postData.type = +(postData.type);
-            apiHelper('addMetric', {
-                data: processIdObj(postData, 'event')
-            }).then(function() {
-                $scope.$close();
-            });
+            if ($scope._data) {
+                apiHelper('editMetric', {
+                    data: postData
+                }).then(function(data) {
+                    replaceInCollection($scope.metricList, postData, 'id');
+                    $scope.$close();
+                });
+            } else {
+                apiHelper('addMetric', {
+                    data: processIdObj(postData, 'event')
+                }).then(function() {
+                    $scope.$close();
+                });
+            }
         },
         combinedMetric: function($scope, apiHelper) {
             var postData = _.clone($scope.formlyData);
@@ -373,11 +421,24 @@ define(function() {
         });
     }
 
+    function replaceInCollection(collection, item, identitier) {
+        _.each(collection, function(i, idx) {
+            if (i[identitier] === item[identitier]) {
+                collection[idx] = item;
+            }
+        });
+    }
+
     _.each(fieldsDict, function(formFields, key) {
         resModalModule.controller(key + 'ModalCtrl', function($scope, apiHelper, $notice, $rootScope) {
             var prefix = $scope._data ? '(TEMP) - Edit ' : 'Add ';
             $scope.modalTitle = prefix + _.capitalize(key);
             $scope.formFields = formFields;
+            // Todo: check _data eidt with edit field
+            if ($scope._data) {
+                $scope.formFields = $scope.formFields.concat([dataDict.ownerField, dataDict.createTimeField, dataDict.modifyTimeField]);
+                // remove specific field for category, report etc
+            }
             $scope.formName = 'formly';
             $scope.formlyData = {};
 

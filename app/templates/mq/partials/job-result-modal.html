@@ -1,10 +1,9 @@
 <div class="modal-header">
     <button type="button" class="close" ng-click="$close()">×</button>
-    <h3 class="modal-title" ng-if="result">JOB RESULT</h3>
-    <h3 class="modal-title" ng-if="reason">FAILED REASON</h3>
+    <h3 class="modal-title">JOB RESULT</h3>
 </div>
 <div class="modal-body" ng-class="{'i-bg-red': reason}">
-    <table class="table table-striped" ng-if="result">
+    <table class="table table-striped">
         <tbody>
             <tr ng-repeat="i in result track by $index">
                 <td ng-repeat="ii in i track by $index">{{ii}}</td>

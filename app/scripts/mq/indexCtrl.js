@@ -1,5 +1,7 @@
 define(function() {
     return function mqCtrl($scope, apiHelper, $state, $stateParams) {
+        $scope.$root.appTitle = 'MQ';
+
         $scope.changeDb = function(db) {
             $scope.allTables = [];
             $scope.currentDb = db;

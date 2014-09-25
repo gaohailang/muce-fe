@@ -6,7 +6,13 @@ define([
 ], function() {
 
     angular.module('muceApp.base', ['muceApp.base.services', 'muceApp.base.filters', 'muceApp.base.directives'])
-        .run(function($notice, $timeout) {
+        .run(function($notice, $timeout, $rootScope) {
+            // appTitle
+            $rootScope.$watch('appTitle', function(val) {
+                if (!val) return;
+                document.title = val + ' - Muce 3.0 - Wandoulabs';
+            });
+
             // add compatible check and notice
             if (navigator && navigator.userAgent && (navigator.userAgent.indexOf('Chrome') === -1)) {
                 $timeout(function() {
