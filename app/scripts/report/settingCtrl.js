@@ -4,26 +4,15 @@ define(function() {
 
         $scope.quickChooseList = Config.quickDataList;
 
+        _state.firstInit = true;
         $scope.$watch('state.report', function(report) {
             if (!report) return;
 
             apiHelper('getReportDetail', report.id, {
                 busy: 'global'
             }).then(function(data) {
-                if ($state.params.startDate && $state.params.endDate && $state.params.period) {
-                    _.each(['startDate', 'endDate'], function(type) {
-                        _state[type] = Helper.deSerApiDate($state.params[type], $state.params.period);
-                    });
-                    _state.period = $state.params.period;
-                    fetchReports();
-                } else {
-                    $scope.currentQuick = 0;
-                    $timeout(function() {
-                        _state.period = data.periods[0];
-                        $scope.currentQuick = -14; // last two week
-                    });
-                }
                 _state.reportDetail = data;
+                _state.dimenAdv.clearStatus();
             });
         }, true);
 
@@ -50,7 +39,6 @@ define(function() {
             // reset currentQuick
             $scope.currentQuick = '';
         };
-
 
         /* Dimen Advanced Modal */
         var dimenAdvModal;
@@ -84,10 +72,64 @@ define(function() {
                 self.filters ? fetchReports() : '';
                 dimenAdvModal.close();
             },
+            deSerFilters: function() {
+                var self = this;
+                _.each(self.filters, function(item) {
+                    self.nowDimensionsType.push(item.operator);
+                    self.nowDimensionsVal.push(item.value);
+                });
+            },
+            clearStatus: function() {
+                var self = this;
+                self.dimensions = [];
+                self.filters = null;
+                self.nowDimensionsVal = [];
+                self.NOT_ENDSWITH = [];
+            },
             removeFilters: function() {
                 this.filters = null;
             }
         };
+
+
+        $rootScope.$watch('state.reportDetail', function(data) {
+            if (!data) return;
+            if (!_state.firstInit) {
+                $scope.currentQuick = 0;
+                $timeout(function() {
+                    _state.period = data.periods[0];
+                    $scope.currentQuick = -14; // last two week
+                });
+                return;
+            }
+            _state.firstInit = false;
+            if ($state.params.dimensions) {
+                _state.dimenAdv.dimensions = _.map(JSON.parse($state.params.dimensions), function(id) {
+                    return _.find(_state.reportDetail.dimensions, function(item) {
+                        return item.id === id;
+                    });
+                });
+            }
+
+            if ($state.params.filters && !_state.dimenAdv.filters) {
+                _state.dimenAdv.filters = JSON.parse($state.params.filters);
+                // rebuild the filters panel
+                _state.dimenAdv.deSerFilters();
+            }
+
+            if ($state.params.startDate && $state.params.endDate && $state.params.period) {
+                _.each(['startDate', 'endDate'], function(type) {
+                    _state[type] = Helper.deSerApiDate($state.params[type], $state.params.period);
+                });
+                _state.period = $state.params.period;
+            } else {
+                $scope.currentQuick = 0;
+                $timeout(function() {
+                    _state.period = data.periods[0];
+                    $scope.currentQuick = -14; // last two week
+                });
+            }
+        }, true);
 
         _state.isFetching = false;
 
@@ -102,8 +144,11 @@ define(function() {
                 report: _state.report.name,
                 startDate: Helper.serApiDate(_state.startDate, _state.period),
                 endDate: Helper.serApiDate(_state.endDate, _state.period),
-                period: _state.period
+                period: _state.period,
+                dimensions: JSON.stringify(_.pluck(_state.dimenAdv.dimensions, 'id')),
+                filters: JSON.stringify(_state.dimenAdv.filters)
             });
+
             $timeout(function() {
                 $rootScope.$emit('report:fetchReportData');
             });

@@ -44,7 +44,7 @@ define([
             }
         },
         'report.detail': {
-            url: '/:group/:category/:report?startDate&endDate&period',
+            url: '/:group/:category/:report?startDate&endDate&period&dimensions&filters',
             templateUrl: 'templates/report/chart-table.html',
             controller: 'detailCtrl'
         },
@@ -120,7 +120,7 @@ define([
             _state.isAjaxFetching = true;
             apiHelper('getReport', _state.report.id, {
                 busy: 'global',
-                params: _.extend(defaultParams, _.pick($state.params, 'period', 'startDate', 'endDate'))
+                params: _.extend(defaultParams, _.pick($state.params, 'period', 'startDate', 'endDate', 'filters', 'dimensions'))
             }).then(function(data) {
                 highchart.buildLineChart(_state.reportDetail, data);
                 $rootScope.$emit('report:renderReportData', [_state.reportDetail, data]);

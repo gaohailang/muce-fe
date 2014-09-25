@@ -64,14 +64,14 @@ define([], function() {
         .filter('percentize', percentize);
 
     angular.module('muceApp.base.filters')
-        .filter('transMetricsDetail', function() {
+        .filter('transMetricsDetail', function($filter) {
             function buildExp(metric) {
                 return metric.target + (metric.conditions ? ' where ' + metric.conditions : '');
             }
             return function(metrics) {
                 // type trans
                 return _.map(metrics, function(metric) {
-                    return metric.name + ': ' + metric.type + ', ' + buildExp(metric);
+                    return metric.name + ': ' + $filter('castDimensionType')(metric.type) + ', ' + buildExp(metric);
                 }).join('\n')
             }
         }).filter('transPeriod', function() {

@@ -36,6 +36,32 @@ define(function() {
                 });
                 return i;
             });
+
+            function get_D_M_NameById(i) {
+                if (i.indexOf('d') === 0) {
+                    return _.find(reportDetail.dimensions, function(d) {
+                        return d.id == i.slice(1);
+                    }).name;
+                } else {
+                    return _.find(reportDetail.metrics, function(m) {
+                        return m.id == i; // catch out id == "id"
+                    }).name;
+                }
+            }
+
+            var tbFields = [{
+                id: 'date',
+                name: 'Date'
+            }];
+            _.each(_.keys($scope.tableRows[0]), function(i) {
+                if (i !== 'date') {
+                    tbFields.push({
+                        id: i,
+                        name: get_D_M_NameById(i)
+                    });
+                }
+            });
+            $scope.tbFields = tbFields;
         }
 
         $scope.sortReverse = false;
