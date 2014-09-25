@@ -9,15 +9,20 @@
                     <option value="">-- Quick Select --</option>
                 </select>
 
-                <quick-datepicker icon-class='fa fa-calendar'
-                    on-change="onDateChnage()"
-                    label-format="yyyy-MM-dd hh:mm"
-                    ng-model='state.startDate' disable-timepicker="state.period"></quick-datepicker>
+
+                <quick-datepicker icon-class='icon-calendar'
+                    disable-clear-button="true"
+                    on-change="onDateChange()"
+                    label-format="yyyy-MM-dd"
+                    date-filter='startDateFilter'
+                    ng-model='state.startDate' disable-timepicker="true"></quick-datepicker>
                 <span>-</span>
-                <quick-datepicker icon-class='fa fa-calendar'
-                    on-change="onDateChnage()"
-                    label-format="yyyy-MM-dd HH:mm"
-                    ng-model='state.endDate' disable-timepicker="{{state.period}}"></quick-datepicker>
+                <quick-datepicker icon-class='icon-calendar'
+                    disable-clear-button="true"
+                    on-change="onDateChange()"
+                    label-format="yyyy-MM-dd"
+                    date-filter='endDateFilter'
+                    ng-model='state.endDate' disable-timepicker="true"></quick-datepicker>
 
                 <div class="btn-group">
                   <button type="button" class="btn btn-default"

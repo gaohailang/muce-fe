@@ -21,7 +21,7 @@ define(function() {
             var now = new Date();
             now.setHours(0, 0, 0, 0);
             _state.startDate = new Date(now.getTime() + (1000 * 60 * 60 * 24) * val);
-            _state.endDate = now;
+            _state.endDate = new Date(Helper.getMaxAvailableDate());
             fetchReports();
         });
 
@@ -35,9 +35,25 @@ define(function() {
             fetchReports();
         });
 
-        $scope.onDateChnage = function() {
+        $scope.onDateChange = function() {
             // reset currentQuick
             $scope.currentQuick = '';
+        };
+        $scope.startDateFilter = function(d) {
+            var isLessEnd = true,
+                isLessToday = d.getTime() < Helper.getMaxAvailableDate();
+            if (_state.endDate) {
+                isLessEnd = d.getTime() < _state.endDate.getTime();
+            }
+            return isLessEnd && isLessToday;
+        };
+        $scope.endDateFilter = function(d) {
+            var isLargeStart = true,
+                isLessToday = d.getTime() < Helper.getMaxAvailableDate();
+            if (_state.startDate) {
+                isLargeStart = d.getTime() > _state.startDate.getTime();
+            }
+            return isLargeStart && isLessToday;
         };
 
         /* Dimen Advanced Modal */
@@ -90,7 +106,6 @@ define(function() {
                 this.filters = null;
             }
         };
-
 
         $rootScope.$watch('state.reportDetail', function(data) {
             if (!data) return;
@@ -157,6 +172,9 @@ define(function() {
         $scope.fetchReports = fetchReports;
 
         var Helper = {
+            getMaxAvailableDate: function() {
+                return (new Date()).getTime() - (1000 * 60 * 60 * 24) * 1;
+            },
             serApiDate: function(datetime, period) {
                 return $filter('date')(datetime, Config.apiDateFormatMap[period]);
             },
