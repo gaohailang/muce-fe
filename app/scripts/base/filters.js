@@ -71,7 +71,7 @@ define([], function() {
             return function(metrics) {
                 // type trans
                 return _.map(metrics, function(metric) {
-                    return metric.name + ': ' + $filter('castDimensionType')(metric.type) + ', ' + buildExp(metric);
+                    return metric.name + ': ' + $filter('castTypeFromInt')(metric.type) + ', ' + buildExp(metric);
                 }).join('\n')
             }
         }).filter('transPeriod', function() {
@@ -82,7 +82,7 @@ define([], function() {
                 };
                 return _map[val];
             }
-        }).filter('castDimensionType', function() {
+        }).filter('castTypeFromInt', function() {
             return function(val) {
                 return _.db.dimensionTypes[val];
             }

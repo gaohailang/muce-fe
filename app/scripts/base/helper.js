@@ -1,6 +1,6 @@
 define([], function() {
     _.db = {
-        dimensionTypes: ['string', 'int', 'float', 'percent'],
+        dimensionTypes: ['int', 'float', 'percent', 'string'],
         metricOperators: ['+', '-', '*', '/']
     };
 

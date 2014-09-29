@@ -130,7 +130,7 @@ define([
                 params: _.extend(defaultParams, _.pick($state.params, 'period', 'startDate', 'endDate'))
             }).then(function(data) {
                 highchart.buildLineChart(_state.reportDetail, data);
-                if ($state.params.dimensions) {
+                if ($state.params.dimensions && ($state.params.dimensions != '[]')) {
                     apiHelper('getReport', _state.report.id, {
                         busy: 'global',
                         params: _.extend(defaultParams, _.pick($state.params, 'period', 'startDate', 'endDate', 'filters', 'dimensions'))

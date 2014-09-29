@@ -22,7 +22,7 @@
                 <div tip-marker content="metric.hql"></div>
             </td> -->
             <td>{{metric.metricType}}</td>
-            <td>{{metric.dataType|castDimensionType}}</td>
+            <td>{{metric.dataType|castTypeFromInt}}</td>
             <td>{{metric.eventId}}</td>
             <td>{{metric.createTime|date:'yyyy-MM-dd'}}</td>
             <td>{{metric.modifyTime|date:'yyyy-MM-dd'}}</td>

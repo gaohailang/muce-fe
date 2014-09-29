@@ -173,6 +173,9 @@ define(function() {
                     data: postData
                 }).then(function(data) {
                     replaceInCollection($scope.$root.state.groupList, postData, 'id');
+                    if ($scope.$root.state.group.id == postData.id) {
+                        $scope.$root.state.group = data;
+                    }
                     $scope.$close();
                 });
             } else {
@@ -278,14 +281,23 @@ define(function() {
             var postData = processIdObj($scope.formlyData, 'field');
             postData.fieldIds = postData.fieldId;
             delete postData.fieldId;
-            // fuck the ugly data interface
-            // Todo: fieldIds?! []
-            // postData.fieldIds = [1, 2];
-            apiHelper('addDimension', {
-                data: postData
-            }).then(function() {
-                $scope.close();
-            });
+            if ($scope._data) {
+                apiHelper('editDimension', {
+                    data: postData
+                }).then(function(data) {
+                    replaceInCollection($scope.dimensionList, postData, 'id');
+                    $scope.$close();
+                });
+            } else {
+                // fuck the ugly data interface
+                // Todo: fieldIds?! []
+                // postData.fieldIds = [1, 2];
+                apiHelper('addDimension', {
+                    data: postData
+                }).then(function() {
+                    $scope.close();
+                });
+            }
         }
     };
 
@@ -303,7 +315,9 @@ define(function() {
                 if ($scope._data) {
                     // edit mode
                     $scope.formlyData = $scope._data;
-                    // id->currentGroup
+                    $scope.formlyData.group = _.find($scope.$root.state.groupList, function(i) {
+                        return i.id === $scope._data.groupId;
+                    });
                 } else {
                     // hack for ng-options var reset
                     $scope.formlyData.group = _.find(data, function(i) {
@@ -407,15 +421,20 @@ define(function() {
             $scope.metricOperators = _.db.metricOperators;
         },
         dimension: function($scope, apiHelper) {
-            if ($scope._data) {
-                $scope.formlyData = $scope._data;
-                // Todo: dataType, fields bug
-            }
             apiHelper('getFieldIdList').then(function(data) {
                 data = transFieldIds(data);
                 $scope.formFields[0].options = data;
-                $scope.formlyData.field = data[0];
-                $scope.formlyData.type = '0';
+
+                if ($scope._data) {
+                    $scope.formlyData = $scope._data;
+                    // Todo: dataType, fields bug
+                    $scope.formlyData.field = _.find(data, function(i) {
+                        return i.id == $scope._data.fieldIds[0].id;
+                    });
+                } else {
+                    $scope.formlyData.field = data[0];
+                    $scope.formlyData.type = '0';
+                }
             });
         }
     };
@@ -446,7 +465,7 @@ define(function() {
             if ($scope._data) {
                 // adjust timestamp for _data
                 _.each(['modifyTime', 'createTime'], function(_tkey) {
-                    $scope._data[_tkey] = $filter('date')($scope._data[_tkey], 'yyyy-MM-dd');
+                    $scope._data[_tkey] = $filter('date')($scope._data[_tkey], 'yyyy-MM-dd mm:ss');
                 });
 
                 // case for metric(whicih has event field huge table)
