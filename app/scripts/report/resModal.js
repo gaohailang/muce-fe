@@ -368,9 +368,12 @@ define(function() {
             if ($scope._data) {
                 if ($scope._data.metricType != 'NORMAL') return;
                 $scope.$root.currentMetricTab = 'normal_metric';
+                $scope.formlyData = $scope._data;
+                // Todo: dataType, eventId
             } else {
                 $scope.$root.currentMetricTab = 'normal_metric';
             }
+
             apiHelper('getEventList').then(function(data) {
                 $scope.formFields[0].options = data;
                 $scope.formlyData.event = data[0];
@@ -394,6 +397,7 @@ define(function() {
             if ($scope._data) {
                 if ($scope._data.metricType != 'COMBINE') return;
                 $scope.$root.currentMetricTab = 'combine_metric';
+                // Todo: need a combined metric
             }
 
             $scope.formlyData.type = '0';
@@ -403,6 +407,10 @@ define(function() {
             $scope.metricOperators = _.db.metricOperators;
         },
         dimension: function($scope, apiHelper) {
+            if ($scope._data) {
+                $scope.formlyData = $scope._data;
+                // Todo: dataType, fields bug
+            }
             apiHelper('getFieldIdList').then(function(data) {
                 data = transFieldIds(data);
                 $scope.formFields[0].options = data;
@@ -430,15 +438,41 @@ define(function() {
     }
 
     _.each(fieldsDict, function(formFields, key) {
-        resModalModule.controller(key + 'ModalCtrl', function($scope, apiHelper, $notice, $rootScope) {
+        resModalModule.controller(key + 'ModalCtrl', function($scope, apiHelper, $notice, $rootScope, $filter) {
             var prefix = $scope._data ? '(TEMP) - Edit ' : 'Add ';
             $scope.modalTitle = prefix + _.capitalize(key);
             $scope.formFields = formFields;
             // Todo: check _data eidt with edit field
             if ($scope._data) {
-                $scope.formFields = $scope.formFields.concat([dataDict.ownerField, dataDict.createTimeField, dataDict.modifyTimeField]);
-                // remove specific field for category, report etc
+                // adjust timestamp for _data
+                _.each(['modifyTime', 'createTime'], function(_tkey) {
+                    $scope._data[_tkey] = $filter('date')($scope._data[_tkey], 'yyyy-MM-dd');
+                });
+
+                // case for metric(whicih has event field huge table)
+                if (key === 'metric') {
+                    $scope.formFields.splice(($scope.formFields.length - 2), 3, dataDict.ownerField, dataDict.createTimeField, dataDict.modifyTimeField);
+                    $scope.formFields = _.uniq($scope.formFields, function(f) {
+                        return f.key;
+                    });
+                } else {
+                    $scope.formFields = $scope.formFields.concat([dataDict.ownerField, dataDict.createTimeField, dataDict.modifyTimeField]);
+                }
+
+                if (key === 'category') {
+                    // category.group readable
+                    $scope.formFields[0].attrs = {
+                        disabled: true
+                    };
+                }
+                if (key === 'report') {
+                    // report.group, category remove
+                    $scope.formFields.splice(0, 2);
+                }
+
+                // if metric disable tab change~~
             }
+
             $scope.formName = 'formly';
             $scope.formlyData = {};
 

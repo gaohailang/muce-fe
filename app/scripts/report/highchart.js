@@ -88,7 +88,7 @@ define([
                         }
                         var d = Number(num);
 
-                        var hasAnnotation = _.find(annotationPoints, function(annotation) {
+                        /*var hasAnnotation = _.find(annotationPoints, function(annotation) {
                             return metricIndex === annotation.metricIndex && index === annotation.index;
                         });
                         if (hasAnnotation) {
@@ -97,7 +97,7 @@ define([
                             d.marker = {
                                 symbol: 'url(http://muce.corp.wandoujia.com/images/flag.png?id=' + hasAnnotation.id + ')'
                             };
-                        }
+                        }*/
 
                         item.data.push(d);
                     })

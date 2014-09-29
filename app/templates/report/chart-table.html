@@ -20,13 +20,16 @@
         </thead>
         <tbody>
             <tr ng-repeat="row in tableRows track by $index">
-                <td ng-repeat="i in tbFields" ng-switch on="i.id">
-                    <span ng-switch-when="date">{{row[i.id]|dateNumFormat}}</span>
-                    <span ng-switch-default>
-                        <b ng-show="row[i.id] == '0.00'" style="color: red">0</b>
-                        <b ng-show="row[i.id] != '0.00'">{{row[i.id] | number}}</b>
-                        <!-- <i tooltip="Row Value: {{row[key]}}"
-                            ng-show="(row[key]+'').split('.')[1].length > 3">...</i> -->
+                <td ng-repeat="i in tbFields" ng-switch on="getTdType(i, row)">
+                    <span ng-switch-when="date">{{row.date}}</span>
+                    <span ng-switch-when="empty">
+                        <b style="color: red">0</b>
+                    </span>
+                    <span ng-switch-when="metric">
+                        <b>{{row[i.id] | number}}</b>
+                    </span>
+                    <span ng-switch-when="dimension">
+                        <b>{{row[i.id]}}</b>
                     </span>
                 </td>
             </tr>

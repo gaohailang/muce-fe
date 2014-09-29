@@ -7,59 +7,29 @@ define(function() {
 
         /* Data Table */
         function buildGridData(reportDetail, data) {
-            var heads = _.pluck(reportDetail.metrics, 'name');
-            heads.unshift('Date');
-            var heads = _.map(heads, function(h) {
-                return _.slugify(h);
-            });
-            var fieldNames = _.pluck(reportDetail.metrics, 'name');
-            fieldNames.unshift('Date');
-            // fieldNames = _.map(fieldNames, function(h) {
-            //     return _.slugify(h);
-            // });
-
-            var fieldIds = _.pluck(reportDetail.metrics, 'id');
-            fieldIds.unshift('date');
-
-            $scope.tbFields = _.map(fieldIds, function(id, i) {
-                return {
-                    id: id,
-                    name: fieldNames[i]
-                };
-            });
             $scope.tableRows = _.map(data.result, function(i) {
-                _.each(_.keys(i), function(k) {
-                    if (k !== 'date') {
-                        // we need date filter to format
-                        i[k] = +i[k];
-                    }
-                });
+                // we need date filter to format
+                i.date = +(i.date);
                 return i;
             });
 
-            function get_D_M_NameById(i) {
-                if (i.indexOf('d') === 0) {
-                    return _.find(reportDetail.dimensions, function(d) {
-                        return d.id == i.slice(1);
-                    }).name;
-                } else {
-                    return _.find(reportDetail.metrics, function(m) {
-                        return m.id == i; // catch out id == "id"
-                    }).name;
-                }
+            function getNameById(i, type) {
+                return _.find(reportDetail[type], function(d) {
+                    return d.id == i;
+                }).name;
             }
 
             var tbFields = [{
                 id: 'date',
                 name: 'Date'
             }];
-            _.each(_.keys($scope.tableRows[0]), function(i) {
-                if (i !== 'date') {
+            _.each(['dimensions', 'metrics'], function(type) {
+                _.each(data[type], function(i) {
                     tbFields.push({
-                        id: i,
-                        name: get_D_M_NameById(i)
+                        id: (type == 'metrics') ? i : 'd' + i,
+                        name: getNameById(i, type)
                     });
-                }
+                });
             });
             $scope.tbFields = tbFields;
         }
@@ -70,10 +40,10 @@ define(function() {
             $scope.sortType = type;
             $scope.sortReverse = !$scope.sortReverse;
             var tableRows = _.sortBy($scope.tableRows, function(item) {
-                if ($scope.sortBy === 'date') {
+                /*if ($scope.sortBy === 'date') {
                     // make date number to sort
                     return +item[type];
-                }
+                }*/
                 return item[type];
             });
             if ($scope.sortReverse) {
@@ -125,6 +95,21 @@ define(function() {
             /*var newTab = window.open();
             $(newTab.document.body).html(csvContent.replace(/\n/g, '<br/>'));*/
             doMockLink();
+        };
+
+        $scope.getTdType = function(field, data) {
+            if (field.id === 'date') {
+                return 'date';
+            }
+            if (_.isNumber(field.id)) {
+                if (data[field.id] === '0.00') {
+                    return 'empty';
+                } else {
+                    return 'metric';
+                }
+            } else {
+                return 'dimension';
+            }
         };
 
         /* Utility */

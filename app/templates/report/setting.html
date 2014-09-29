@@ -9,7 +9,6 @@
                     <option value="">-- Quick Select --</option>
                 </select>
 
-
                 <quick-datepicker icon-class='icon-calendar'
                     disable-clear-button="true"
                     on-change="onDateChange()"
@@ -44,18 +43,21 @@
                     ng-show="state.reportDetail.dimensions.length>0">1st Dimen:
                     <select id="dimensions_1" ng-model="state.dimenAdv.dimensions[0]"
                         ng-options="i as i.name for i in state.reportDetail.dimensions">
+                        <option value=""></option>
                     </select>
                 </label>
                 <label for="dimensions_2"
                     ng-show="state.reportDetail.dimensions.length>1">2nd Dimen:
                     <select id="dimensions_2"  ng-model="state.dimenAdv.dimensions[1]"
                         ng-options="i as i.name for i in state.reportDetail.dimensions">
+                        <option value=""></option>
                     </select>
                 </label>
                 <label for="dimensions_3"
                     ng-show="state.reportDetail.dimensions.length>2">3rd Dimen:
                     <select id="dimensions_3" ng-model="state.dimenAdv.dimensions[2]"
                         ng-options="i as i.name for i in state.reportDetail.dimensions">
+                        <option value=""></option>
                     </select>
                 </label>
                 <button class="btn"

@@ -153,6 +153,10 @@ define(function() {
             if (_.isUndefined(_state.period)) return;
             if (_state.isFetching) return;
             _state.isFetching = true;
+            // clean up dimensions
+            _state.dimenAdv.dimensions = _.filter(_state.dimenAdv.dimensions, function(i) {
+                if (i) return i;
+            });
             $state.go('report.detail', {
                 group: _state.group.name,
                 category: _state.category.name,
@@ -167,7 +171,6 @@ define(function() {
             $timeout(function() {
                 $rootScope.$emit('report:fetchReportData');
             });
-            // $rootScope.emit
         }
         $scope.fetchReports = fetchReports;
 

@@ -88,7 +88,7 @@ define([
 
                 $scope['edit' + capitalizeType] = function(item) {
                     var newScope = $scope.$new(true);
-                    $scope._data = item;
+                    $scope._data = _.clone(item);
 
                     var templateUrl;
                     if (!$scope.delMetric) {
@@ -110,6 +110,13 @@ define([
     function detailCtrl($scope, $state, apiHelper, $timeout, $filter, $rootScope) {
         var _state = $rootScope.state;
         _state.isAjaxFetching = false;
+
+        function triggerFetchDone(data) {
+            $rootScope.$emit('report:renderReportData', [_state.reportDetail, data]);
+            _state.isFetching = false;
+            _state.isAjaxFetching = false;
+        }
+
         $rootScope.$on('report:fetchReportData', function() {
             var defaultParams = {
                 filters: [],
@@ -120,12 +127,19 @@ define([
             _state.isAjaxFetching = true;
             apiHelper('getReport', _state.report.id, {
                 busy: 'global',
-                params: _.extend(defaultParams, _.pick($state.params, 'period', 'startDate', 'endDate', 'filters', 'dimensions'))
+                params: _.extend(defaultParams, _.pick($state.params, 'period', 'startDate', 'endDate'))
             }).then(function(data) {
                 highchart.buildLineChart(_state.reportDetail, data);
-                $rootScope.$emit('report:renderReportData', [_state.reportDetail, data]);
-                _state.isFetching = false;
-                _state.isAjaxFetching = false;
+                if ($state.params.dimensions) {
+                    apiHelper('getReport', _state.report.id, {
+                        busy: 'global',
+                        params: _.extend(defaultParams, _.pick($state.params, 'period', 'startDate', 'endDate', 'filters', 'dimensions'))
+                    }).then(function(data) {
+                        triggerFetchDone(data);
+                    });
+                } else {
+                    triggerFetchDone(data);
+                }
             }, function() {});
         });
     }
