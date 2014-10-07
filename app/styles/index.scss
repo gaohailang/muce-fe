@@ -32,7 +32,23 @@ textarea {
     transition: all linear .2s;
 }
 
-// dropdown item cusror for bs
+.navbar .navbar-inner {
+    min-height: 40px;
+
+    .brand {
+        line-height: 40px;
+        padding-left: 20px;
+        padding: 0 0 0 20px;
+        height: 40px;
+
+        b {
+            font-size: 12px;
+            padding-left: 5px;
+        }
+    }
+}
+
+/* dropdown item cusror for bs*/
 .dropdown-menu li a {
     cursor: pointer;
 }
@@ -68,11 +84,11 @@ textarea {
 /* 外部组件设置 */
 
 
-// 业务前缀 mc-<modle>-
+/*// 业务前缀 mc-<modle>-
 // 组件前缀 i-<componentName>-
 // 一次性限定 x-语义+限定
 
-// 基础组件
+// 基础组件*/
 .mc-notices {
     .alert {
         max-width: 400px;
@@ -426,6 +442,10 @@ textarea {
 }
 .w-text-warning {
     color: #f24949;
+}
+.i-text-warning-nav {
+    color: red!important;
+    cursor: not-allowed;
 }
 
 /* component archive */

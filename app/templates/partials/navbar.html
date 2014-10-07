@@ -8,18 +8,19 @@
                 <span class="icon-bar"></span>
             </button>
 
-            <a class="brand" ui-sref="report.detail">Muce</a>
+            <a class="brand" ui-sref="report.detail">
+                Muce<b>Beta</b>
+            </a>
 
             <ul class="nav pull-right">
                 <li>
-                    <a class="text-error" style="cursor: not-allowed;color: red">测试~</a>
+                    <a class="i-text-warning-nav" >CONFIDENTIAL!</a>
                 </li>
+
                 <li>
-                    <a class="text-error" style="cursor: not-allowed;color: red">CONFIDENTIAL!</a>
-                </li>
-                <li>
-                    <a class="muce-nav-tab"
-                        ui-sref-active="selected" ui-sref="feedback">Feedback</a>
+                    <a class="muce-nav-tab" ui-sref-active="selected" ui-sref="feedback">
+                        Feedback
+                    </a>
                 </li>
                 <li>
                     <a href="https://docs.google.com/a/wandoujia.com/document/d/1yG3Dx-Cyvyu91QBiVz36RSs_IOoj1a9-Q4Flv-cZUrM/edit" target="_blank">Help</a>
@@ -27,14 +28,10 @@
 
                 <li>
                     <a data-toggle="dropdown" href="#" class="dropdown-toggle">
-                        <!-- <img class="nav-user-photo" src="assets/avatars/user.jpg" alt="Jason's Photo"> -->
-                        <span class="user-info">
-                            <!-- <small>Welcome,</small> -->{{userInfo.username}}
-                        </span>
+                        {{userInfo.username}}
                         <i class="icon-caret-down"></i>
                     </a>
                 </li>
-
             </ul>
 
             <div class="nav-collapse collapse" muce-navbar>

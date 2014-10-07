@@ -19,5 +19,21 @@ define([
                     $notice.warning('您使用的浏览器可能存在兼容性问题，建议您使用 Chrome 来更好的使用 Muce 服务');
                 }, 3000);
             }
+
+            // scroll
+            $('.scroll-key span').click(function(e) {
+                var $target = $(e.target);
+                var $body = $("html, body");
+                if ($target.hasClass('scroll-top')) {
+                    $body.animate({
+                        scrollTop: 0
+                    }, '500', 'swing');
+                } else {
+                    $body.animate({
+                        scrollTop: $(document).height()
+                    }, '500', 'swing');
+                }
+            });
+
         });
 });

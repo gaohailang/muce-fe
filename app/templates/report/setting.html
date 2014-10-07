@@ -37,6 +37,7 @@
                     <span ng-show="!state.dimenAdv.filters">Filter</span>
                     <span ng-show="state.dimenAdv.filters">Filter ON</span>
                 </button> -->
+
             </div>
             <div class="dimension-operator">
                 <label for="dimensions_1"
@@ -65,7 +66,7 @@
                     ng-class="{'active': state.dimenAdv.filters}"
                     ng-click="openAdvancedPanel()">
                     <span ng-if="!state.dimenAdv.filters">Advanced</span>
-                    <span ng-if="state.dimenAdv.filters">Advanced Filter ON</span>
+                    <span ng-if="state.dimenAdv.filters">Advanced Filter ON <i class="icon-trash" ng-click="state.dimenAdv.removeFilters()"></i></span>
                 </button>
             </div>
         </div>

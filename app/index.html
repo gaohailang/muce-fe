@@ -18,7 +18,7 @@
         <link rel="stylesheet" href="components/codemirror/lib/codemirror.css">
         <link rel="stylesheet" href="components/codemirror/addon/hint/show-hint.css" />
         <link rel="stylesheet" href="components/angular-ui-select/dist/select.min.css">
-        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/select2/3.5.0/select2.css">
+        <link rel="stylesheet" href="vendors/select2.css">
         <link rel="stylesheet" href="components/AngularJS-Toaster/toaster.css">
 
         <link rel="stylesheet" href="styles/index.css">
@@ -31,7 +31,8 @@
 
         <!-- page container -->
         <div class="container-fluid container-wrapper">
-            <toaster-container></toaster-container> <!-- toaster-options="{'position-class': 'toast-top-full-width'}" -->
+            <toaster-container></toaster-container>
+            <!-- toaster-options="{'position-class': 'toast-top-full-width'}" -->
             <div ui-view></div>
         </div>
 
@@ -72,12 +73,12 @@
         <script src="vendors/Highcharts-4.0.3/js/highcharts.src.js"></script>
         <script src="vendors/Highcharts-4.0.3/js/highcharts-more.src.js"></script>
         <script src="vendors/Highcharts-4.0.3/js/modules/exporting.src.js"></script>
-        <!-- endbuild -->
         <script src="components/highcharts-ng/dist/highcharts-ng.js"></script>
 
         <script src="components/quick-ng-repeat/quick-ng-repeat.js"></script>
         <script src="components/moment/moment.js"></script>
         <script src="components/bootstrap-daterangepicker/daterangepicker.js"></script>
+        <!-- endbuild -->
 
         <!-- build:js /scripts/app.js -->
         <script src="components/requirejs/require.js" data-main="scripts/index"></script>
