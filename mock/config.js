@@ -102,51 +102,189 @@ var jobListData = [{
 // Todo More Mock Helper _.dateRange, etc, incrId -> ItemList
 
 module.exports = {
-    'GET /api/v1/meta/groups': wrapper([{
-        "id": 1,
-        "name": "test_group"
-    }, {
-        "id": 2,
-        "name": "best_group"
-    }, {
-        "id": 3,
-        "name": "aest_group"
-    }, {
-        "id": 4,
-        "name": "测试下fsaf"
-    }]),
-    'GET /api/v1/meta/fields': wrapper([{
-        "id": 1,
-        "name": "age",
-        "type": 0
-    }, {
-        "id": 2,
-        "name": "test1",
-        "type": 1
-    }, {
-        "id": 3,
-        "name": "test2",
-        "type": 2
-    }]),
-    'GET /api/v1/report/1?.*': renderFsMock('report-1-data.json'),
-    'GET /api/v1/meta/report/.*': renderFsMock('report-1-detail.json'),
+    // 'GET /api/v1/meta/groups': wrapper([{
+    //     "id": 1,
+    //     "name": "test_group"
+    // }, {
+    //     "id": 2,
+    //     "name": "best_group"
+    // }, {
+    //     "id": 3,
+    //     "name": "aest_group"
+    // }, {
+    //     "id": 4,
+    //     "name": "测试下fsaf"
+    // }]),
+    // 'GET /api/v1/meta/fields': wrapper([{
+    //     "id": 1,
+    //     "name": "age",
+    //     "type": 0
+    // }, {
+    //     "id": 2,
+    //     "name": "test1",
+    //     "type": 1
+    // }, {
+    //     "id": 3,
+    //     "name": "test2",
+    //     "type": 2
+    // }]),
+    // 'GET /api/v1/report/1?.*': renderFsMock('report-1-data.json'),
+    // 'GET /api/v1/meta/report/.*': renderFsMock('report-1-detail.json'),
 
-    'GET /api/v1/mq/job$': wrapper(jobListData),
-    'GET /api/v1/mq/job/\d+$': function() {
-        // RANDOM CHOICE ONE
-        return wrapper(_.sample(jobListData));
-    },
-    'GET /api/v1/mq/job/.*/result/size': function() {
-        return wrapper(_.random(0, 1000));
-    },
+    // 'GET /api/v1/mq/job$': wrapper(jobListData),
+    // 'GET /api/v1/mq/job/\d+$': function() {
+    //     // RANDOM CHOICE ONE
+    //     return wrapper(_.sample(jobListData));
+    // },
+    // 'GET /api/v1/mq/job/.*/result/size': function() {
+    //     return wrapper(_.random(0, 1000));
+    // },
 
-    'GET /api/v1/mq/job/.*/view': wrapper("\t37\nICON\t1310876\nSUB_ACTION\t69551522\nPROGRESS\t237578\nHEADER\t612882\nLIST_ITEM\t1561642\nSCROLL_TOP\t3592997\nBACK\t730800104\nLABEL\t45375981\nPOPUP_BUTTON\t3195\nTAB\t232709119\nMENU_ITEM\t202100711\nSLIDE\t2767993\nBUTDON\t1\nSPINNER\t27428152\nTEXT_LINK\t70962098\nINPUT\t66623752\nBUTTON\t828056107\nCARD\t256287733\nPICTURE\t33726563\nBaCK\t2\n"),
+    // 'GET /api/v1/mq/job/.*/view': wrapper("\t37\nICON\t1310876\nSUB_ACTION\t69551522\nPROGRESS\t237578\nHEADER\t612882\nLIST_ITEM\t1561642\nSCROLL_TOP\t3592997\nBACK\t730800104\nLABEL\t45375981\nPOPUP_BUTTON\t3195\nTAB\t232709119\nMENU_ITEM\t202100711\nSLIDE\t2767993\nBUTDON\t1\nSPINNER\t27428152\nTEXT_LINK\t70962098\nINPUT\t66623752\nBUTTON\t828056107\nCARD\t256287733\nPICTURE\t33726563\nBaCK\t2\n"),
 
-    'GET /api/v1/mq/databases': wrapper(["account", "adnetwork", "ads", "analytics", "android", "antispam", "api", "apk_wdjcdn", "apkserver_rawlog", "app", "app_search", "appbeacon", "appn", "appwap", "audit", "b_wdjimg", "cheating", "community", "communityaction", "connection", "connection_wdj", "crawler_log", "datasystem", "default", "demo", "dn_dl", "doraemon", "dservice", "dservicea", "dservicej", "ebooks", "ep", "feed", "flvcdproxy", "friends", "fw_dl", "gaojunxiu", "hadoop", "iaslog", "imageservice", "img", "ios", "ios_channel", "ios_wandoujia", "l_wandoujia", "linkscanner_log", "mariosdk", "miniwdj", "mms", "muce", "mucedataserver", "muceserver", "musics", "musics_wandoujia", "nc_dl", "omaha", "ops", "oscar", "oscaraccess", "p3", "paysdk", "pbsapk", "pbsdl", "pbspmt", "ping", "platform", "pmt_wdjcdn", "portal_nginx_log", "proxy", "push", "pushio", "pushlog", "qhapk", "qhdl", "qhpmt", "qxgapk", "qxgdl", "qxgpmt", "rawapp", "recaccess", "roshan", "s2", "satellite", "sdydpmt", "social", "socialshare", "startpage", "static", "syncaccess", "syncv2", "test", "tiny", "tmp", "tmp_murray", "ua", "uc", "uninstall", "wallpapers", "wandou_im", "wandoujia_oem", "wdindex", "windows", "windows1x", "windows2x", "www", "xibaibai", "xsearch", "xsearchvideo"]),
-    'GET /api/v1/mq/.*/tables': wrapper(["tb_account", "tb_accountaudit", "tb_accountpocket", "tb_ads_game_ceshi", "tb_adsandpaysdkconsume", "tb_adsandpaysdkconsumenew", "tb_app", "tb_appapk", "tb_appdownload", "tb_appkey", "tb_apppackage", "tb_bid", "tb_bidreportdaily", "tb_bidreportminuteblock", "tb_bidreporttotal", "tb_campaign", "tb_campaignbill", "tb_campaignreportdaily", "tb_campaignreporttotal", "tb_consume", "tb_consume_ads", "tb_consume_paysdk", "tb_consume_with_udidinfo", "tb_datadetailformuce", "tb_download_activation_report_daily", "tb_feed_ads_data", "tb_first_pay_time_report_daily", "tb_game_recommend_daily", "tb_game_recommend_report_daily", "tb_gamerecommreportdaily", "tb_gamereport", "tb_long_time_value_report_daily", "tb_navbidreportdaily", "tb_offlinetime", "tb_payaccount", "tb_payorder", "tb_payspambid", "tb_promotionapp", "tb_retention_report_daily", "tb_searchbidctrreportdaily", "tb_searchbidreportdaily", "tb_udid_info", "tb_wandoucoin", "tb_wdcaiconsume"]),
-    'GET /api/v1/mq/.*/.*/schema': wrapper(["col_ip", "col_date", "col_token", "col_position", "col_udid", "col_pid", "col_tag", "col_adformat", "col_price", "col_bid", "col_mac", "col_imei", "p_date", "p_hourmin"]),
-    'GET /api/v1/mq/.*/.*/partitions': wrapper(["p_date=20140505/p_hourmin=0000", "p_date=20140506/p_hourmin=0000", "p_date=20140507/p_hourmin=0000", "p_date=20140508/p_hourmin=0000", "p_date=20140509/p_hourmin=0000", "p_date=20140510/p_hourmin=0000", "p_date=20140511/p_hourmin=0000", "p_date=20140512/p_hourmin=0000", "p_date=20140513/p_hourmin=0000", "p_date=20140514/p_hourmin=0000", "p_date=20140515/p_hourmin=0000", "p_date=20140516/p_hourmin=0000", "p_date=20140517/p_hourmin=0000", "p_date=20140518/p_hourmin=0000", "p_date=20140519/p_hourmin=0000", "p_date=20140520/p_hourmin=0000", "p_date=20140521/p_hourmin=0000", "p_date=20140522/p_hourmin=0000", "p_date=20140523/p_hourmin=0000", "p_date=20140524/p_hourmin=0000", "p_date=20140525/p_hourmin=0000", "p_date=20140526/p_hourmin=0000", "p_date=20140527/p_hourmin=0000", "p_date=20140528/p_hourmin=0000", "p_date=20140529/p_hourmin=0000", "p_date=20140530/p_hourmin=0000", "p_date=20140531/p_hourmin=0000", "p_date=20140601/p_hourmin=0000", "p_date=20140602/p_hourmin=0000"]),
+    // 'GET /api/v1/mq/databases': wrapper(["account", "adnetwork", "ads", "analytics", "android", "antispam", "api", "apk_wdjcdn", "apkserver_rawlog", "app", "app_search", "appbeacon", "appn", "appwap", "audit", "b_wdjimg", "cheating", "community", "communityaction", "connection", "connection_wdj", "crawler_log", "datasystem", "default", "demo", "dn_dl", "doraemon", "dservice", "dservicea", "dservicej", "ebooks", "ep", "feed", "flvcdproxy", "friends", "fw_dl", "gaojunxiu", "hadoop", "iaslog", "imageservice", "img", "ios", "ios_channel", "ios_wandoujia", "l_wandoujia", "linkscanner_log", "mariosdk", "miniwdj", "mms", "muce", "mucedataserver", "muceserver", "musics", "musics_wandoujia", "nc_dl", "omaha", "ops", "oscar", "oscaraccess", "p3", "paysdk", "pbsapk", "pbsdl", "pbspmt", "ping", "platform", "pmt_wdjcdn", "portal_nginx_log", "proxy", "push", "pushio", "pushlog", "qhapk", "qhdl", "qhpmt", "qxgapk", "qxgdl", "qxgpmt", "rawapp", "recaccess", "roshan", "s2", "satellite", "sdydpmt", "social", "socialshare", "startpage", "static", "syncaccess", "syncv2", "test", "tiny", "tmp", "tmp_murray", "ua", "uc", "uninstall", "wallpapers", "wandou_im", "wandoujia_oem", "wdindex", "windows", "windows1x", "windows2x", "www", "xibaibai", "xsearch", "xsearchvideo"]),
+    // 'GET /api/v1/mq/.*/tables': wrapper(["tb_account", "tb_accountaudit", "tb_accountpocket", "tb_ads_game_ceshi", "tb_adsandpaysdkconsume", "tb_adsandpaysdkconsumenew", "tb_app", "tb_appapk", "tb_appdownload", "tb_appkey", "tb_apppackage", "tb_bid", "tb_bidreportdaily", "tb_bidreportminuteblock", "tb_bidreporttotal", "tb_campaign", "tb_campaignbill", "tb_campaignreportdaily", "tb_campaignreporttotal", "tb_consume", "tb_consume_ads", "tb_consume_paysdk", "tb_consume_with_udidinfo", "tb_datadetailformuce", "tb_download_activation_report_daily", "tb_feed_ads_data", "tb_first_pay_time_report_daily", "tb_game_recommend_daily", "tb_game_recommend_report_daily", "tb_gamerecommreportdaily", "tb_gamereport", "tb_long_time_value_report_daily", "tb_navbidreportdaily", "tb_offlinetime", "tb_payaccount", "tb_payorder", "tb_payspambid", "tb_promotionapp", "tb_retention_report_daily", "tb_searchbidctrreportdaily", "tb_searchbidreportdaily", "tb_udid_info", "tb_wandoucoin", "tb_wdcaiconsume"]),
+    // 'GET /api/v1/mq/.*/.*/schema': wrapper(["col_ip", "col_date", "col_token", "col_position", "col_udid", "col_pid", "col_tag", "col_adformat", "col_price", "col_bid", "col_mac", "col_imei", "p_date", "p_hourmin"]),
+    // 'GET /api/v1/mq/.*/.*/partitions': wrapper(["p_date=20140505/p_hourmin=0000", "p_date=20140506/p_hourmin=0000", "p_date=20140507/p_hourmin=0000", "p_date=20140508/p_hourmin=0000", "p_date=20140509/p_hourmin=0000", "p_date=20140510/p_hourmin=0000", "p_date=20140511/p_hourmin=0000", "p_date=20140512/p_hourmin=0000", "p_date=20140513/p_hourmin=0000", "p_date=20140514/p_hourmin=0000", "p_date=20140515/p_hourmin=0000", "p_date=20140516/p_hourmin=0000", "p_date=20140517/p_hourmin=0000", "p_date=20140518/p_hourmin=0000", "p_date=20140519/p_hourmin=0000", "p_date=20140520/p_hourmin=0000", "p_date=20140521/p_hourmin=0000", "p_date=20140522/p_hourmin=0000", "p_date=20140523/p_hourmin=0000", "p_date=20140524/p_hourmin=0000", "p_date=20140525/p_hourmin=0000", "p_date=20140526/p_hourmin=0000", "p_date=20140527/p_hourmin=0000", "p_date=20140528/p_hourmin=0000", "p_date=20140529/p_hourmin=0000", "p_date=20140530/p_hourmin=0000", "p_date=20140531/p_hourmin=0000", "p_date=20140601/p_hourmin=0000", "p_date=20140602/p_hourmin=0000"]),
     // 'GET /api/v1/meta/reports': renderFsMock('reports.json'),
+
+    'GET /api/v1/tool/ua/reportList': wrapper([{
+        "name": "BD 日报",
+        "id": 1
+    }, {
+        "name": "消费数据",
+        "id": 2
+    }, {
+        "name": "用户活跃",
+        "id": 3
+    }]),
+    'GET /api/v1/tool/ua/report/.*': wrapper({
+        "dimension": [{
+            "id": 1,
+            "dimension_value": {
+                "0": "非作弊",
+                "1": "作弊用户"
+            },
+            "disp_name": "是否作弊"
+        }, {
+            "id": 2,
+            "dimension_value": {
+                "0": "老用户",
+                "1": "新用户"
+            },
+            "disp_name": "新老"
+        }],
+        "timespan": {
+            "1440": "天",
+            "10080": "周",
+            "43200": "月"
+        }
+    }),
+    'GET /api/v1/tool/ua/reportData/.*': wrapper({
+        "tableTitle": [{
+            "alias": "metric",
+            "disp_name": "指标"
+        }, {
+            "alias": 1,
+            "data_diff": "minus",
+            "disp_name": "今日值"
+        }, {
+            "alias": 2,
+            "data_diff": "origin",
+            "disp_name": "昨日值"
+        }, {
+            "alias": 3,
+            "data_diff": "origin",
+            "disp_name": "上周今日值"
+        }, {
+            "alias": 4,
+            "data_diff": "origin",
+            "disp_name": "上月今日值"
+        }, {
+            "alias": 5,
+            "data_diff": "ratio",
+            "disp_name": "昨日变化率"
+        }, {
+            "alias": 6,
+            "data_diff": "ratio",
+            "disp_name": "上周变化率"
+        }, {
+            "alias": 7,
+            "data_diff": "ratio",
+            "disp_name": "上月变化率"
+        }],
+        "tableData": [{
+            "data": [-123, 93, 103, 123, 0.1023, -0.0546, 0],
+            "haschild": true,
+            "isopened": true,
+            "name": "fakename:13",
+            "id": "13",
+            "child": [{
+                "data": [123, 93, 103, 123, 0.1023, 0.0546, 0],
+                "haschild": true,
+                "isopened": false,
+                "child": [{
+                    "data": [123, 93, 103, 123, 0.1023, 0.0546, 0],
+                    "haschild": false,
+                    "isopened": false,
+                    "name": "fakename:13-4-4",
+                    "id": "13##4"
+                }, {
+                    "data": [123, 93, 103, 123, 0.1023, 0.0546, 0],
+                    "haschild": false,
+                    "isopened": false,
+                    "name": "fakename:13-4-44",
+                    "id": "135"
+                }],
+                "name": "fakename:13-4",
+                "id": "134"
+            }, {
+                "data": [123, 93, 103, 123, 0.1023, -0.0546, 0],
+                "haschild": true,
+                "isopened": false,
+                "name": "fakename:135",
+                "id": "135"
+            }]
+        }, {
+            "data": [123, 93, 103, 123, 0.1023, 0.0546, 0],
+            "haschild": true,
+            "isopened": true,
+            "name": "fakename:16",
+            "child": [{
+                "data": [123, 93, 103, 123, 0.1023, 0.0546, 0],
+                "haschild": "true",
+                "isopened": "false",
+                "name": "fakename:164",
+                "id": "164"
+            }],
+            "id": "16"
+        }, {
+            "data": [123, 93, 103, 123, 0.1023, 0.0546, 0],
+            "haschild": true,
+            "isopened": true,
+            "name": "fakename:17",
+            "child": [{
+                "data": [123, 93, 103, 123, 0.1023, 0.0546, 0],
+                "haschild": false,
+                "isopened": false,
+                "name": "fakename:174",
+                "id": "174"
+            }],
+            "id": "17"
+        }]
+    }),
+    'GET /api/v1/tool/ua/chartData': wrapper({
+        "1##1:##2:1": {
+            "data": ["5146747.0000", "5616327.0000", "5628277.0000", "5632576.0000", "5974986.0000", "5127350.0000", "5158867.0000", "5127709.0000"],
+            "date": ["20140910", "20140911", "20140912", "20140913", "20140914", "20140915", "20140916", "20140917"],
+            "name": '测试下'
+        },
+        "1##1:##2:1": {
+            "data": [],
+            "date": [],
+            "name": '测试下'
+        }
+    }),
     'POST REGEX': function() {
 
     }
