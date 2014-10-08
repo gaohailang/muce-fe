@@ -321,18 +321,7 @@ module.exports = function(grunt) {
     ]);
 
     grunt.registerTask('build:production', [
-        'clean:dist',
-        'concurrent:dist',
-        // 'ngAnnotate',
-        // 'useminPrepare',
-        // 'concat',
-        // 'uglify',
-        // 'cssmin', // Uncomment this line if using none-sass style
-        // 'requirejs:dist', // Uncomment this line if using RequireJS in your project
-        // 'rev',
-        'copy:compass',
-        // 'imagemin',
-        // 'usemin'
-        'copy:dist'
+        'build'
+        // add aws_s3 upload
     ]);
 };
