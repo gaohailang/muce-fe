@@ -36,17 +36,26 @@
 
             <div class="nav-collapse collapse" muce-navbar>
                 <ul class="nav">
-                    <li>
-                        <a class="muce-nav-tab" ui-sref-active="selected"
-                            ui-sref="report.detail">
-                            <!-- <i class="icon-leaf"></i> -->Report</a>
+                    <li ui-sref-active="ative">
+                        <a class="muce-nav-tab" ui-sref="report.detail">
+                            Report
+                        </a>
                     </li>
 
-                    <li>
-                        <a class="muce-nav-tab" ui-sref-active="selected"
-                            ui-sref="mq.history">
-                            <!-- <i class="icon-leaf"></i> -->Mq</a>
+                    <li ui-sref-active="active">
+                        <a class="muce-nav-tab" ui-sref="mq.history">
+                            Mq
+                        </a>
                     </li>
+
+                    <li class="dropdown" ui-sref-active="active">
+                        <a href="#" class="dropdown-toggle">
+                            Tools <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                          <li><a ui-sref="tool-uamp">UA Metric Platform</a></li>
+                        </ul>
+                      </li>
                 </ul>
             </div>
         </div>
