@@ -1,11 +1,23 @@
 <div id="mq_user_query_share">
+    <script type="text/ng-template" id="who-item.html">
+      <a>
+          <img ng-src="{{match.model.img||'http://img.wdjimg.com/who/avatar2.png'}}" width="16">
+          <span bind-html-unsafe="match.model.id | typeaheadHighlight:query"></span>
+      </a>
+    </script>
+
     <div class="navbar-div">
         <p>
             <span class="alert alert-info">
                 <strong>Heads up!</strong> The search needs wiki account name.
             </span>
         </p>
-        <input type="text" class="span3" ng-model="userName" ng-keydown="mqShareInputHandler($event)">
+
+        <input type="text" ng-model="target" class="span3"
+            ng-keydown="mqShareInputHandler($event)"
+            typeahead="who as who.id for who in whoList | filter:{id:$viewValue}"
+            typeahead-template-url="who-item.html">
+
         <button type="submit" class="btn btn-primary mq-search"
             ng-click="queryUserJobList()">Search</button>
     </div>

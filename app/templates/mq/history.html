@@ -39,5 +39,8 @@
 
             <td ng-click="setHqlEditor(job.hql)">{{job.hql}}</td>
         </tr>
+        <tr ng-if="!jobList.length && hasQueryJobList">
+            <td> 暂无结果 </td>
+        </tr>
     </tbody>
 </table>
