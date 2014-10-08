@@ -96,21 +96,21 @@ module.exports = function(grunt) {
                     ]
                 }]
             },
-            compass: {
-                files: [{
-                    expand: true,
-                    dot: true,
-                    cwd: '<%= paths.tmp %>',
-                    dest: '<%= paths.dist %>',
-                    src: [
-                        'styles/index.css'
-                    ]
-                }]
-            },
             index: {
                 files: {
                     'dist/index.html': 'app/index.html'
                 }
+            },
+            templates: {
+                files: [{
+                    expand: true,
+                    dot: true,
+                    cwd: '<%= paths.app %>/templates',
+                    dest: '<%= paths.dist %>/templates',
+                    src: [
+                        '**/*'
+                    ]
+                }]
             }
         },
 
@@ -118,7 +118,7 @@ module.exports = function(grunt) {
             html: ['dist/index.html'],
             options: {
                 dest: 'dist',
-                root: '.tmp'
+                root: 'app'
             }
         },
         usemin: {
@@ -157,25 +157,17 @@ module.exports = function(grunt) {
             options: {
                 singleQuotes: true,
             },
-            app: {
-                files: [{
-                    expand: true,
-                    dot: true,
-                    src: [
-                        '**/*.js'
-                    ]
-                }]
+            dist: {
+                src: '.tmp/scripts/index.js'
             }
         },
-        rev: {
-            dist: {
-                files: {
-                    src: [
-                        '<%= paths.dist %>/javascripts/**/*.js',
-                        '<%= paths.dist %>/stylesheets/**/*.css',
-                        '<%= paths.dist %>/images/**/*.{webp,gif,png,jpg,jpeg,ttf,otf}'
-                    ]
-                }
+        filerev: {
+            assets: {
+                src: [
+                    '<%= paths.dist %>/**/*',
+                    '!<%= paths.dist %>/index.html'
+                ],
+                filter: 'isFile'
             }
         },
         requirejs: {
@@ -183,7 +175,6 @@ module.exports = function(grunt) {
                 appDir: '<%= paths.app %>/scripts',
                 baseUrl: './',
                 dir: '<%= paths.tmp %>/scripts',
-                mainConfigFile: '<%= paths.app %>/scripts/config.js',
                 optimize: 'none'
             },
             dist: {
@@ -193,7 +184,7 @@ module.exports = function(grunt) {
                     }],
                     almond: true,
                     replaceRequireScript: [{
-                        files: ['<%= paths.dist %>/index.html'],
+                        files: ['dist/index.html'],
                         module: 'index'
                     }]
                 }
@@ -251,7 +242,24 @@ module.exports = function(grunt) {
         },
         removelogging: {
             dist: {
-                src: 'dist/scripts/**/*.js'
+                src: '.tmp/concat/scripts/**/*.js'
+            }
+        },
+
+        ngtemplates: {
+            app: {
+                src: 'app/templates/**/*.html',
+                dest: 'dist/scripts/templates.js',
+                options: {
+                    // bootstrap: function(module, script) {
+                    //     return 'define(module, [], function() { return { init: ' + script + ' }; });';
+                    // },
+                    // htmlmin: {
+                    //     collapseWhitespace: true,
+                    //     collapseBooleanAttributes: true
+                    // },
+                    module: 'muceApp'
+                }
             }
         }
     };
@@ -272,20 +280,18 @@ module.exports = function(grunt) {
     grunt.registerTask('build', [
         'clean:dist',
         'compass:dist',
-        'copy:compass',
         'copy:index',
         'requirejs',
+        'ngAnnotate',
         'useminPrepare',
         'concat',
         'removelogging',
-        'ngAnnotate',
-        'uglify',
         'cssmin',
-        'rev',
-        'copy:compass',
+        'uglify',
+        'filerev',
         // 'imagemin',
-        'usemin'
-        // 'copy:dist'
+        'usemin',
+        'copy:templates'
     ]);
 
     grunt.registerTask('build:staging', [
