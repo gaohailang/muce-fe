@@ -457,7 +457,7 @@ define(function() {
     }
 
     _.each(fieldsDict, function(formFields, key) {
-        resModalModule.controller(key + 'ModalCtrl', function($scope, apiHelper, $notice, $rootScope, $filter) {
+        resModalModule.controller(key + 'ModalCtrl', ['$scope', 'apiHelper', '$notice', '$rootScope', '$filter', function($scope, apiHelper, $notice, $rootScope, $filter) {
             var prefix = $scope._data ? '(TEMP) - Edit ' : 'Add ';
             $scope.modalTitle = prefix + _.capitalize(key);
             $scope.formFields = formFields;
@@ -500,7 +500,7 @@ define(function() {
                 console.log($scope.formlyData);
                 submitMap[key]($scope, apiHelper, $notice);
             };
-        });
+        }]);
     });
 
 
