@@ -1,5 +1,5 @@
 define(function() {
-    return function mqHistoryCtrl($scope, $rootScope, apiHelper) {
+    function mqHistoryCtrl($scope, $rootScope, apiHelper) {
         // 支持 选项： order, querys_showed, more_querys
         function fetchHistory() {
             apiHelper('getJobList').then(function(data) {
@@ -12,4 +12,7 @@ define(function() {
             fetchHistory();
         });
     }
+
+    angular.module('muceApp.mq.mqHistoryCtrl', [])
+        .controller('mqHistoryCtrl', mqHistoryCtrl);
 });

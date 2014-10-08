@@ -6,7 +6,7 @@ define([
     'report/settingCtrl',
     'report/tableCtrl',
     'report/resModal'
-], function(highchart, reportCtrl, sidebarCtrl, settingCtrl, tableCtrl) {
+], function(highchart) {
 
     var Config = {
         delAlertPrefix: 'Are you sure you wish to delete ',
@@ -164,21 +164,15 @@ define([
     }
 
     function buildCtrlDepArr(ctrlNames) {
-        _.map([], function(name) {
+        return _.map(ctrlNames, function(name) {
             return 'muceApp.report.' + name;
         });
     }
 
-    var depModules = buildCtrlDepArr()
-
     angular.module('muceApp.report',
-        buildCtrlDepArr(['delPanelCtrl']).concat(['muceApp.report.resModal']))
-        .controller('reportCtrl', reportCtrl)
-        .controller('sidebarCtrl', sidebarCtrl)
+        buildCtrlDepArr(['delPanelCtrl', 'reportCtrl', 'sidebarCtrl', 'settingCtrl', 'tableCtrl']).concat(['muceApp.report.resModal']))
         .controller('addModalCtrl', addModalCtrl)
-        .controller('settingCtrl', settingCtrl)
         .controller('detailCtrl', detailCtrl)
-        .controller('tableCtrl', tableCtrl)
         .controller('viewMetricsCtrl', viewCtrls[0])
         .controller('viewDimensionsCtrl', viewCtrls[1])
         .config(function($stateProvider) {

@@ -1,5 +1,5 @@
 define(function() {
-    return function tableCtrl($scope, $rootScope, $filter) {
+    function tableCtrl($scope, $rootScope, $filter) {
         var _state = $rootScope.state;
         $rootScope.$on('report:renderReportData', function(event, opt) {
             buildGridData.apply(null, opt);
@@ -124,5 +124,8 @@ define(function() {
 
             return dict;
         }
-    };
+    }
+
+    angular.module('muceApp.report.tableCtrl', [])
+        .controller('tableCtrl', tableCtrl);
 });

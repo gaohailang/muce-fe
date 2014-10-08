@@ -1,5 +1,5 @@
 define(function() {
-    return function mqCtrl($scope, apiHelper, $state, $stateParams) {
+    function mqCtrl($scope, apiHelper, $state, $stateParams) {
         $scope.$root.appTitle = 'MQ';
 
         $scope.changeDb = function(db) {
@@ -46,4 +46,7 @@ define(function() {
             $scope.changeTable($state.params.table);
         }
     }
+
+    angular.module('muceApp.mq.mqCtrl', [])
+        .controller('mqCtrl', mqCtrl);
 });

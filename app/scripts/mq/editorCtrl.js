@@ -1,5 +1,5 @@
 define(['mq/muce-hint'], function() {
-    return function mqEditorCtrl($scope, $rootScope, $interval, apiHelper, $state) {
+    function mqEditorCtrl($scope, $rootScope, $interval, apiHelper, $state) {
         $scope.form = {};
 
 
@@ -159,4 +159,7 @@ define(['mq/muce-hint'], function() {
             return showTime;
         }
     }
+
+    angular.module('muceApp.mq.mqEditorCtrl', [])
+        .controller('mqEditorCtrl', mqEditorCtrl);
 });

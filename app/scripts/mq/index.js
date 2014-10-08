@@ -5,14 +5,15 @@ define([
     'mq/editorCtrl',
     'mq/shareCtrl',
     'mq/jobListCtrl'
-], function(routeInfo, mqCtrl, mqHistoryCtrl, mqEditorCtrl, mqShareCtrl, mqJobListCtrl) {
+], function(routeInfo) {
 
-    angular.module('muceApp.mq', [])
-        .controller('mqEditorCtrl', mqEditorCtrl)
-        .controller('mqHistoryCtrl', mqHistoryCtrl)
-        .controller('mqShareCtrl', mqShareCtrl)
-        .controller('mqJobListCtrl', mqJobListCtrl)
-        .controller('mqCtrl', mqCtrl)
+    function buildCtrlDepArr(ctrlNames) {
+        return _.map(ctrlNames, function(name) {
+            return 'muceApp.mq.' + name;
+        });
+    }
+
+    angular.module('muceApp.mq', buildCtrlDepArr(['mqCtrl', 'mqHistoryCtrl', 'mqEditorCtrl', 'mqShareCtrl', 'mqJobListCtrl']))
         .config(function($stateProvider) {
             _.each(routeInfo, function(opt, name) {
                 $stateProvider.state(name, opt);

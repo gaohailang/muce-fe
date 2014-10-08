@@ -1,5 +1,5 @@
 define(function() {
-    return function($scope, $rootScope, apiHelper, $modal, downloadFile) {
+    function mqJobListCtrl($scope, $rootScope, apiHelper, $modal, downloadFile) {
         $scope.setHqlEditor = function(hql) {
             $rootScope.$emit('mq:setHqlEditor', hql);
         };
@@ -32,4 +32,7 @@ define(function() {
             downloadFile(apiHelper.getUrl('getJobResult', id));
         };
     }
+
+    angular.module('muceApp.mq.mqJobListCtrl', [])
+        .controller('mqJobListCtrl', mqJobListCtrl);
 })

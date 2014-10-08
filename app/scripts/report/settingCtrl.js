@@ -1,5 +1,5 @@
 define(function() {
-    return function settingCtrl($scope, apiHelper, $timeout, $state, $rootScope, $filter, $modal) {
+    function settingCtrl($scope, apiHelper, $timeout, $state, $rootScope, $filter, $modal) {
         var _state = $rootScope.state;
 
         $scope.quickChooseList = Config.quickDataList;
@@ -201,4 +201,7 @@ define(function() {
             }
         };
     };
+
+    angular.module('muceApp.report.settingCtrl', [])
+        .controller('settingCtrl', settingCtrl);
 });

@@ -1,5 +1,5 @@
 define(function() {
-    return function sidebarCtrl(apiHelper, $scope, $rootScope, $modal) {
+    function sidebarCtrl(apiHelper, $scope, $rootScope, $modal) {
         var _state = $rootScope.state;
 
         $scope.switchTypeVal = function(type, val) {
@@ -31,5 +31,8 @@ define(function() {
                 _state.reportList = _.without(_state.reportList, item);
             });
         };
-    };
+    }
+
+    angular.module('muceApp.report.sidebarCtrl', [])
+        .controller('sidebarCtrl', sidebarCtrl);
 });

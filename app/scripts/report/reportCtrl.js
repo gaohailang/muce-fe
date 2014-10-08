@@ -1,5 +1,5 @@
 define(function() {
-    return function reportCtrl($scope, $modal, apiHelper, $state, $rootScope) {
+    function reportCtrl($scope, $modal, apiHelper, $state, $rootScope) {
         $rootScope.state = {};
         var _state = $rootScope.state;
 
@@ -54,4 +54,7 @@ define(function() {
             });
         }, true);
     }
+
+    angular.module('muceApp.report.reportCtrl', [])
+        .controller('reportCtrl', reportCtrl);
 })

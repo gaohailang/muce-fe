@@ -1,5 +1,5 @@
 define(function() {
-    return function($scope, apiHelper) {
+    function mqShareCtrl($scope, apiHelper) {
 
         $scope.mqShareInputHandler = function(e) {
             if (e.keyCode === 13) {
@@ -17,4 +17,7 @@ define(function() {
             });
         }
     }
+
+    angular.module('muceApp.mq.mqShareCtrl', [])
+        .controller('mqShareCtrl', mqShareCtrl);
 });
