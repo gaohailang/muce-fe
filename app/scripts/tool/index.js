@@ -155,6 +155,20 @@ define([], function() {
     // 1?timespan=1440&dateTime=20140921&dimensions=[{"id": 1, "value": ["", "1"]}, {"id": 2, "value": [""]}]
 
     angular.module('muceApp.tool', ['highcharts-ng'])
+        .directive('uampCheckboxSelect', function($timeout) {
+            // http://wenzhixin.net.cn/p/multiple-select/docs/#methods
+            return {
+                templateUrl: 'uamp-checkbox-select.html',
+                link: function($scope, $elem, $attr) {
+                    $timeout(function() {
+                        $elem.find('select').multipleSelect({
+                            allSelected: false
+                        });
+                    });
+                },
+                replace: true
+            }
+        })
         .controller('UAMPCtrl', UAMPCtrl)
         .config(function($stateProvider) {
             _.each(routeInfo, function(opt, name) {

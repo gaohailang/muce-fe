@@ -238,7 +238,7 @@ textarea {
     }
 }
 
-// advanced dimension modal
+/* advanced dimension modal */
 .mc-report-dimenAdv-form {
     .controls select {
         width: 35%;
@@ -328,7 +328,7 @@ textarea {
     }
 }
 
-// mq page
+/* mq page */
 .mc-mq-container {
     .CodeMirror {
         height: 112px;
@@ -378,12 +378,56 @@ textarea {
 
 
 /* tool - UAMP */
-.metric-minus-up {
-    color: green;
+.mc-uamp {
+    .main-content {
+        padding: 10px;
+    }
+    .sidebar {
+        text-align: center;
+        h3{
+            font-size: 18px;
+            line-height: 24px;
+            i{
+                padding-right: 8px;
+            }
+        }
+        li a {
+            font-size: 14px;
+            line-height: 40px;
+            height: 44px;
+        }
+    }
+    .op-bar {
+        .multi-fn-datepicker, .uamp-checkbox-slect, .apply-btn {
+            display: inline-block;
+            margin-right: 5px;
+        }
+    }
+    .multi-fn-datepicker {
+        .datepicker, .fn-chooser {
+            display: inline-block;
+        }
+        .datepicker {
+            input {
+                width: 100px;
+            }
+        }
+    }
+    .metric-minus-up {
+        color: green;
+    }
+    .metric-minus-down {
+        color: red;
+    }
+    .uamp-checkbox-slect {
+        display: inline-block;
+        select[multiple] {
+            margin-left: 5px;
+            width: 200px;
+        }
+    }
 }
-.metric-minus-down {
-    color: red;
-}
+
 
 
 .x-control-stack-select select {
@@ -404,7 +448,7 @@ textarea {
     }
 }
 
-// component - multi-choose
+/* component - multi-choose */
 .i-multi-choose-wrapper {
     .checkbox-wrapper {
         max-height: 300px;
