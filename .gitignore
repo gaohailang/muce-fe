@@ -13,4 +13,3 @@ app/styles/**/*.css
 *.sublime-*
 .wdrc
 archive/
-app/assets

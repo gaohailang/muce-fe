@@ -108,7 +108,7 @@ module.exports = function(grunt) {
                     cwd: '<%= paths.app %>',
                     dest: '<%= paths.dist %>',
                     src: [
-                        'font/**/*', 'images/**/*'
+                        'font/**/*', 'images/**/*', 'assets/**/*'
                     ]
                 }]
             },
@@ -301,7 +301,8 @@ module.exports = function(grunt) {
         // 'imagemin',
         'usemin',
         'copy:static',
-        'copy:vendor'
+        'copy:vendor',
+        'copy:asset'
     ]);
 
     grunt.registerTask('build:staging', [
