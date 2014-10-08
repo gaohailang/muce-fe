@@ -41,7 +41,8 @@ require([
 
         'muceApp.report',
         'muceApp.mq',
-        'muceApp.tool'
+        'muceApp.tool',
+        'muceApp.templates'
     ]);
 
     muceApp.config(function($stateProvider, $urlRouterProvider, $locationProvider) {

@@ -7,6 +7,7 @@ deploy
 .sass-cache
 node_modules
 app/components
+app/styles/**/*.css
 # app/vendors
 
 *.sublime-*

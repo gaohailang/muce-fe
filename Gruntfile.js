@@ -23,7 +23,7 @@ var pathConfig = {
     tmp: '.tmp',
     test: 'test',
     sass: 'app/styles',
-    css: '.tmp/styles',
+    css: 'app/styles',
     js: 'app/scripts'
 };
 var connectOpt = {
@@ -101,15 +101,25 @@ module.exports = function(grunt) {
                     'dist/index.html': 'app/index.html'
                 }
             },
-            templates: {
+            static: {
                 files: [{
                     expand: true,
                     dot: true,
-                    cwd: '<%= paths.app %>/templates',
-                    dest: '<%= paths.dist %>/templates',
+                    cwd: '<%= paths.app %>',
+                    dest: '<%= paths.dist %>',
                     src: [
-                        '**/*'
+                        'font/**/*', 'images/**/*'
                     ]
+                }]
+            },
+            vendor: {
+                files: [{
+                    expand: true,
+                    // dot: true,
+                    flatten: true,
+                    cwd: '<%= paths.app %>/vendors',
+                    dest: '<%= paths.dist %>/font',
+                    src: ['ace-v1.2/font/**/*']
                 }]
             }
         },
@@ -158,7 +168,7 @@ module.exports = function(grunt) {
                 singleQuotes: true,
             },
             dist: {
-                src: '.tmp/scripts/index.js'
+                src: '.tmp/concat/scripts/app.js'
             }
         },
         filerev: {
@@ -249,16 +259,14 @@ module.exports = function(grunt) {
         ngtemplates: {
             app: {
                 src: 'app/templates/**/*.html',
-                dest: 'dist/scripts/templates.js',
+                dest: 'app/scripts/templates.js',
                 options: {
-                    // bootstrap: function(module, script) {
-                    //     return 'define(module, [], function() { return { init: ' + script + ' }; });';
-                    // },
-                    // htmlmin: {
-                    //     collapseWhitespace: true,
-                    //     collapseBooleanAttributes: true
-                    // },
-                    module: 'muceApp'
+                    bootstrap: function(module, script) {
+                        return "(function() { angular.module('muceApp.templates', []).run(['$templateCache'," + "function($templateCache) {" + script + "}]);})();";
+                    },
+                    url: function(url) {
+                        return url.replace(/^app\//, '');
+                    }
                 }
             }
         }
@@ -281,17 +289,19 @@ module.exports = function(grunt) {
         'clean:dist',
         'compass:dist',
         'copy:index',
+        'ngtemplates',
         'requirejs',
-        'ngAnnotate',
         'useminPrepare',
         'concat',
         'removelogging',
+        'ngAnnotate',
         'cssmin',
         'uglify',
         'filerev',
         // 'imagemin',
         'usemin',
-        'copy:templates'
+        'copy:static',
+        'copy:vendor'
     ]);
 
     grunt.registerTask('build:staging', [
