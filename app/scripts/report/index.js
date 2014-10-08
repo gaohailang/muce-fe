@@ -71,7 +71,7 @@ define([
     var viewCtrls;
     (function buildViewCtrls() {
         viewCtrls = _.map(['metric', 'dimension'], function(type) {
-            return function($scope, apiHelper, $rootScope, $modal) {
+            return ['$scope', 'apiHelper', '$rootScope', '$modal', function($scope, apiHelper, $rootScope, $modal) {
                 var capitalizeType = _.capitalize(type);
                 apiHelper('getDetail' + capitalizeType + 'sList').then(function(data) {
                     $scope[type + 'List'] = data;
@@ -103,7 +103,7 @@ define([
                         size: 'lg'
                     });
                 };
-            }
+            }]
         });
     })();
 
