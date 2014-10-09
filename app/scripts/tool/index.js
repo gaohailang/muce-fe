@@ -10,7 +10,6 @@ define([], function() {
 
     // Todo: 请求 children 的 metric id?
     // Todo: dimension 变成数组
-    // jQuery 等 non-angular 代码:
     function UAMPCtrl($scope, $rootScope, apiHelper, $filter, $timeout) {
         // reportList 和 state.report, state.period, state.dimension, state.chartMetri, state.dateTime
         $scope.state = {
@@ -66,9 +65,9 @@ define([], function() {
             // 依赖于_state.report 和 日期，dimension_选择情况 - check 下
             apiHelper('getUAMPReportData', _state.report.id, {
                 params: {
-                    dimension: JSON.stringify(_state.dimension),
+                    dimension: getDimensionSelectVals(),
                     timespan: _state.timespan,
-                    dateTime: 20140921
+                    dateTime: getDatePickerVal()
                 }
             }).then(function(data) {
                 flatMetricsData = [];
@@ -87,11 +86,17 @@ define([], function() {
         };
 
         $scope.fetchChartDataRender = function() {
+            var idListSelected = _.pluck(_.filter($scope.flatMetricsData, function(i) {
+                return i.selected;
+            }), 'id');
+            if (!idListSelected.length) return;
             apiHelper('getUAMPChartData', {
                 params: {},
                 busy: 'global'
-            }).then(function() {
+            }).then(function(data) {
                 // set chartConfig data option
+                var dateList = data.date;
+                delete data.date;
                 $scope.chartConfig = {
                     options: {
                         chart: {
@@ -99,16 +104,9 @@ define([], function() {
                             zoomType: 'x'
                         }
                     },
-                    series: [{
-                        data: [5146747.0000, 5616327.0000, 5628277.0000, 5632576.0000, 5974986.0000, 5127350.0000, 5158867.0000, 5127709.0000]
-                    }, {
-                        data: [5146747.0000, 56167.0000, 5628277.0000, 5632576.0000, 5974986.0000, 5127350.0000, 5158867.0000, 51709.0000]
-                    }],
+                    series: _.values(data),
                     xAxis: {
-                        categories: ["20140910", "20140911", "20140912", "20140913", "20140914", "20140915", "20140916", "20140917"],
-                    },
-                    title: {
-                        text: 'Hello' // 标题
+                        categories: dateList
                     },
                     loading: false
                 };
@@ -270,6 +268,7 @@ define([], function() {
             return x;
         }
 
+        // jQuery 等 non-angular 代码 linked/binded:
         // datepicker 设置时间和取时间，diemsion select 设置和取值，daterangepicker 设置和取值
         // 从 datepicker input val 取得值，原始的 datepicker('getDate') 不 work
         function getDatePickerVal() {
@@ -281,13 +280,14 @@ define([], function() {
         }
 
         function getDimensionSelectVals() {
-            $('.uamp-checkbox-select select').map(function(idx, i) {
+            var _val = $('.uamp-checkbox-select select').map(function(idx, i) {
                 return {
                     id: $(i).data('dimension-id'),
                     value: $(i).multipleSelect('getSelects')
                 }
             });
-            $('select').multipleSelect('setSelects', [1, 3]);
+            _state.dimension = _val; // persistence for url serialized
+            return _val;
         }
 
         function setDimensionSelectVals() {
@@ -297,7 +297,8 @@ define([], function() {
         }
 
         function getChartDateRangeVal() {
-
+            var _picker = $chartDateRangePicker.data('daterangepicker');
+            return [_picker.startDate, _picker.endDate];
         }
 
         function setChartDateRangeVal() {
@@ -305,6 +306,17 @@ define([], function() {
             _picker.setEndDate(getPrevDay());
             _picker.setStartDate(getPrevMonth());
         }
+
+        // collapse the sidebar
+        $('.collapse-sidebar-trigger').click(function(e) {
+            if ($(e.target).hasClass('icon-double-angle-left')) {
+                $(e.target).removeClass('icon-double-angle-left').addClass('icon-double-angle-right');
+                $('.mc-uamp').addClass('sidebar-collapsed');
+            } else {
+                $(e.target).removeClass('icon-double-angle-right').addClass('icon-double-angle-left');
+                $('.mc-uamp').removeClass('sidebar-collapsed');
+            }
+        });
     }
 
     // 1?timespan=1440&dateTime=20140921&dimensions=[{"id": 1, "value": ["", "1"]}, {"id": 2, "value": [""]}]

@@ -376,10 +376,43 @@ textarea {
 
 /* tool - UAMP */
 .mc-uamp {
+    &.sidebar-collapsed {
+        .main-content {
+            margin-left: 0;
+        }
+        .sidebar {
+            margin-left: -210px;
+            opacity: 0;
+            background-color: #fff;
+        }
+        .collapse-sidebar-trigger {
+            left: 10px;
+            top: 35px;
+        }
+    }
+    .collapse-sidebar-trigger {
+        transition: all .5s cubic-bezier(0.25,.46,.45,.94);
+        display: inline-block;
+        cursor: pointer;
+        font-size: 14px;
+        color: #aaa;
+        border: 1px solid #bbb;
+        padding: 0 5px;
+        line-height: 18px;
+        border-radius: 16px;
+        background-color: #fff;
+
+        position: absolute;
+        top: 45px;
+        left: 178px;
+        z-index: 9999;
+    }
     .main-content {
         padding: 10px;
+        transition: all .5s cubic-bezier(0.25,.46,.45,.94);
     }
     .sidebar {
+        transition: all .2s cubic-bezier(0.25,.46,.45,.94);
         text-align: center;
         h3{
             font-size: 18px;
@@ -395,7 +428,7 @@ textarea {
         }
     }
     .op-bar {
-        .multi-fn-datepicker, .uamp-checkbox-slect, .apply-btn {
+        .multi-fn-datepicker, .uamp-checkbox-select, .apply-btn {
             display: inline-block;
             margin-right: 5px;
         }
@@ -421,7 +454,7 @@ textarea {
     .metric-minus-down {
         color: red;
     }
-    .uamp-checkbox-slect {
+    .uamp-checkbox-select {
         display: inline-block;
         select[multiple] {
             margin-left: 5px;
@@ -429,7 +462,6 @@ textarea {
         }
     }
 }
-
 
 
 .x-control-stack-select select {

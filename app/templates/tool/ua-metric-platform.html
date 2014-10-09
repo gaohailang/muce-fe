@@ -13,10 +13,11 @@
     }
 </style>
 
-<div class="mc-uamp">
+<div class="mc-uamp" ng-show="state.hasFetchData">
+    <i class="icon-double-angle-left collapse-sidebar-trigger"></i>
     <div class="sidebar">
         <h3>
-            <i class=" icon-bar-chart"></i>UA 指标
+            <i class="icon-bar-chart"></i>UA 指标
         </h3>
         <ul class="nav nav-list">
             <li ng-repeat="report in reportList"
@@ -26,7 +27,7 @@
             </li>
         </ul>
     </div>
-    <div class="main-content" ng-show="state.hasFetchData">
+    <div class="main-content">
         <div class="op-bar">
             <div class="multi-fn-datepicker">
                 <!-- export: state.timezone -->
@@ -63,11 +64,9 @@
             <!-- config: [report] -->
             <div uamp-checkbox-select ng-repeat="i in state.report.dimension"></div>
 
-            <button class="btn apply-btn">Apply</button>
+            <button class="btn apply-btn" ng-click="fetchReportData()">Apply</button>
         </div>
 
-        <!-- todo 支持child字段的级联渲染
-            config: [report, state.timezone, state.dateTime, state.dimensions] -->
         <!-- collapsable-data-table -->
         <table class="table">
             <tr>
@@ -76,9 +75,10 @@
                     {{th.disp_name}}
                 </td>
             </tr>
-            <tr ng-repeat="metric in flatMetricsData"
-                ng-show="inferFromParent(metric)">
-                <td ng-if="state.isSelectMetricMode"><input type="checkbox"></td>
+            <tr ng-repeat="metric in flatMetricsData" ng-show="inferFromParent(metric)">
+                <td ng-if="state.isSelectMetricMode">
+                    <input type="checkbox" ng-model="metric.selected">
+                </td>
 
                 <td ng-show="inferFromParent(metric)" ng-style="setMetricLevelStyle(metric)">
                     <i class="icon-plus" ng-show="metric.haschild"
