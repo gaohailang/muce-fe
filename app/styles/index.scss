@@ -174,9 +174,6 @@ textarea {
             }
         }
         .date-operator {
-            // select{
-            //     margin-bottom: 0px;
-            // }
             .btn-group {
                 .btn {
                     padding-left: 18px;
@@ -401,6 +398,11 @@ textarea {
         .multi-fn-datepicker, .uamp-checkbox-slect, .apply-btn {
             display: inline-block;
             margin-right: 5px;
+        }
+    }
+    .bottom-op-bar {
+        .btn.ng-hide-remove, .btn.ng-hide-add {
+            display: inline-block!important;
         }
     }
     .multi-fn-datepicker {

@@ -12,28 +12,30 @@
         padding: 0;
     }
 </style>
+
 <div class="mc-uamp">
     <div class="sidebar">
         <h3>
-            <i class=" icon-bar-chart"></i>
-            UA 指标
+            <i class=" icon-bar-chart"></i>UA 指标
         </h3>
         <ul class="nav nav-list">
-            <li ng-repeat="report in reportList">
-                <a ng-href="">{{report.name}}</a>
+            <li ng-repeat="report in reportList"
+                ng-click="selectReport(report.id)"
+                ng-class="{'active': state.report.id === report.id}">
+                <a>{{report.name}}</a>
             </li>
         </ul>
     </div>
-    <div class="main-content">
+    <div class="main-content" ng-show="state.hasFetchData">
         <div class="op-bar">
             <div class="multi-fn-datepicker">
                 <!-- export: state.period -->
                 <div data-toggle="buttons-radio" class="btn-group fn-chooser">
-                    <button class="btn btn-primary" type="button"
-                        ng-class="{'active': state.period==i}"
-                        ng-click="state.period=i;"
-                        ng-repeat="i in ['day', 'week', 'month']">
-                        {{i}}
+                    <button class="btn" type="button"
+                        ng-class="{'active': state.timespan==i[0]}"
+                        ng-click="state.timespan=i[0];"
+                        ng-repeat="i in state.report.timespan">
+                        {{i[1]}}
                     </button>
                 </div>
 
@@ -44,32 +46,6 @@
                         <i class="icon-calendar"></i>
                     </span>
                 </div>
-
-                <script type="text/javascript">
-                    var baseOpt = {
-                        autoclose: true,
-                        todayHighlight: true,
-                        endDate: new Date()
-                    };
-
-                    // day
-                    /*$('.date-picker').datepicker(_.extend(baseOpt, {
-                        format: 'yyyy-mm-dd'
-                    }));
-
-                    // week
-                    $('.date-picker').datepicker(_.extend(baseOpt, {
-                        format: 'yyyy-mm-dd',
-                        daysOfWeekDisabled: "0,2,3,4,5,6"
-                    }));*/
-
-                    // month
-                    $('.date-picker').datepicker(_.extend(baseOpt, {
-                        format: 'yyyy-mm',
-                        minViewMode: 'months',
-                        startView: 'months'
-                    }));
-                </script>
             </div>
 
             <!-- label+input-select2-multi -->
@@ -95,22 +71,19 @@
         <!-- collapsable-data-table -->
         <table class="table">
             <tr>
-                <td ng-show="state.isSelectMetricMode">选择</td>
-
+                <td ng-if="state.isSelectMetricMode">选择</td>
                 <td ng-repeat="th in reportData.tableTitle">
                     {{th.disp_name}}
                 </td>
             </tr>
             <tr ng-repeat="metric in flatMetricsData"
                 ng-show="inferFromParent(metric)">
-                <td ng-show="state.isSelectMetricMode"><input type="checkbox"></td>
+                <td ng-if="state.isSelectMetricMode"><input type="checkbox"></td>
 
                 <td ng-show="inferFromParent(metric)" ng-style="setMetricLevelStyle(metric)">
-                    <i class="icon-plus"
+                    <i class="icon-plus" ng-show="metric.haschild"
                         ng-click="toggleMetricOpenStatus(metric)"
-                        ng-show="metric.haschild"
-                        ng-class='{"icon-plus": !metric.isopened,
-                                    "icon-minus": metric.isopened}'>
+                        ng-class='{"icon-plus": !metric.isopened, "icon-minus": metric.isopened}'>
                     </i>
                     {{metric.name}}
                 </td>
@@ -120,12 +93,14 @@
             </tr>
         </table>
 
-        <button type="button" class="btn" btn-checkbox
-            ng-model="state.isSelectMetricMode">{{state.isSelectMetricMode?'取消':'看趋势'}}</button>
-        <button type="button" class="btn"
-            ng-show="state.isSelectMetricMode" ng-click="renderChart()">绘制</button>
-        <!-- 监控 selectMetrics 的值，toggle 重现绘制 -->
-        <button class="btn">导出 CSV</button>
+        <p class="bottom-op-bar">
+            <button type="button" class="btn" btn-checkbox
+                ng-model="state.isSelectMetricMode">{{state.isSelectMetricMode?'取消':'看趋势'}}</button>
+            <button type="button" class="btn"
+                ng-show="state.isSelectMetricMode" ng-click="renderChart()">绘制</button>
+            <!-- 监控 selectMetrics 的值，toggle 重现绘制 -->
+            <button class="btn">导出 CSV</button>
+        </p>
 
         <!-- chart config: [state.metric-list] -->
         <div class="chart" ng-show="state.isShowChart">
@@ -135,7 +110,7 @@
                     <span class="add-on">
                         <i class="icon-calendar"></i>
                     </span>
-                    <input class="span10" type="text" name="date-range-picker" id="date-range-picker" />
+                    <input type="text" name="date-range-picker" id="date-range-picker" />
                 </div>
             </label>
             <highchart config="chartConfig"></highchart>

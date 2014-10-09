@@ -7,13 +7,19 @@
 
 /* Todo: add fade-down, fade-down, fade-right; */
 
-
+/*.ux-fadeDown*/
 .ng-enter {-webkit-animation: fadeDownEnter .3s linear;}
 .ng-hide-add, .ng-hide-remove {
-    display: block!important;
+    display: inherit!important;
 }
-.ng-hide-remove {
-    -webkit-animation: fadeDownEnter .3s linear;
+.ng-hide-remove {-webkit-animation: fadeDownEnter .3s linear;}
+
+.mc-uamp table {
+    .ng-enter {-webkit-animation: initial;}
+    .ng-hide-add, .ng-hide-remove {
+        display: inherit!important;
+    }
+    .ng-hide-remove {-webkit-animation: initial;}
 }
 
 .disable-ux {
@@ -21,7 +27,7 @@
     &.ng-leave {-webkit-animation: initial;}
 
     &.ng-hide-add, &.ng-hide-remove {
-        display: block!important;
+        display: inherit!important;
     }
     &.ng-hide-add {
         -webkit-animation: initial;
