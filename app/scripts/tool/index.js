@@ -11,8 +11,7 @@ define([], function() {
     // Todo: 请求 children 的 metric id?
     // Todo: dimension 变成数组
     // jQuery 等 non-angular 代码:
-    // datepicker 设置时间和取时间，diemsion select 设置和取值，daterangepicker 设置和取值
-    function UAMPCtrl($scope, $rootScope, apiHelper, $filter) {
+    function UAMPCtrl($scope, $rootScope, apiHelper, $filter, $timeout) {
         // reportList 和 state.report, state.period, state.dimension, state.chartMetri, state.dateTime
         $scope.state = {
             isSelectMetricMode: false,
@@ -20,6 +19,20 @@ define([], function() {
         };
         var flatMetricsData,
             _state = $scope.state;
+        var $datePicker = $('.date-picker');
+        var $chartDateRangePicker = $('.chart-date-range-picker');
+
+        // init chart's date range picker first
+        $chartDateRangePicker.daterangepicker({
+            ranges: {
+                'Last 7 Days': [moment().subtract('days', 6).toDate(), moment().toDate()],
+                'Last 30 Days': [moment().subtract('days', 29).toDate(), moment().toDate()],
+                'This Month': [moment().startOf('month').toDate(), moment().endOf('month').toDate()],
+                'Last Month': [moment().subtract('month', 1).startOf('month').toDate(), moment().subtract('month', 1).endOf('month').toDate()]
+            },
+            format: 'YYYY-MM-DD',
+            endDate: moment()
+        });
 
         apiHelper('getUAMPReportList').then(function(data) {
             $scope.reportList = data;
@@ -41,6 +54,9 @@ define([], function() {
                         value: ["##ALL##"]
                     };
                 });
+                $timeout(function() {
+                    setDimensionSelectVals();
+                }, 500);
                 $scope.fetchReportData();
             });
         };
@@ -65,27 +81,42 @@ define([], function() {
 
         // 绘制趋势
         $scope.renderChart = function() {
-            // set chartConfig data option
-            $scope.chartConfig = {
-                options: {
-                    chart: {
-                        type: 'line', // spline
-                        zoomType: 'x'
-                    }
-                },
-                series: [{
-                    data: [5146747.0000, 5616327.0000, 5628277.0000, 5632576.0000, 5974986.0000, 5127350.0000, 5158867.0000, 5127709.0000]
-                }],
-                xAxis: {
-                    categories: ["20140910", "20140911", "20140912", "20140913", "20140914", "20140915", "20140916", "20140917"],
-                },
-                title: {
-                    text: 'Hello' // 标题
-                },
-                loading: false
-            };
             _state.isShowChart = true;
+            setChartDateRangeVal();
+            $scope.fetchChartDataRender();
         };
+
+        $scope.fetchChartDataRender = function() {
+            apiHelper('getUAMPChartData', {
+                params: {},
+                busy: 'global'
+            }).then(function() {
+                // set chartConfig data option
+                $scope.chartConfig = {
+                    options: {
+                        chart: {
+                            type: 'line', // spline
+                            zoomType: 'x'
+                        }
+                    },
+                    series: [{
+                        data: [5146747.0000, 5616327.0000, 5628277.0000, 5632576.0000, 5974986.0000, 5127350.0000, 5158867.0000, 5127709.0000]
+                    }, {
+                        data: [5146747.0000, 56167.0000, 5628277.0000, 5632576.0000, 5974986.0000, 5127350.0000, 5158867.0000, 51709.0000]
+                    }],
+                    xAxis: {
+                        categories: ["20140910", "20140911", "20140912", "20140913", "20140914", "20140915", "20140916", "20140917"],
+                    },
+                    title: {
+                        text: 'Hello' // 标题
+                    },
+                    loading: false
+                };
+            });
+        };
+
+        // 导出 CSV
+        $scope.exportCsv = function() {};
 
         /* watchersss 监控~~ */
 
@@ -116,11 +147,22 @@ define([], function() {
                 10080: getPrevMonday,
                 43200: getPrevMonth
             };
-            $('.date-picker').datepicker('remove');
-            $('.date-picker').datepicker(timespanDPoptionMap[timespan]);
-            $('.date-picker').datepicker('setDate', prevFnMap[timespan].call());
+            $datePicker.datepicker('remove');
+            $datePicker.datepicker(timespanDPoptionMap[timespan]);
+            $datePicker.datepicker('setDate', prevFnMap[timespan].call());
         }, true);
 
+        $chartDateRangePicker.on('apply.daterangepicker', function(ev, picker) {
+            $scope.fetchChartDataRender();
+        });
+
+        // auto close chart when not select metric
+        $scope.$watch('state.isSelectMetricMode', function(flag, old) {
+            if (!old) return;
+            if (!_state.isSelectMetricMode && _state.isShowChart) {
+                _state.isShowChart = false;
+            }
+        });
 
         /* view helper */
 
@@ -226,6 +268,42 @@ define([], function() {
             x.setDate(1);
             x.setMonth(x.getMonth() - 1);
             return x;
+        }
+
+        // datepicker 设置时间和取时间，diemsion select 设置和取值，daterangepicker 设置和取值
+        // 从 datepicker input val 取得值，原始的 datepicker('getDate') 不 work
+        function getDatePickerVal() {
+            var _val = $datePicker.val();
+            if (_state.timespan == 43200) {
+                _val += '-01';
+            }
+            return _val.replace('-', '');
+        }
+
+        function getDimensionSelectVals() {
+            $('.uamp-checkbox-select select').map(function(idx, i) {
+                return {
+                    id: $(i).data('dimension-id'),
+                    value: $(i).multipleSelect('getSelects')
+                }
+            });
+            $('select').multipleSelect('setSelects', [1, 3]);
+        }
+
+        function setDimensionSelectVals() {
+            $('.uamp-checkbox-select select').each(function(idx, i) {
+                $(i).multipleSelect('setSelects', ['##ALL##']);
+            });
+        }
+
+        function getChartDateRangeVal() {
+
+        }
+
+        function setChartDateRangeVal() {
+            var _picker = $chartDateRangePicker.data('daterangepicker');
+            _picker.setEndDate(getPrevDay());
+            _picker.setStartDate(getPrevMonth());
         }
     }
 
