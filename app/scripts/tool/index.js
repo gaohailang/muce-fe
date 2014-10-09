@@ -8,13 +8,18 @@ define([], function() {
         }
     };
 
+    // Todo: 请求 children 的 metric id?
+    // Todo: dimension 变成数组
+    // jQuery 等 non-angular 代码:
+    // datepicker 设置时间和取时间，diemsion select 设置和取值，daterangepicker 设置和取值
     function UAMPCtrl($scope, $rootScope, apiHelper, $filter) {
         // reportList 和 state.report, state.period, state.dimension, state.chartMetri, state.dateTime
-        $rootScope.state = {
-            isSelectMetricMode: false
+        $scope.state = {
+            isSelectMetricMode: false,
+            hasFetchData: false
         };
         var flatMetricsData,
-            _state = $rootScope.state;
+            _state = $scope.state;
 
         apiHelper('getUAMPReportList').then(function(data) {
             $scope.reportList = data;
@@ -24,8 +29,18 @@ define([], function() {
 
         // 左面切换 report
         $scope.selectReport = function(id) {
+            _state.hasFetchData = false;
             apiHelper('getUAMPReportDetail', id).then(function(data) {
                 _state.report = data;
+                _state.timespan = _state.report.timespan[0][0];
+                // Todo: dateTime inital set
+                // dimension intial set
+                _state.dimension = _.map(_state.report.dimension, function(d) {
+                    return {
+                        id: d.id,
+                        value: ["##ALL##"]
+                    };
+                });
                 $scope.fetchReportData();
             });
         };
@@ -35,20 +50,16 @@ define([], function() {
             // 依赖于_state.report 和 日期，dimension_选择情况 - check 下
             apiHelper('getUAMPReportData', _state.report.id, {
                 params: {
-                    dimension: JSON.stringify([{
-                        "id": 1,
-                        "value": ["", "1"]
-                    }, {
-                        "id": 2,
-                        "value": [""]
-                    }]),
-                    timespan: 1440
+                    dimension: JSON.stringify(_state.dimension),
+                    timespan: _state.timespan,
+                    dateTime: 20140921
                 }
             }).then(function(data) {
                 flatMetricsData = [];
                 flattenReportMetric(data.tableData);
                 $scope.flatMetricsData = flatMetricsData;
                 $scope.reportData = data;
+                _state.hasFetchData = true;
             });
         };
 
@@ -76,13 +87,49 @@ define([], function() {
             _state.isShowChart = true;
         };
 
-        // view helper
+        /* watchersss 监控~~ */
+
+        // set datepicker jquery plugin
+        $scope.$watch('state.timespan', function(timespan) {
+            if (!timespan) return;
+            var baseOpt = {
+                autoclose: true,
+                todayHighlight: true,
+                endDate: new Date()
+            };
+            var timespanDPoptionMap = {
+                1440: _.extend({}, baseOpt, {
+                    format: 'yyyy-mm-dd'
+                }),
+                10080: _.extend({}, baseOpt, {
+                    format: 'yyyy-mm-dd',
+                    daysOfWeekDisabled: "0,2,3,4,5,6"
+                }),
+                43200: _.extend({}, baseOpt, {
+                    format: 'yyyy-mm',
+                    minViewMode: 'months',
+                    startView: 'months'
+                })
+            };
+            var prevFnMap = {
+                1440: getPrevDay,
+                10080: getPrevMonday,
+                43200: getPrevMonth
+            };
+            $('.date-picker').datepicker('remove');
+            $('.date-picker').datepicker(timespanDPoptionMap[timespan]);
+            $('.date-picker').datepicker('setDate', prevFnMap[timespan].call());
+        }, true);
+
+
+        /* view helper */
+
         // 指标前面的+-控制 isOpen
         $scope.toggleMetricOpenStatus = function(metric) {
             metric.isopened = !metric.isopened;
             // ajaxxing~~~
             if (metric.haschildren && (!metric.children)) {
-                // 同时保留其他 param
+                //  Todo --- 同时保留其他 param
                 apiHelper('getUAMPReportData', metric.id).then(function(data) {
                     var _idx = _.indexOf($scope.flatMetricsData, metric);
                     flatMetricsData = [];
@@ -157,6 +204,28 @@ define([], function() {
                     flattenReportMetric(metric.children, metric.name);
                 }
             }
+        }
+
+        function getPrevDay() {
+            var x = new Date().getTime();
+            return new Date(x - 1000 * 3600 * 24);
+        }
+
+        function getPrevMonday() {
+            var x = new Date();
+            if (x.getDay() != 0) {
+                x.setDate(x.getDate() - 7 - 6);
+            } else {
+                x.setDate(x.getDate() - x.getDay() - 6);
+            }
+            return x;
+        }
+
+        function getPrevMonth() {
+            var x = new Date();
+            x.setDate(1);
+            x.setMonth(x.getMonth() - 1);
+            return x;
         }
     }
 
