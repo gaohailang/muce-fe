@@ -218,6 +218,27 @@ define([], function() {
             doMockLink();
         };
 
+        // sort by name
+        $scope.sortReverse = false;
+        $scope.toggleRowSort = function(idx) {
+            // use native sort method, instead of angular's filter orderBy
+            $scope.sortType = idx;
+            $scope.sortReverse = !$scope.sortReverse;
+            var flatMetricsData;
+            flatMetricsData = _.sortBy($scope.flatMetricsData, function(item) {
+                if (idx === 0) {
+                    return item.name;
+                } else {
+                    // Todo - numberic converter
+                    return item.data[idx + 1];
+                }
+            });
+            if ($scope.sortReverse) {
+                flatMetricsData.reverse();
+            }
+            $scope.flatMetricsData = flatMetricsData;
+        };
+
         /* watchersss 监控~~ */
 
         // set datepicker jquery plugin
@@ -299,6 +320,14 @@ define([], function() {
                     ret = ret;
             }
             return ret;
+        };
+
+        // Todo
+        $scope.checkCollapsable = function() {
+            try {
+                return !_.isUndefined($scope.reportData.tableData[0].haschild);
+            } catch (e) {}
+            return false;
         };
 
         // inner function

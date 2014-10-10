@@ -71,8 +71,12 @@
         <table class="table">
             <tr>
                 <td ng-if="state.isSelectMetricMode">选择</td>
-                <td ng-repeat="th in reportData.tableTitle">
+                <td ng-repeat="th in reportData.tableTitle track by $index">
                     {{th.disp_name}}
+                    <i ng-show="checkCollapsable()" ng-click="toggleRowSort($index)" ng-class="{
+                        'icon-sort': $index !== sortType,
+                        'icon-arrow-up': $index == sortType && !sortReverse,
+                        'icon-arrow-down': $index == sortType && sortReverse}"></i>
                 </td>
             </tr>
             <tr ng-repeat="metric in flatMetricsData" ng-show="inferFromParent(metric)">
