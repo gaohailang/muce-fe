@@ -312,8 +312,7 @@ module.exports = function(grunt) {
         // 'imagemin',
         'usemin',
         'copy:static',
-        'copy:vendor',
-        'copy:asset'
+        'copy:vendor'
     ]);
 
     grunt.registerTask('build:staging', [
