@@ -83,21 +83,15 @@ define([
                 _.each(retData, function(item, metricIndex) {
                     var tmp = _.pluck(data.result, item.id);
                     _.each(tmp, function(num, index) {
-                        if (!num) {
-                            num = 0;
+                        var d;
+                        if (num == '0.00') {
+                            d = null;
+                        } else {
+                            if (!num) {
+                                num = 0;
+                            }
+                            d = Number(num);
                         }
-                        var d = Number(num);
-
-                        /*var hasAnnotation = _.find(annotationPoints, function(annotation) {
-                            return metricIndex === annotation.metricIndex && index === annotation.index;
-                        });
-                        if (hasAnnotation) {
-                            var d = {};
-                            d.y = Number(num);
-                            d.marker = {
-                                symbol: 'url(http://muce.corp.wandoujia.com/images/flag.png?id=' + hasAnnotation.id + ')'
-                            };
-                        }*/
 
                         item.data.push(d);
                     })
