@@ -8,9 +8,8 @@ define([], function() {
         }
     };
 
-    // Todo: 请求 children 的 metric id?
-    // Todo: dimension 变成数组
     function UAMPCtrl($scope, $rootScope, apiHelper, $filter, $timeout) {
+
         // reportList 和 state.report, state.period, state.dimension, state.chartMetri, state.dateTime
         $scope.state = {
             isSelectMetricMode: false,
@@ -42,37 +41,29 @@ define([], function() {
 
         // 左面切换 report
         $scope.selectReport = function(id) {
+            _state.isShowChart = false;
+            _state.isSelectMetricMode = false;
             _state.hasFetchData = false;
             apiHelper('getUAMPReportDetail', id).then(function(data) {
                 _state.report = data;
                 _state.report.id = id;
                 _state.timespan = _state.report.timespan[0][0];
-                // Todo: dateTime inital set
-                // dimension intial set
                 _state.dimension = _.map(_state.report.dimension, function(d) {
                     return {
                         id: d.id,
-                        value: ["##ALL##"]
+                        value: ["((ALL))"]
                     };
                 });
                 $timeout(function() {
                     setDimensionSelectVals();
                     $scope.fetchReportData();
-                }, 500);
+                }, 100);
             });
         };
 
         // apply 请求 report table 数据
         $scope.fetchReportData = function() {
-            // 依赖于_state.report 和 日期，dimension_选择情况 - check 下
-            var _d = getDimensionSelectVals();
-            apiHelper('getUAMPReportData', _state.report.id, {
-                params: {
-                    dimension: _d,
-                    timespan: _state.timespan,
-                    dateTime: getDatePickerVal()
-                }
-            }).then(function(data) {
+            callReportDataApi(_state.report.id).then(function(data) {
                 flatMetricsData = [];
                 flattenReportMetric(data.tableData);
                 $scope.flatMetricsData = flatMetricsData;
@@ -81,8 +72,38 @@ define([], function() {
             });
         };
 
+        // 指标前面的+-控制 isOpen
+        $scope.toggleMetricOpenStatus = function(metric) {
+            metric.isopened = !metric.isopened;
+            // ajaxxing~~~
+            if (metric.haschild && (!metric.children)) {
+                //  Todo --- 同时保留其他 param
+                callReportDataApi(_state.report.id, metric.id).then(function(data) {
+                    injectChildToReportData(metric, data.tableData);
+                    flatMetricsData = [];
+                    flattenReportMetric($scope.reportData.tableData);
+                    $scope.flatMetricsData = flatMetricsData;
+                });
+            } else {
+                loopArr(metric.children);
+            }
+
+            function loopArr(list) {
+                _.each(list, function(row) {
+                    row.isopened = false;
+                    if (row.children) {
+                        loopArr(row.children);
+                    }
+                });
+            }
+        };
+
         // 绘制趋势
         $scope.renderChart = function() {
+            var idListSelected = _.pluck(_.filter($scope.flatMetricsData, function(i) {
+                return i.selected;
+            }), 'metricid');
+            if (!idListSelected.length) return;
             _state.isShowChart = true;
             setChartDateRangeVal();
             $scope.fetchChartDataRender();
@@ -91,38 +112,111 @@ define([], function() {
         $scope.fetchChartDataRender = function() {
             var idListSelected = _.pluck(_.filter($scope.flatMetricsData, function(i) {
                 return i.selected;
-            }), 'id');
+            }), 'metricid');
             if (!idListSelected.length) return;
             apiHelper('getUAMPChartData', {
                 params: {
-                    // reportid, metricsList
+                    metricidDimensionidList: JSON.stringify(idListSelected),
+                    reportid: _state.report.id,
+                    timespan: _state.timespan,
+                    dateTimeStart: dateRangerHelper.getStartVal(),
+                    dateTimeEnd: dateRangerHelper.getEndVal()
                 },
                 busy: 'global'
             }).then(function(data) {
                 // set chartConfig data option
-                var dateList = data.date;
-                delete data.date;
+                var dateList = data.dateTimeList;
+                delete data.dateTimeList;
+                var _seriesData = _.map(_.values(data), function(i) {
+                    i.pointInterval = _state.timespan * 60000;
+                    i.pointStart = dateRangerHelper.getStartTime();
+                    return i;
+                });
                 $scope.chartConfig = {
                     options: {
                         chart: {
-                            type: 'line', // spline
+                            type: 'spline', // spline
                             zoomType: 'x'
                         }
                     },
-                    series: _.values(data),
+                    series: _seriesData,
                     xAxis: {
-                        categories: dateList
+                        type: 'datetime'
                     },
                     title: {
                         text: ""
                     },
-                    loading: false
+                    loading: false,
+                    lang: {
+                        noData: '没有查询到相关数据'
+                    },
+                    noData: {
+                        style: {
+                            fontSize: '18px',
+                            color: '#303030'
+                        }
+                    },
+                    plotOptions: {
+                        series: {
+                            connectNulls: true
+                        }
+                    },
+                    tooltip: {
+                        crosshairs: true,
+                        shared: true
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    yAxis: {
+                        title: {
+                            text: null
+                        }
+                    }
                 };
             });
         };
 
         // 导出 CSV
-        $scope.exportCsv = function() {};
+        $scope.exportCsv = function() {
+            function buildCsvName() {
+                var _i = _.find($scope.reportList, function(i) {
+                    return i.id == _state.report.id;
+                });
+                return 'UA-Metric-Data-' + _i.name + ' ' + getDatePickerVal();
+            }
+
+            function buildCsvContent() {
+                var resultArr = [],
+                    csvContent;
+                var names = _.pluck($scope.reportData.tableTitle, 'disp_name');
+                resultArr.push(names);
+
+                _.each($scope.flatMetricsData, function(row) {
+                    var _row = [row.name].concat(row.data);
+                    resultArr.push(_row);
+                });
+
+                csvContent = _.map(resultArr, function(rowArr, idx) {
+                    return rowArr.join(',')
+                }).join('\n');
+                // http://stackoverflow.com/questions/23816005/anchor-tag-download-attribute-not-working-bug-in-chrome-35-0-1916-114
+                return URL.createObjectURL(new Blob([csvContent], {
+                    type: 'text/csv'
+                }));
+            }
+
+            function doMockLink() {
+                var link = document.createElement("a");
+                link.href = buildCsvContent();
+                link.download = buildCsvName();
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+
+            doMockLink();
+        };
 
         /* watchersss 监控~~ */
 
@@ -167,27 +261,13 @@ define([], function() {
             if (!old) return;
             if (!_state.isSelectMetricMode && _state.isShowChart) {
                 _state.isShowChart = false;
+                _.each($scope.flatMetricsData, function(i) {
+                    return i.selected = false;
+                });
             }
         });
 
         /* view helper */
-
-        // 指标前面的+-控制 isOpen
-        $scope.toggleMetricOpenStatus = function(metric) {
-            metric.isopened = !metric.isopened;
-            // ajaxxing~~~
-            if (metric.haschildren && (!metric.children)) {
-                //  Todo --- 同时保留其他 param
-                apiHelper('getUAMPReportData', metric.id).then(function(data) {
-                    var _idx = _.indexOf($scope.flatMetricsData, metric);
-                    flatMetricsData = [];
-                    flattenReportMetric(data.tableData);
-                    flatMetricsData.unshift(flatMetricsData.length);
-                    flatMetricsData.unshift(_idx + 1);
-                    Array.prototype.splice.apply($scope.flatMetricsData, flatMetricsData);
-                });
-            }
-        };
 
         // metric name 层级 padding
         $scope.setMetricLevelStyle = function(metric) {
@@ -221,9 +301,40 @@ define([], function() {
             return ret;
         };
 
+        // inner function
+
+        function callReportDataApi(id, metricid) {
+            // 依赖于_state.report 和 日期，dimension_选择情况 - check 下
+            var _d = getDimensionSelectVals();
+            return apiHelper('getUAMPReportData', id, {
+                params: {
+                    dimension: JSON.stringify(_d),
+                    timespan: _state.timespan,
+                    dateTime: getDatePickerVal(),
+                    metricid: metricid
+                },
+                busy: 'global'
+            });
+        }
+
+        function injectChildToReportData(metric, children) {
+            loopArr($scope.reportData.tableData);
+
+            function loopArr(list) {
+                _.each(list, function(row) {
+                    if (row.children) {
+                        loopArr(row.children);
+                    }
+                    if (row.id === metric.id) {
+                        row.children = children;
+                    }
+                });
+            }
+        }
+
         function findParentInFlat(children) {
             return _.find($scope.flatMetricsData, function(i) {
-                return i.name === children.parent;
+                return i.id === children.parent;
             });
         }
 
@@ -249,11 +360,15 @@ define([], function() {
                     flatMetricsData.push(metric);
                 }
                 if (metric.children) {
-                    flattenReportMetric(metric.children, metric.name);
+                    flattenReportMetric(metric.children, metric.id);
                 }
             }
         }
 
+        // inner function for jquery-based component
+        // jQuery 等 non-angular 代码 linked/binded:
+        // datepicker 设置时间和取时间，diemsion select 设置和取值，daterangepicker 设置和取值
+        // 从 datepicker input val 取得值，原始的 datepicker('getDate') 不 work
         function getPrevDay() {
             var x = new Date().getTime();
             return new Date(x - 1000 * 3600 * 24);
@@ -276,9 +391,10 @@ define([], function() {
             return x;
         }
 
-        // jQuery 等 non-angular 代码 linked/binded:
-        // datepicker 设置时间和取时间，diemsion select 设置和取值，daterangepicker 设置和取值
-        // 从 datepicker input val 取得值，原始的 datepicker('getDate') 不 work
+        function getLast30Days() {
+            return moment().subtract('days', 29).toDate();
+        }
+
         function getDatePickerVal() {
             var _val = $datePicker.val();
             if (_state.timespan == 43200) {
@@ -288,33 +404,45 @@ define([], function() {
         }
 
         function getDimensionSelectVals() {
-            var _val = $('.uamp-checkbox-select select').map(function(idx, i) {
-                return {
+            var _val = [];
+            $('.uamp-checkbox-select select').each(function(idx, i) {
+                _val.push({
                     id: $(i).data('dimension-id'),
                     value: $(i).multipleSelect('getSelects')
-                }
+                });
             });
-            if (_val.ajaxComplete) return [];
             _state.dimension = _val; // persistence for url serialized
             return _val;
         }
 
         function setDimensionSelectVals() {
             $('.uamp-checkbox-select select').each(function(idx, i) {
-                $(i).multipleSelect('setSelects', ['##ALL##']);
+                $(i).multipleSelect('setSelects', ['((ALL))']);
             });
-        }
-
-        function getChartDateRangeVal() {
-            var _picker = $chartDateRangePicker.data('daterangepicker');
-            return [_picker.startDate, _picker.endDate];
         }
 
         function setChartDateRangeVal() {
             var _picker = $chartDateRangePicker.data('daterangepicker');
             _picker.setEndDate(getPrevDay());
-            _picker.setStartDate(getPrevMonth());
+            _picker.setStartDate(getLast30Days());
         }
+
+        var dateRangerHelper = {
+            _inner: function(attr) {
+                var _picker = $chartDateRangePicker.data('daterangepicker');
+                return $filter('date')(_picker[attr].toDate().getTime(), 'yyyyMMdd');
+            },
+            getStartVal: function() {
+                return this._inner('startDate');
+            },
+            getEndVal: function() {
+                return this._inner('endDate');
+            },
+            getStartTime: function() {
+                var _picker = $chartDateRangePicker.data('daterangepicker');
+                return _picker.startDate.toDate().getTime();
+            }
+        };
 
         // collapse the sidebar
         $('.collapse-sidebar-trigger').click(function(e) {

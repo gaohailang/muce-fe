@@ -54,9 +54,9 @@
                 <label class="uamp-checkbox-select">
                     <span>{{i.disp_name}}</span>
                     <select multiple="multiple" data-dimension-id="{{i.id}}">
-                        <option value="##ALL##">全部</option>
-                        <option ng-repeat="(k,v) in i.dimension_value" ng-value="k">
-                            {{v}}
+                        <option value="((ALL))">全部</option>
+                        <option ng-repeat="i in i.dimension_value" ng-value="i.dimensionvalue">
+                            {{i.disp_name}}
                         </option>
                     </select>
                 </label>
@@ -99,7 +99,7 @@
             <button type="button" class="btn"
                 ng-show="state.isSelectMetricMode" ng-click="renderChart()">绘制</button>
             <!-- 监控 selectMetrics 的值，toggle 重现绘制 -->
-            <button class="btn">导出 CSV</button>
+            <button class="btn" ng-click="exportCsv()">导出 CSV</button>
         </p>
 
         <!-- chart config: [state.metric-list] -->
