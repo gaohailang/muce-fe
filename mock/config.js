@@ -159,6 +159,7 @@ module.exports = {
         "id": 3
     }]),
     'GET /api/v1/tool/ua/report/.*': wrapper({
+        "id": 1,
         "dimension": [{
             "id": 1,
             "dimension_value": {
@@ -174,42 +175,42 @@ module.exports = {
             },
             "disp_name": "新老"
         }],
-        "timespan": {
-            "1440": "天",
-            "10080": "周",
-            "43200": "月"
-        }
+        "timespan": [
+            ["1440", "天"],
+            ["10080", "周"],
+            ["43200", "月"]
+        ]
     }),
     'GET /api/v1/tool/ua/reportData/.*': wrapper({
         "tableTitle": [{
-            "alias": "metric",
+            "columnid": "metric",
             "disp_name": "指标"
         }, {
-            "alias": 1,
+            "columnid": 1,
             "data_diff": "minus",
             "disp_name": "今日值"
         }, {
-            "alias": 2,
+            "columnid": 2,
             "data_diff": "origin",
             "disp_name": "昨日值"
         }, {
-            "alias": 3,
+            "columnid": 3,
             "data_diff": "origin",
             "disp_name": "上周今日值"
         }, {
-            "alias": 4,
+            "columnid": 4,
             "data_diff": "origin",
             "disp_name": "上月今日值"
         }, {
-            "alias": 5,
+            "columnid": 5,
             "data_diff": "ratio",
             "disp_name": "昨日变化率"
         }, {
-            "alias": 6,
+            "columnid": 6,
             "data_diff": "ratio",
             "disp_name": "上周变化率"
         }, {
-            "alias": 7,
+            "columnid": 7,
             "data_diff": "ratio",
             "disp_name": "上月变化率"
         }],
@@ -219,7 +220,7 @@ module.exports = {
             "isopened": true,
             "name": "fakename:13",
             "id": "13",
-            "child": [{
+            "children": [{
                 "data": [123, 93, 103, 123, 0.1023, 0.0546, 0],
                 "haschild": true,
                 "isopened": false,
@@ -250,7 +251,7 @@ module.exports = {
             "haschild": true,
             "isopened": true,
             "name": "fakename:16",
-            "child": [{
+            "children": [{
                 "data": [123, 93, 103, 123, 0.1023, 0.0546, 0],
                 "haschild": "true",
                 "isopened": "false",
@@ -263,7 +264,7 @@ module.exports = {
             "haschild": true,
             "isopened": true,
             "name": "fakename:17",
-            "child": [{
+            "children": [{
                 "data": [123, 93, 103, 123, 0.1023, 0.0546, 0],
                 "haschild": false,
                 "isopened": false,
@@ -274,16 +275,15 @@ module.exports = {
         }]
     }),
     'GET /api/v1/tool/ua/chartData': wrapper({
-        "1##1:##2:1": {
-            "data": ["5146747.0000", "5616327.0000", "5628277.0000", "5632576.0000", "5974986.0000", "5127350.0000", "5158867.0000", "5127709.0000"],
-            "date": ["20140910", "20140911", "20140912", "20140913", "20140914", "20140915", "20140916", "20140917"],
-            "name": '测试下'
+        "1##1:##2:2": {
+            "data": [514677.0000, 56167.0000, 562277.0000, 56326.0000, 5974986.0000, 5127350.0000, 5158867.0000, 5709.0000],
+            "name": '测试下1'
         },
         "1##1:##2:1": {
-            "data": [],
-            "date": [],
-            "name": '测试下'
-        }
+            "data": [5146747.0000, 56167.0000, 5628277.0000, 5632576.0000, 5974986.0000, 5127350.0000, 5158867.0000, 51709.0000],
+            "name": '测试下2'
+        },
+        "date": ["20140910", "20140911", "20140912", "20140913", "20140914", "20140915", "20140916", "20140917"]
     }),
     'POST REGEX': function() {
 

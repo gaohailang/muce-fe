@@ -123,10 +123,10 @@ define([
                         if (_.contains(['PUT', 'POST', 'DELETE'], response.config.method)) {
                             $notice.success('操作成功！');
                         }
-                        if(response.data.data) {
+                        if (response.data.data) {
                             return response.data.data;
                         } else {
-                            return response;
+                            return response.data;
                         }
                     }
                     return response;

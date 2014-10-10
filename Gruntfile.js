@@ -64,11 +64,22 @@ var connectOpt = {
             useAvailablePort: true
         },
         proxies: [{
+            context: '/api/v1/tool/ua',
+            host: 'apps-datatools0-bgp0.hy01.wandoujia.com',
+            port: 4000,
+            rewrite: {
+                '^/api/v1/tool/ua': ''
+            },
+            changeOrigin: true,
+            headers: {
+                cookie: 'sso_session_id=20ca0a0f275dce09f7e456171fddc60e'
+            }
+        }, {
             context: '/api/v1',
             host: 'muce3.wandoulabs.com',
             changeOrigin: true,
             headers: {
-                cookie: 'sso_session_id=20ca0a0f275dce09f7e456171fddc60e'
+                cookie: 'sso_session_id=be61feafd9c5bf017953f96ecebe3510'
             }
         }]
     }
