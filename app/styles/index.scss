@@ -461,6 +461,17 @@ textarea {
             width: 200px;
         }
     }
+    .chart {
+        margin-bottom: 40px;
+        position: relative;
+        .chart-date-range-picker-wrapper {
+            position: absolute;
+            right: 10px;
+            top: -50px;
+            z-index: 1000;
+        }
+    }
+
 }
 
 

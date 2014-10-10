@@ -30,7 +30,8 @@ define([], function() {
                 'Last Month': [moment().subtract('month', 1).startOf('month').toDate(), moment().subtract('month', 1).endOf('month').toDate()]
             },
             format: 'YYYY-MM-DD',
-            endDate: moment()
+            endDate: moment(),
+            opens: 'left'
         });
 
         apiHelper('getUAMPReportList').then(function(data) {
@@ -44,6 +45,7 @@ define([], function() {
             _state.hasFetchData = false;
             apiHelper('getUAMPReportDetail', id).then(function(data) {
                 _state.report = data;
+                _state.report.id = id;
                 _state.timespan = _state.report.timespan[0][0];
                 // Todo: dateTime inital set
                 // dimension intial set
@@ -55,17 +57,18 @@ define([], function() {
                 });
                 $timeout(function() {
                     setDimensionSelectVals();
+                    $scope.fetchReportData();
                 }, 500);
-                $scope.fetchReportData();
             });
         };
 
         // apply 请求 report table 数据
         $scope.fetchReportData = function() {
             // 依赖于_state.report 和 日期，dimension_选择情况 - check 下
+            var _d = getDimensionSelectVals();
             apiHelper('getUAMPReportData', _state.report.id, {
                 params: {
-                    dimension: getDimensionSelectVals(),
+                    dimension: _d,
                     timespan: _state.timespan,
                     dateTime: getDatePickerVal()
                 }
@@ -91,7 +94,9 @@ define([], function() {
             }), 'id');
             if (!idListSelected.length) return;
             apiHelper('getUAMPChartData', {
-                params: {},
+                params: {
+                    // reportid, metricsList
+                },
                 busy: 'global'
             }).then(function(data) {
                 // set chartConfig data option
@@ -107,6 +112,9 @@ define([], function() {
                     series: _.values(data),
                     xAxis: {
                         categories: dateList
+                    },
+                    title: {
+                        text: ""
                     },
                     loading: false
                 };
@@ -276,7 +284,7 @@ define([], function() {
             if (_state.timespan == 43200) {
                 _val += '-01';
             }
-            return _val.replace('-', '');
+            return _val.replace(/-/g, '');
         }
 
         function getDimensionSelectVals() {
@@ -286,6 +294,7 @@ define([], function() {
                     value: $(i).multipleSelect('getSelects')
                 }
             });
+            if (_val.ajaxComplete) return [];
             _state.dimension = _val; // persistence for url serialized
             return _val;
         }
