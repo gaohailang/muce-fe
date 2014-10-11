@@ -41,10 +41,12 @@ define([], function() {
 
         // Tools - ua metric platform - prefix UAMP
         apiHelper.config({
-            'getUAMPReportList': 'GET /tool/ua/reportList',
-            'getUAMPReportDetail': 'GET /tool/ua/report/:id',
-            'getUAMPReportData': 'GET /tool/ua/reportData/:id',
-            'getUAMPChartData': 'GET /tool/ua/chartData'
+            'getUAMPReportList': 'GET /reportList',
+            'getUAMPReportDetail': 'GET /report/:id',
+            'getUAMPReportData': 'GET /reportData/:id',
+            'getUAMPChartData': 'GET /chartData'
+        }, {
+            urlPrefix: 'http://apps-datatools0-bgp0.hy01.wandoujia.com:4000'
         });
     });
 })
