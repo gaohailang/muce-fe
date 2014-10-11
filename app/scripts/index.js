@@ -33,6 +33,7 @@ require([
         'ui.select',
         'ngQuickDate',
         'pasvaz.bindonce',
+        'infinite-scroll',
         'toaster',
         'QuickList',
 

@@ -6,7 +6,8 @@
     <button class="btn" style="float: right;"
         ng-click="exportTableAsCsv(tbFields, tableRows)"> 导出 CSV </button>
     <!-- Todo: one-bind to save watchers -->
-    <table class="table table-bordered table-striped">
+    <table class="table table-bordered table-striped"
+        infinite-scroll="loadMoreReportData()">
         <thead>
             <tr class="header-row">
                 <td ng-repeat="i in tbFields"
@@ -19,15 +20,14 @@
             </tr>
         </thead>
         <tbody>
-            <tr quick-repeat-list="tableRows" bindonce
-                quick-ng-repeat="row in tableRows track by $index">
-                <td ng-repeat="i in tbFields" ng-switch on="getTdType(i, row)" bindonce>
-                    <span ng-switch-when="date" bo-text="row.date|dateNumFormat"></span>
-                    <span ng-switch-when="empty">
+            <tr ng-repeat="row in tableRows track by $index" bindonce>
+                <td ng-repeat="i in tbFields" bo-switch="getTdType(i, row)" bindonce>
+                    <span bo-switch-when="date" bo-text="row.date|dateNumFormat"></span>
+                    <span bo-switch-when="empty">
                         <b style="color: red">0</b>
                     </span>
-                    <span ng-switch-when="metric" bo-text="row[i.id] | number"></span>
-                    <span ng-switch-when="dimension" bo-text="row[i.id]"></span>
+                    <span bo-switch-when="metric" bo-text="row[i.id] | number"></span>
+                    <span bo-switch-when="dimension" bo-text="row[i.id]"></span>
                 </td>
             </tr>
         </tbody>

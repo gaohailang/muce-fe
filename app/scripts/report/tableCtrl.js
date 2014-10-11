@@ -1,18 +1,21 @@
 define(function() {
-    function tableCtrl($scope, $rootScope, $filter) {
+    function tableCtrl($scope, $rootScope, $filter, $timeout) {
         var _state = $rootScope.state;
+        var _tableDataPg = 1;
+        var _allTableData = [],
+            _reportDetail; // store all tableData
+        $scope.tableRows = [];
         $rootScope.$on('report:renderReportData', function(event, opt) {
-            buildGridData.apply(null, opt);
+            // store full amount data inner
+            _reportDetail = opt[0];
+            _allTableData = opt[1];
+            buildGridHeader(_reportDetail, _allTableData);
+            buildGridData();
         });
 
         /* Data Table */
-        function buildGridData(reportDetail, data) {
-            $scope.tableRows = _.map(data.result, function(i) {
-                // we need date filter to format
-                i.date = +(i.date);
-                return i;
-            });
-
+        function buildGridHeader(reportDetail, data) {
+            // dependency: data['dimensions/metrics']
             function getNameById(i, type) {
                 return _.find(reportDetail[type], function(d) {
                     return d.id == i;
@@ -31,8 +34,29 @@ define(function() {
                     });
                 });
             });
-            $scope.tbFields = tbFields;
+            $timeout(function() {
+                $scope.tbFields = tbFields;
+            }, 20);
         }
+
+        function buildGridData() {
+            /*$scope.tableRows = _.map(data.result, function(i) {
+                // we need date filter to format
+                i.date = +(i.date);
+                return i;
+            });*/
+            $timeout(function() {
+                var _updates = _allTableData.result.slice(0, 50);
+                $scope.tableRows = $scope.tableRows.concat(_updates);
+            }, 20);
+        }
+
+        $scope.loadMoreReportData = _.throttle(function() {
+            console.log('fetching...');
+            if (!_reportDetail || !_allTableData) return;
+            _tableDataPg += 1;
+            buildGridData();
+        }, 1000);
 
         $scope.sortReverse = false;
         $scope.toggleRowSort = function(type) {
@@ -49,7 +73,10 @@ define(function() {
             if ($scope.sortReverse) {
                 tableRows.reverse();
             }
-            $scope.tableRows = tableRows;
+            $scope.tableRows = [];
+            $timeout(function() {
+                $scope.tableRows = tableRows;
+            });
         };
 
         $scope.exportTableAsCsv = function(tbFields, tableRows) {

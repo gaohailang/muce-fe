@@ -52,17 +52,7 @@ define([
                 _.each(retData, function(item, metricIndex) {
                     var tmp = _.pluck(data.result, item.id);
                     _.each(tmp, function(num, index) {
-                        var d;
-                        if (num == '0.00') {
-                            d = null;
-                        } else {
-                            if (!num) {
-                                num = 0;
-                            }
-                            d = Number(num);
-                        }
-
-                        item.data.push(d);
+                        item.data.push(num);
                     })
                 });
             }
