@@ -2,6 +2,9 @@ define(function() {
     function settingCtrl($scope, apiHelper, $timeout, $state, $rootScope, $filter, $modal) {
         var _state = $rootScope.state;
 
+        $scope.ghostDimension = {
+            name: ''
+        };
         $scope.quickChooseList = Config.quickDataList;
 
         _state.firstInit = true;
@@ -68,7 +71,7 @@ define(function() {
         _state.dimenAdv = {
             dimensions: [],
             filters: null,
-            filterTypes: ['', 'EQUAL', 'NOT_EQUAL', 'CONTAINING', 'STARTSWITH', 'ENDSWITH', 'NOT_CONTAINING', 'NOT_STARTSWITH', 'NOT_ENDSWITH'],
+            filterTypes: ['EQUAL', 'NOT_EQUAL', 'CONTAINING', 'STARTSWITH', 'ENDSWITH', 'NOT_CONTAINING', 'NOT_STARTSWITH', 'NOT_ENDSWITH'],
             nowDimensionsType: [],
             nowDimensionsVal: [],
             saveFilters: function() {
@@ -104,6 +107,8 @@ define(function() {
             },
             removeFilters: function() {
                 this.filters = null;
+                this.nowDimensionsVal = [];
+                this.nowDimensionsType = [];
             }
         };
 

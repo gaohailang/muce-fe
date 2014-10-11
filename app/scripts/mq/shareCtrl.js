@@ -19,8 +19,8 @@ define(function() {
             });
         }
 
-        $http.get('http://who.wandoulabs.com/api/v1/list/person').then(function(resp) {
-            $scope.whoList = resp.data;
+        $http.get('http://who.wandoulabs.com/api/v1/list/person/').then(function(data) {
+            $scope.whoList = data;
         });
     }
 

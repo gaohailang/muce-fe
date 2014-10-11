@@ -137,11 +137,14 @@
                 <td>
                     <select ng-model="state.dimenAdv.dimensions[$index]"
                         ng-options="i as i.name for i in state.reportDetail.dimensions">
+                        <option ng-value="ghostDimension"></option>
                     </select>
                 </td>
                 <td>
                     <select ng-model="state.dimenAdv.nowDimensionsType[$index]"
-                        ng-options="i for i in state.dimenAdv.filterTypes"></select>
+                        ng-options="i for i in state.dimenAdv.filterTypes">
+                        <option value=""></option>
+                    </select>
                 </td>
                 <td>
                     <input type="text"

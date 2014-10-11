@@ -19,18 +19,15 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="row in tableRows track by $index">
-                <td ng-repeat="i in tbFields" ng-switch on="getTdType(i, row)">
-                    <span ng-switch-when="date">{{row.date}}</span>
+            <tr quick-repeat-list="tableRows" bindonce
+                quick-ng-repeat="row in tableRows track by $index">
+                <td ng-repeat="i in tbFields" ng-switch on="getTdType(i, row)" bindonce>
+                    <span ng-switch-when="date" bo-text="row.date|dateNumFormat"></span>
                     <span ng-switch-when="empty">
                         <b style="color: red">0</b>
                     </span>
-                    <span ng-switch-when="metric">
-                        <b>{{row[i.id] | number}}</b>
-                    </span>
-                    <span ng-switch-when="dimension">
-                        <b>{{row[i.id]}}</b>
-                    </span>
+                    <span ng-switch-when="metric" bo-text="row[i.id] | number"></span>
+                    <span ng-switch-when="dimension" bo-text="row[i.id]"></span>
                 </td>
             </tr>
         </tbody>

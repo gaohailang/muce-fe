@@ -27,7 +27,7 @@ define([], function() {
     function dateNumFormat() {
         return function(date, spliter) {
             var spliter = spliter || '-';
-            var array = date.match(/(\d{4})(\d{2})(\d{2})/);
+            var array = new String(date).match(/(\d{4})(\d{2})(\d{2})/);
             return array[1] + spliter + array[2] + spliter + array[3];
         }
     }
@@ -40,7 +40,7 @@ define([], function() {
 
     function linizeArray() {
         return function(arr) {
-            return arr.join('\n');
+            return arr.join('<br>');
         }
     }
 
