@@ -48,21 +48,38 @@ define([
             templateUrl: 'templates/report/chart-table.html',
             controller: 'detailCtrl'
         },
-        'report.view_metrics': {
-            url: '/view_metrics',
+        'report.management': {
+            url: '/management',
             views: {
                 '@': {
-                    templateUrl: 'templates/report/view_metrics.html',
+                    templateUrl: 'templates/report/management.html'
+                }
+            }
+        },
+        'report.management.metric': {
+            url: '/metric',
+            views: {
+                'pannel@report.management': {
+                    templateUrl: 'templates/report/management/metric.html',
                     controller: 'viewMetricsCtrl'
                 }
             }
         },
-        'report.view_dimensions': {
-            url: '/view_dimensions',
+        'report.management.dimension': {
+            url: '/dimension',
             views: {
-                '@': {
-                    templateUrl: 'templates/report/view_dimensions.html',
+                'pannel@report.management': {
+                    templateUrl: 'templates/report/management/dimension.html',
                     controller: 'viewDimensionsCtrl'
+                }
+            }
+        },
+        'report.management.report': {
+            url: '/report',
+            views: {
+                'pannel@report.management': {
+                    templateUrl: 'templates/report/management/report.html',
+                    controller: 'viewReportsCtrl'
                 }
             }
         }

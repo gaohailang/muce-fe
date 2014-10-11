@@ -1,0 +1,38 @@
+<div class="row-fluid mc-report-container">
+    <div class="span2">
+        <div class="nav nav-sidebar mc-report-sidebar">
+            <!-- Todo: inline loading indicator -->
+
+            <li>
+                <h3>View:</h3>
+                <ul class="nav nav-list sidebar-list">
+                    <li><a ui-sref="report.management.metric">View Metrics</a></li>
+                    <li><a ui-sref="report.management.dimension">View Dimensions</a></li>
+                    <li><a ui-sref="report.management.report">View Reports</a></li>
+                </ul>
+            </li>
+
+            <!-- Add List -->
+            <li ng-controller="addModalCtrl">
+                <h3>Add:</h3>
+                <ul class="nav nav-list sidebar-list">
+                    <li ng-repeat="type in addTypes">
+                        <a ng-click="openModal(type)">Add {{type|capitalize}}</a>
+                    </li>
+                </ul>
+            </li>
+
+            <!-- Delete MultiChoose-->
+            <li ng-controller="delPanelCtrl">
+                <h3>Delete:</h3>
+                <select ng-model="currentDelType" ng-options="type for type in delTypes"></select>
+                <div multi-chooser choices-list="currentDelList" trigger-del="delSelectedHandler()"></div>
+            </li>
+        </div>
+    </div>
+    <div class="span10">
+        <div ui-view="pannel"></div>
+    </div>
+</div>
+
+<div muce-include="templates/report/snippet.html"></div>
