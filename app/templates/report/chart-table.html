@@ -24,7 +24,7 @@
                 <td ng-repeat="i in tbFields" bo-switch="getTdType(i, row)" bindonce>
                     <span bo-switch-when="date" bo-text="row.date|dateNumFormat"></span>
                     <span bo-switch-when="empty">
-                        <b style="color: red">0</b>
+                        <b class="w-text-warning">0</b>
                     </span>
                     <span bo-switch-when="metric" bo-text="row[i.id] | number"></span>
                     <span bo-switch-when="dimension" bo-text="row[i.id]"></span>

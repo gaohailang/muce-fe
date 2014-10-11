@@ -3,12 +3,15 @@ define(function() {
         var _state = $rootScope.state;
         var _tableDataPg = 1;
         var _allTableData = [],
-            _reportDetail; // store all tableData
+            _reportDetail,
+            _pageSize = 50,
+            _totalPg; // store all tableData
         $scope.tableRows = [];
         $rootScope.$on('report:renderReportData', function(event, opt) {
             // store full amount data inner
             _reportDetail = opt[0];
             _allTableData = opt[1];
+            _totalPg = Math.ceil(_allTableData.result.length / _pageSize);
             buildGridHeader(_reportDetail, _allTableData);
             buildGridData();
         });
@@ -46,7 +49,7 @@ define(function() {
                 return i;
             });*/
             $timeout(function() {
-                var _updates = _allTableData.result.slice(0, 50);
+                var _updates = _allTableData.result.slice(0, _pageSize);
                 $scope.tableRows = $scope.tableRows.concat(_updates);
             }, 20);
         }
@@ -54,6 +57,7 @@ define(function() {
         $scope.loadMoreReportData = _.throttle(function() {
             console.log('fetching...');
             if (!_reportDetail || !_allTableData) return;
+            if (_tableDataPg == _totalPg) return;
             _tableDataPg += 1;
             buildGridData();
         }, 1000);
