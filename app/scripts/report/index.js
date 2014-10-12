@@ -196,5 +196,7 @@ define([
             _.each(routeInfo, function(opt, name) {
                 $stateProvider.state(name, opt);
             });
+            $urlRouterProvider
+                .when('/management', '/management/report')
         });
 });

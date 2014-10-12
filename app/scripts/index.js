@@ -68,7 +68,9 @@ require([
         uiSelectConfig.theme = 'select2';
     });
 
-    muceApp.controller('feedbackCtrl', function($scope) {
+    muceApp.controller('baseCtrl', function($scope, $state) {
+        $scope.$state = $state;
+    }).controller('feedbackCtrl', function($scope) {
         console.log('in feedbackCtrl');
     });
 

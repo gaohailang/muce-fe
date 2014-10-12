@@ -36,26 +36,32 @@
 
             <div class="nav-collapse collapse" muce-navbar>
                 <ul class="nav">
-                    <li ui-sref-active="ative">
+                    <li ng-class="{ active: $state.is('report.detail') }">
                         <a class="muce-nav-tab" ui-sref="report.detail">
                             Report
                         </a>
                     </li>
 
-                    <li ui-sref-active="active">
-                        <a class="muce-nav-tab" ui-sref="mq.history">
-                            Mq
+                    <li ng-class="{ active: $state.includes('report.management') }">
+                        <a class="muce-nav-tab" href="/#/management">
+                            Management
                         </a>
                     </li>
 
-                    <!-- <li class="dropdown" ui-sref-active="active">
+                    <li ui-sref-active="active">
+                        <a class="muce-nav-tab" ui-sref="mq.history">
+                            MuceQuery
+                        </a>
+                    </li>
+
+                    <li class="dropdown" ui-sref-active="active">
                         <a href="#" class="dropdown-toggle">
                             Tools <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
                           <li><a ui-sref="tool-uamp">UA Metric Platform</a></li>
                         </ul>
-                    </li> -->
+                    </li>
                 </ul>
             </div>
         </div>

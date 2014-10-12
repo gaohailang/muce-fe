@@ -6,9 +6,15 @@
             <li>
                 <h3>View:</h3>
                 <ul class="nav nav-list sidebar-list">
-                    <li><a ui-sref="report.management.metric">View Metrics</a></li>
-                    <li><a ui-sref="report.management.dimension">View Dimensions</a></li>
-                    <li><a ui-sref="report.management.report">View Reports</a></li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="report.management.report">View Reports</a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="report.management.metric">View Metrics</a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="report.management.dimension">View Dimensions</a>
+                    </li>
                 </ul>
             </li>
 
