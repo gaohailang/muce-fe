@@ -11,6 +11,7 @@
             <th>Modified Time</th>
             <th>Owner</th>
             <th>Comment</th>
+            <td>isEnable</td>
             <th>Operate</th>
         </tr>
         <tr ng-repeat="metric in metricList">
@@ -28,6 +29,7 @@
             <td>{{metric.modifyTime|date:'yyyy-MM-dd'}}</td>
             <td>{{metric.owner}}</td>
             <td>{{metric.comment}}</td>
+            <td><div enable-flag-switch></div></td>
             <td>
                 <a ng-click="editMetric(metric)">Edit</a>
                 <a ng-click="delMetric(metric)">Delete</a>

@@ -5,7 +5,8 @@ define([
     'report/delPanelCtrl',
     'report/settingCtrl',
     'report/tableCtrl',
-    'report/resModal'
+    'report/resModal',
+    'report/management'
 ], function(highchart) {
 
     var Config = {
@@ -53,7 +54,8 @@ define([
             abstract: true,
             views: {
                 '@': {
-                    templateUrl: 'templates/report/management.html'
+                    templateUrl: 'templates/management/base.html',
+                    controller: 'managementBaseCtrl'
                 }
             }
         },
@@ -61,7 +63,7 @@ define([
             url: '/metric',
             views: {
                 'pannel@report.management': {
-                    templateUrl: 'templates/report/management/metric.html',
+                    templateUrl: 'templates/management/metric.html',
                     controller: 'viewMetricsCtrl'
                 }
             }
@@ -70,7 +72,7 @@ define([
             url: '/dimension',
             views: {
                 'pannel@report.management': {
-                    templateUrl: 'templates/report/management/dimension.html',
+                    templateUrl: 'templates/management/dimension.html',
                     controller: 'viewDimensionsCtrl'
                 }
             }
@@ -79,51 +81,12 @@ define([
             url: '/report',
             views: {
                 'pannel@report.management': {
-                    templateUrl: 'templates/report/management/report.html',
+                    templateUrl: 'templates/management/report.html',
                     controller: 'viewReportsCtrl'
                 }
             }
         }
     };
-
-    var viewCtrls;
-    (function buildViewCtrls() {
-        viewCtrls = _.map(['metric', 'dimension', 'report'], function(type) {
-            return ['$scope', 'apiHelper', '$rootScope', '$modal', function($scope, apiHelper, $rootScope, $modal) {
-                var capitalizeType = _.capitalize(type);
-                apiHelper('getDetail' + capitalizeType + 'sList').then(function(data) {
-                    $scope[type + 'List'] = data;
-                });
-
-                $scope['del' + capitalizeType] = function(item) {
-                    apiHelper('del' + capitalizeType, item.id).then(function() {
-                        var alertTip = Config.delAlertPrefix + type + ' ' + item.name;
-                        if (!window.confirm(alertTip)) return;
-                        // remove metric from list
-                        $scope[type + 'List'] = _.without($scope[type + 'List'], item);
-                    });
-                }
-
-                $scope['edit' + capitalizeType] = function(item) {
-                    var newScope = $scope.$new(true);
-                    $scope._data = _.clone(item);
-
-                    var templateUrl;
-                    if (!$scope.delMetric) {
-                        templateUrl = 'templates/report/modal.html';
-                    } else {
-                        templateUrl = 'report/metric-tabs-modal.html';
-                    }
-                    $modal.open({
-                        templateUrl: templateUrl,
-                        controller: type + 'ModalCtrl',
-                        scope: $scope,
-                        size: 'lg'
-                    });
-                };
-            }]
-        });
-    })();
 
     function detailCtrl($scope, $state, apiHelper, $timeout, $filter, $rootScope) {
         var _state = $rootScope.state;
@@ -188,12 +151,9 @@ define([
     }
 
     angular.module('muceApp.report',
-        buildCtrlDepArr(['delPanelCtrl', 'reportCtrl', 'sidebarCtrl', 'settingCtrl', 'tableCtrl']).concat(['muceApp.report.resModal']))
+        buildCtrlDepArr(['delPanelCtrl', 'reportCtrl', 'sidebarCtrl', 'settingCtrl', 'tableCtrl']).concat(['muceApp.report.resModal', 'muceApp.report.management']))
         .controller('addModalCtrl', addModalCtrl)
         .controller('detailCtrl', detailCtrl)
-        .controller('viewMetricsCtrl', viewCtrls[0])
-        .controller('viewDimensionsCtrl', viewCtrls[1])
-        .controller('viewReportsCtrl', viewCtrls[2])
         .config(function($stateProvider, $urlRouterProvider) {
             _.each(routeInfo, function(opt, name) {
                 $stateProvider.state(name, opt);

@@ -8,6 +8,7 @@
         <th>Modified Time</th>
         <th>Owner</th>
         <th>Comment</th>
+        <th>isEnable</th>
         <th>Operate</th>
     </tr>
     <tr ng-repeat="dimension in dimensionList">
@@ -22,6 +23,7 @@
         <td>{{dimension.modifyTime|date:'yyyy-MM-dd'}}</td>
         <td>{{dimension.owner}}</td>
         <td>{{dimension.comment}}</td>
+        <td><div enable-flag-switch></div></td>
         <td>
             <a ng-click="editDimension(dimension)">Edit</a>
             <a ng-click="delDimension(dimension)">Delete</a>
