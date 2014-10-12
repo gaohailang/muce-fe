@@ -38,6 +38,12 @@ define([], function() {
         }
     }
 
+    function joinArrExt() {
+        return function(arr, opt) {
+            return _.pluck(arr, opt.key).join(opt.joiner);
+        }
+    }
+
     function linizeArray() {
         return function(arr) {
             return arr.join('<br>');
@@ -61,7 +67,8 @@ define([], function() {
         .filter('dateNumFormat', dateNumFormat)
         .filter('humanBytes', humanBytes)
         .filter('linizeArray', linizeArray)
-        .filter('percentize', percentize);
+        .filter('percentize', percentize)
+        .filter('joinArrExt', joinArrExt);
 
     angular.module('muceApp.base.filters')
         .filter('transMetricsDetail', function($filter) {

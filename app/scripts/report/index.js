@@ -49,7 +49,8 @@ define([
             controller: 'detailCtrl'
         },
         'report.management': {
-            url: '/management',
+            url: '^/management',
+            abstract: true,
             views: {
                 '@': {
                     templateUrl: 'templates/report/management.html'
@@ -87,7 +88,7 @@ define([
 
     var viewCtrls;
     (function buildViewCtrls() {
-        viewCtrls = _.map(['metric', 'dimension'], function(type) {
+        viewCtrls = _.map(['metric', 'dimension', 'report'], function(type) {
             return ['$scope', 'apiHelper', '$rootScope', '$modal', function($scope, apiHelper, $rootScope, $modal) {
                 var capitalizeType = _.capitalize(type);
                 apiHelper('getDetail' + capitalizeType + 'sList').then(function(data) {
@@ -192,7 +193,8 @@ define([
         .controller('detailCtrl', detailCtrl)
         .controller('viewMetricsCtrl', viewCtrls[0])
         .controller('viewDimensionsCtrl', viewCtrls[1])
-        .config(function($stateProvider) {
+        .controller('viewReportsCtrl', viewCtrls[2])
+        .config(function($stateProvider, $urlRouterProvider) {
             _.each(routeInfo, function(opt, name) {
                 $stateProvider.state(name, opt);
             });

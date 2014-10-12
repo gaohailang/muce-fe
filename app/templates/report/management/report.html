@@ -1,0 +1,59 @@
+<div>
+    <table class="table table-bordered table-striped">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Period</th>
+            <th>Group & Category</th>
+            <th>Metric</th>
+            <th>Dimension</th>
+            <!-- <th>Created Time</th> -->
+            <th>Modified Time</th>
+            <th>Owner</th>
+            <th>Comment</th>
+            <th>isEnable</th>
+            <th>Operate</th>
+        </tr>
+        <tr ng-repeat="report in reportList">
+            <td>{{report.id}}</td>
+            <td>{{report.name}}</td>
+            <td>
+                <span ng-repeat="period in report.periods">
+                    {{period|transPeriod}}
+                </span>
+            </td>
+            <!-- <td ng-bind-html="report.groupCategories|linizeArray"></td> -->
+            <td></td><!-- Todo remove -->
+            <td>
+                <span ng-repeat="m in report.metrics">
+                    {{m.name}}
+                    <i class="icon-info-sign"
+                        popover-html-unsafe="m.target+<i>ss</i>"
+                        popover-trigger="mouseenter"
+                        popover-animation="true"></i>
+                    <br/>
+                </span>
+                <!-- <span ng-bind-html="report.metrics|joinArrExt:{'key': 'name', 'joiner': '<br>'}"></span> -->
+                <!-- popover card to show more info  -->
+            </td>
+            <td>
+                <span ng-bind-html="report.dimensions|joinArrExt:{'key': 'name', 'joiner': '<br>'}"></span>
+                <!-- popover card to show more info  -->
+            </td>
+            <!-- <td>{{report.createTime|date:'yyyy-MM-dd'}}</td> -->
+            <td>{{report.modifyTime|date:'yyyy-MM-dd'}}</td>
+            <td>{{report.owner}}</td>
+            <td>{{report.comment}}</td>
+            <td>
+                <input ng-model="report.enable"
+                    type="checkbox" class="ace ace-switch ace-switch-5">
+                <span class="lbl"></span>
+            </td>
+            <td>
+                <a ng-click="editreport(report)">Edit</a>
+                <a ng-click="delreport(report)">Delete</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<div muce-include="templates/report/snippet.html"></div>

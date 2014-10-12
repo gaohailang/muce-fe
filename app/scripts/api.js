@@ -16,7 +16,8 @@ define([], function() {
             'getReport': 'GET /report/:id',
             'getReportDetail': 'GET /meta/report/:id',
             'getDetailMetricsList': 'GET /meta/viewMetrics',
-            'getDetailDimensionsList': 'GET /meta/viewDimensions'
+            'getDetailDimensionsList': 'GET /meta/viewDimensions',
+            'getDetailReportsList': 'GET /meta/viewReports'
         });
 
         // Muce Query
@@ -46,7 +47,7 @@ define([], function() {
             'getUAMPReportData': 'GET /reportData/:id',
             'getUAMPChartData': 'GET /chartData'
         }, {
-            urlPrefix: 'http://apps-datatools0-bgp0.hy01.wandoujia.com:4000'
+            urlPrefix: 'http://apps-datatools0-bgp0.hy01.wandoujia.com:4000/api'
         });
     });
 })
