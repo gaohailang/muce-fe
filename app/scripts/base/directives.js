@@ -119,5 +119,26 @@ define([
             function($tooltip) {
                 return $tooltip("popoverHtmlUnsafe", "popover", "click");
             }
-        ]);
+        ])
+        .directive('enableFlagSwitch', function($timeout) {
+            return {
+                templateUrl: 'templates/widgets/enable-flag-switch.html',
+                replace: true,
+                scope: {
+                    switchCallback: '=',
+                    isEnable: '@',
+                    type: '@'
+                },
+                link: function($scope) {
+                    $timeout(function() {
+                        $scope.isEnable = !! ($scope.isEnable);
+                    });
+                    $scope.$watch('isEnable', function(val, old) {
+                        if (_.isUndefined(old)) return;
+                        if (val == old) return; // trans 0/1 into false/true
+                        $scope.switchCallback($scope.isEnable, $scope.type);
+                    });
+                }
+            }
+        });
 });
