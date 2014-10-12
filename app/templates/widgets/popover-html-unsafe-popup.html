@@ -1,0 +1,9 @@
+<div class="popover {{placement}}" ng-class="{ in: isOpen(), fade: animation() }">
+    <!-- https://github.com/angular-ui/bootstrap/issues/520 -->
+  <div class="arrow"></div>
+
+  <div class="popover-inner">
+      <h3 class="popover-title" ng-bind="title" ng-show="title"></h3>
+      <div class="popover-content" bind-html-unsafe="content"></div>
+  </div>
+</div>
