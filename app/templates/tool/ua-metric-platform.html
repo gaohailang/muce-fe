@@ -13,7 +13,7 @@
     }
 </style>
 
-<div class="mc-uamp" ng-show="state.hasFetchData">
+<div class="mc-uamp">
     <i class="icon-double-angle-left collapse-sidebar-trigger"></i>
     <div class="sidebar">
         <h3>
@@ -28,7 +28,7 @@
         </ul>
     </div>
     <div class="main-content">
-        <div class="op-bar">
+        <div class="op-bar" ng-show="state.hasFetchData">
             <div class="multi-fn-datepicker">
                 <!-- export: state.timezone -->
                 <div data-toggle="buttons-radio" class="btn-group fn-chooser">
@@ -73,10 +73,10 @@
                 <td ng-if="state.isSelectMetricMode">选择</td>
                 <td ng-repeat="th in reportData.tableTitle track by $index">
                     {{th.disp_name}}
-                    <i ng-show="checkCollapsable()" ng-click="toggleRowSort($index)" ng-class="{
+                    <!-- <i ng-show="checkCollapsable()" ng-click="toggleRowSort($index)" ng-class="{
                         'icon-sort': $index !== sortType,
                         'icon-arrow-up': $index == sortType && !sortReverse,
-                        'icon-arrow-down': $index == sortType && sortReverse}"></i>
+                        'icon-arrow-down': $index == sortType && sortReverse}"></i> -->
                 </td>
             </tr>
             <tr ng-repeat="metric in flatMetricsData" ng-show="inferFromParent(metric)">

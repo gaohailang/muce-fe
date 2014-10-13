@@ -14,12 +14,14 @@
 }
 .ng-hide-remove {-webkit-animation: fadeDownEnter .3s linear;}
 
-.mc-uamp table {
-    .ng-enter {-webkit-animation: initial;}
-    .ng-hide-add, .ng-hide-remove {
-        display: inherit!important;
+.mc-uamp {
+    table, input, .btn, .btn-group, .op-bar {
+        .ng-enter {-webkit-animation: initial;}
+        .ng-hide-add, .ng-hide-remove {
+            display: inherit!important;
+        }
+        .ng-hide-remove {-webkit-animation: initial;}
     }
-    .ng-hide-remove {-webkit-animation: initial;}
 }
 
 .disable-ux {

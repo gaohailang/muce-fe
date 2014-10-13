@@ -68,7 +68,9 @@ define([], function() {
                 flattenReportMetric(data.tableData);
                 $scope.flatMetricsData = flatMetricsData;
                 $scope.reportData = data;
-                _state.hasFetchData = true;
+                $timeout(function() {
+                    _state.hasFetchData = true;
+                }, 100);
             });
         };
 
