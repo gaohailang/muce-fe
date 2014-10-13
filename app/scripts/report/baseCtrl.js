@@ -1,7 +1,9 @@
 define(function() {
-    function reportCtrl($scope, $modal, apiHelper, $state, $rootScope) {
+    // @ngInject
+    function reportBaseCtrl($scope, $modal, apiHelper, $state, $rootScope) {
         $rootScope.state = {};
         var _state = $rootScope.state;
+        console.log('reportBaseCtrl');
 
         apiHelper('getGroupList', {
             busy: 'global'
@@ -55,6 +57,5 @@ define(function() {
         }, true);
     }
 
-    angular.module('muceApp.report.reportCtrl', [])
-        .controller('reportCtrl', reportCtrl);
-})
+    return reportBaseCtrl;
+});

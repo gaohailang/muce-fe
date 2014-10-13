@@ -1,4 +1,5 @@
 define(function() {
+    // @ngInject
     function sidebarCtrl(apiHelper, $scope, $rootScope, $modal) {
         var _state = $rootScope.state;
 
@@ -33,6 +34,5 @@ define(function() {
         };
     }
 
-    angular.module('muceApp.report.sidebarCtrl', [])
-        .controller('sidebarCtrl', sidebarCtrl);
+    return sidebarCtrl;
 });

@@ -1,13 +1,13 @@
 define([
-    'report/highchart',
-    'report/reportCtrl',
+    'report/baseCtrl',
     'report/sidebarCtrl',
     'report/delPanelCtrl',
     'report/settingCtrl',
+    'report/detailCtrl',
     'report/tableCtrl',
     'report/resModal',
     'report/management'
-], function(highchart) {
+], function(reportBaseCtrl, sidebarCtrl, delPanelCtrl, settingCtrl, detailCtrl, tableCtrl) {
 
     var Config = {
         delAlertPrefix: 'Are you sure you wish to delete ',
@@ -24,6 +24,7 @@ define([
         },
         csvFileNameTpl: '[MUCE REPORT] <%= report %> - <%= start %>_<%= end %>'
     };
+    // WTF?! Name Conflict!!!
     window.Config = Config;
 
     var routeInfo = {
@@ -40,7 +41,7 @@ define([
                 },
                 '@': {
                     templateUrl: 'templates/report/index.html',
-                    controller: 'reportCtrl'
+                    controller: 'reportBaseCtrl'
                 }
             }
         },
@@ -88,43 +89,6 @@ define([
         }
     };
 
-    function detailCtrl($scope, $state, apiHelper, $timeout, $filter, $rootScope) {
-        var _state = $rootScope.state;
-        _state.isAjaxFetching = false;
-
-        function triggerFetchDone(data) {
-            $rootScope.$emit('report:renderReportData', [_state.reportDetail, data]);
-            _state.isFetching = false;
-            _state.isAjaxFetching = false;
-        }
-
-        $rootScope.$on('report:fetchReportData', function() {
-            var defaultParams = {
-                filters: [],
-                cache: true,
-                dimensions: []
-            };
-            if (_state.isAjaxFetching) return;
-            _state.isAjaxFetching = true;
-            apiHelper('getReport', _state.report.id, {
-                busy: 'global',
-                params: _.extend(defaultParams, _.pick($state.params, 'period', 'startDate', 'endDate'))
-            }).then(function(data) {
-                highchart.buildLineChart(_state.reportDetail, data);
-                if ($state.params.dimensions && ($state.params.dimensions != '[]')) {
-                    apiHelper('getReport', _state.report.id, {
-                        busy: 'global',
-                        params: _.extend(defaultParams, _.pick($state.params, 'period', 'startDate', 'endDate', 'filters', 'dimensions'))
-                    }).then(function(data) {
-                        triggerFetchDone(data);
-                    });
-                } else {
-                    triggerFetchDone(data);
-                }
-            }, function() {});
-        });
-    }
-
     /* add modal */
     function addModalCtrl($scope, $modal) {
         $scope.addTypes = ['group', 'category', 'report', 'metric', 'dimension'];
@@ -144,21 +108,28 @@ define([
         };
     }
 
-    function buildCtrlDepArr(ctrlNames) {
-        return _.map(ctrlNames, function(name) {
-            return 'muceApp.report.' + name;
-        });
-    }
-
-    angular.module('muceApp.report',
-        buildCtrlDepArr(['delPanelCtrl', 'reportCtrl', 'sidebarCtrl', 'settingCtrl', 'tableCtrl']).concat(['muceApp.report.resModal', 'muceApp.report.management']))
+    angular.module('muceApp.report', ['muceApp.report.resModal', 'muceApp.report.management'])
+        .controller('reportBaseCtrl', reportBaseCtrl)
+        .controller('sidebarCtrl', sidebarCtrl)
         .controller('addModalCtrl', addModalCtrl)
+        .controller('delPanelCtrl', delPanelCtrl)
+        .controller('settingCtrl', settingCtrl)
         .controller('detailCtrl', detailCtrl)
+        .controller('tableCtrl', tableCtrl)
         .config(function($stateProvider, $urlRouterProvider) {
             _.each(routeInfo, function(opt, name) {
                 $stateProvider.state(name, opt);
             });
             $urlRouterProvider
                 .when('/management', '/management/report')
+        }).run(function($rootScope) {
+            $rootScope.$on('$stateChangeStart',
+                function(event, toState, toParams, fromState, fromParams) {
+                    // event.preventDefault();
+                    console.log(toState);
+                    console.log(toParams);
+                    // transitionTo() promise will be rejected with
+                    // a 'transition prevented' error
+                });
         });
 });

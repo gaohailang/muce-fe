@@ -1,5 +1,5 @@
 define(function() {
-
+    // @ngInject
     function delPanelCtrl(apiHelper, $scope, $timeout, $rootScope) {
         var _state = $rootScope.state;
         $scope.delTypes = ['group', 'category', 'metric', 'dimension'];
@@ -51,6 +51,5 @@ define(function() {
         };
     };
 
-    angular.module('muceApp.report.delPanelCtrl', [])
-        .controller('delPanelCtrl', delPanelCtrl);
+    return delPanelCtrl;
 });

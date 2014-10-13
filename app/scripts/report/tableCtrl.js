@@ -1,4 +1,5 @@
 define(function() {
+    // @ngInject
     function tableCtrl($scope, $rootScope, $filter, $timeout) {
         var _state = $rootScope.state;
         var _tableDataPg = 1;
@@ -157,6 +158,5 @@ define(function() {
         }
     }
 
-    angular.module('muceApp.report.tableCtrl', [])
-        .controller('tableCtrl', tableCtrl);
+    return tableCtrl;
 });

@@ -1,6 +1,8 @@
 define(function() {
+    // @ngInject
     function settingCtrl($scope, apiHelper, $timeout, $state, $rootScope, $filter, $modal) {
         var _state = $rootScope.state;
+        console.log('settingCtrl');
 
         $scope.ghostDimension = {
             name: ''
@@ -38,27 +40,6 @@ define(function() {
             fetchReports();
         });
 
-        $scope.onDateChange = function() {
-            // reset currentQuick
-            $scope.currentQuick = '';
-        };
-        $scope.startDateFilter = function(d) {
-            var isLessEnd = true,
-                isLessToday = d.getTime() < Helper.getMaxAvailableDate();
-            if (_state.endDate) {
-                isLessEnd = d.getTime() < _state.endDate.getTime();
-            }
-            return isLessEnd && isLessToday;
-        };
-        $scope.endDateFilter = function(d) {
-            var isLargeStart = true,
-                isLessToday = d.getTime() < Helper.getMaxAvailableDate();
-            if (_state.startDate) {
-                isLargeStart = d.getTime() > _state.startDate.getTime();
-            }
-            return isLargeStart && isLessToday;
-        };
-
         /* Dimen Advanced Modal */
         var dimenAdvModal;
         $scope.openAdvancedPanel = function() {
@@ -67,7 +48,6 @@ define(function() {
                 scope: $scope
             });
         };
-
         _state.dimenAdv = {
             dimensions: [],
             filters: null,
@@ -156,28 +136,56 @@ define(function() {
         function fetchReports() {
             if (!_state.startDate) return;
             if (_.isUndefined(_state.period)) return;
-            if (_state.isFetching) return;
+            // if (_state.isFetching) return;
             _state.isFetching = true;
             // clean up dimensions
             _state.dimenAdv.dimensions = _.filter(_state.dimenAdv.dimensions, function(i) {
                 if (i) return i;
             });
-            $state.go('report.detail', {
+            var nextParams = {
                 group: _state.group.name,
                 category: _state.category.name,
                 report: _state.report.name,
                 startDate: Helper.serApiDate(_state.startDate, _state.period),
                 endDate: Helper.serApiDate(_state.endDate, _state.period),
-                period: _state.period,
+                period: ''+_state.period,
                 dimensions: JSON.stringify(_.pluck(_state.dimenAdv.dimensions, 'id')),
                 filters: JSON.stringify(_state.dimenAdv.filters)
-            });
+            };
+            if (testObjEqual(_state.detailParams, nextParams)) return;
+            // if ($state.is('report.detail') && testObjEqual(nextParams, $state.params)) return;
+            _state.detailParams = nextParams;
+            console.log('go to report.detail');
+            $state.go('report.detail', nextParams);
 
             $timeout(function() {
                 $rootScope.$emit('report:fetchReportData');
             });
         }
+        // var fetchReports = _.throttle(_fetchReports, 2000);
         $scope.fetchReports = fetchReports;
+
+        // view helper
+        $scope.onDateChange = function() {
+            // reset currentQuick
+            $scope.currentQuick = '';
+        };
+        $scope.startDateFilter = function(d) {
+            var isLessEnd = true,
+                isLessToday = d.getTime() < Helper.getMaxAvailableDate();
+            if (_state.endDate) {
+                isLessEnd = d.getTime() < _state.endDate.getTime();
+            }
+            return isLessEnd && isLessToday;
+        };
+        $scope.endDateFilter = function(d) {
+            var isLargeStart = true,
+                isLessToday = d.getTime() < Helper.getMaxAvailableDate();
+            if (_state.startDate) {
+                isLargeStart = d.getTime() > _state.startDate.getTime();
+            }
+            return isLargeStart && isLessToday;
+        };
 
         var Helper = {
             getMaxAvailableDate: function() {
@@ -205,8 +213,11 @@ define(function() {
                 return parseMap[period](datetime)
             }
         };
+
+        function testObjEqual(obj1, obj2) {
+            return JSON.stringify(obj1) === JSON.stringify(obj2);
+        }
     };
 
-    angular.module('muceApp.report.settingCtrl', [])
-        .controller('settingCtrl', settingCtrl);
+    return settingCtrl;
 });
