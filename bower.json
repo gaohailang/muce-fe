@@ -21,6 +21,7 @@
     "quick-ng-repeat": "~0.0.1",
     "angular-loading-bar": "~0.6.0",
     "multiple-select": "~1.1.0",
-    "ngInfiniteScroll": "~1.1.2"
+    "ngInfiniteScroll": "~1.1.2",
+    "angular-spinkit": "~0.3.2"
   }
 }

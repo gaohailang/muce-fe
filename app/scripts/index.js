@@ -36,6 +36,7 @@ require([
         'infinite-scroll',
         'toaster',
         'QuickList',
+        'angular-spinkit',
 
         'muceApp.api',
         'muceApp.base',

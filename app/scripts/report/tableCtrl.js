@@ -52,6 +52,10 @@ define(function() {
             $timeout(function() {
                 var _updates = _allTableData.result.slice(0, _pageSize);
                 $scope.tableRows = $scope.tableRows.concat(_updates);
+                $timeout(function() {
+                    _state._fetchingReportTableData = false;
+                    $('body').removeClass('i-stop-scrolling');
+                }, 1200);
             }, 20);
         }
 
@@ -59,6 +63,8 @@ define(function() {
             console.log('fetching...');
             if (!_reportDetail || !_allTableData) return;
             if (_tableDataPg == _totalPg) return;
+            _state._fetchingReportTableData = true;
+            $('body').addClass('i-stop-scrolling');
             _tableDataPg += 1;
             buildGridData();
         }, 1000);

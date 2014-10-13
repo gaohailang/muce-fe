@@ -18,8 +18,8 @@ define(['report/highchart'], function(highchart) {
                 dimensions: []
             };
             if (_state.isAjaxFetching) return;
-            if(window._lastReportDataTime) {
-                if((new Date().getTime() - window._lastReportDataTime) < 1000) return;
+            if (window._lastReportDataTime) {
+                if ((new Date().getTime() - window._lastReportDataTime) < 1000) return;
             }
             window._lastReportDataTime = new Date().getTime();
             _state.isAjaxFetching = true;
@@ -28,15 +28,18 @@ define(['report/highchart'], function(highchart) {
                 busy: 'global',
                 params: _.extend(defaultParams, _.pick($state.params, 'period', 'startDate', 'endDate'))
             }).then(function(data) {
+                $rootScope.state._allChartData = data;
                 highchart.buildLineChart($rootScope.state.reportDetail, data);
                 if ($state.params.dimensions && ($state.params.dimensions != '[]')) {
                     // timeout to non-block ui
-                    apiHelper('getReport', $rootScope.state.report.id, {
-                        busy: 'global',
-                        params: _.extend(defaultParams, _.pick($state.params, 'period', 'startDate', 'endDate', 'filters', 'dimensions'))
-                    }).then(function(data) {
-                        triggerFetchDone(data);
-                    });
+                    $timeout(function() {
+                        apiHelper('getReport', $rootScope.state.report.id, {
+                            busy: 'global',
+                            params: _.extend(defaultParams, _.pick($state.params, 'period', 'startDate', 'endDate', 'filters', 'dimensions'))
+                        }).then(function(data) {
+                            triggerFetchDone(data);
+                        });
+                    }, 1000);
                 } else {
                     triggerFetchDone(data);
                 }
@@ -44,6 +47,13 @@ define(['report/highchart'], function(highchart) {
         }
         var innerFetching = _.throttle(_innerFetching, 1000);
         $rootScope.$on('report:fetchReportData', innerFetching);
+        $scope.$on('base:sidebar-collapsed', function(e, collapsed) {
+            var _state = $rootScope.state;
+            $timeout(function() {
+                // fix period undefined
+                highchart.buildLineChart(_state.reportDetail, _state._allChartData);
+            }, 300);
+        });
     }
 
     return detailCtrl;

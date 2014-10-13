@@ -102,6 +102,7 @@ define([], function() {
         },
         getIntervalByPeriod: function(period) {
             var retVal;
+            if (!period) period = 'day';
             switch (period) {
                 case 'hour':
                     retVal = 3600 * 1000;

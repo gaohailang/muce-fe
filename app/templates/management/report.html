@@ -18,12 +18,12 @@
             <th>Name</th>
             <th>Period</th>
             <th>Group & Category</th>
-            <th>Metric</th>
+            <th class="i-nowrap-cell">Metric</th>
             <th>Dimension</th>
             <!-- <th>Created Time</th> -->
             <th>Modified Time</th>
             <th>Owner</th>
-            <th>Comment</th>
+            <th style="min-width: 140px;">Comment</th>
             <th>isEnable</th>
             <th>Operate</th>
         </tr>
@@ -36,7 +36,7 @@
                 </span>
             </td>
             <td ng-bind-html="report.groupCategories|linizeArray"></td>
-            <td>
+            <td class="i-nowrap-cell">
                 <!-- popover card to show more info  -->
                 <span ng-repeat="m in report.metrics">
                     {{m.name}}
@@ -47,7 +47,7 @@
                     <br/>
                 </span>
             </td>
-            <td>
+            <td class="i-nowrap-cell">
                 <span ng-bind-html="report.dimensions|joinArrExt:{'key': 'name', 'joiner': '<br>'}"></span>
             </td>
             <!-- <td>{{report.createTime|date:'yyyy-MM-dd'}}</td> -->

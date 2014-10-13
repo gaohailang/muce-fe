@@ -474,17 +474,6 @@ define([], function() {
                 return _picker.startDate.toDate().getTime();
             }
         };
-
-        // collapse the sidebar
-        $('.collapse-sidebar-trigger').click(function(e) {
-            if ($(e.target).hasClass('icon-double-angle-left')) {
-                $(e.target).removeClass('icon-double-angle-left').addClass('icon-double-angle-right');
-                $('.mc-uamp').addClass('sidebar-collapsed');
-            } else {
-                $(e.target).removeClass('icon-double-angle-right').addClass('icon-double-angle-left');
-                $('.mc-uamp').removeClass('sidebar-collapsed');
-            }
-        });
     }
 
     // 1?timespan=1440&dateTime=20140921&dimensions=[{"id": 1, "value": ["", "1"]}, {"id": 2, "value": [""]}]

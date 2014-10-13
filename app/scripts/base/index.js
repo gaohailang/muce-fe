@@ -35,5 +35,17 @@ define([
                 }
             });
 
+            // collapse the sidebar
+            $('body').on('click', '.collapse-sidebar-trigger', function(e) {
+                if ($(e.target).hasClass('icon-double-angle-left')) {
+                    $(e.target).removeClass('icon-double-angle-left').addClass('icon-double-angle-right');
+                    $('.collapse-sidebar-container').addClass('sidebar-collapsed');
+                    $rootScope.$broadcast('base:sidebar-collapsed', true);
+                } else {
+                    $(e.target).removeClass('icon-double-angle-right').addClass('icon-double-angle-left');
+                    $('.collapse-sidebar-container').removeClass('sidebar-collapsed');
+                    $rootScope.$broadcast('base:sidebar-collapsed', false);
+                }
+            });
         });
 });

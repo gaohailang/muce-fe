@@ -27,12 +27,18 @@ label > input[type=checkbox] {
         transition: all .5s ease;
     }
 }
+double-bounce-spinner {
+    position: fixed;
+    bottom: -85px;
+    left: 55%;
+}
 
 textarea {
     transition: all linear .2s;
 }
 
 .navbar .navbar-inner {
+    max-height: 40px;
     min-height: 40px;
     background-color: #438eb9;
     background-image: none;
@@ -138,6 +144,7 @@ textarea {
         cursor: pointer;
         background: none;
         border: none;
+        margin-top: 10px;
 
         i {
             font-size: 16px;
@@ -329,6 +336,13 @@ textarea {
 
 /* mq page */
 .mc-mq-container {
+    margin-top: 15px;
+    .span3 {
+        width: 16%;
+    }
+    .span9 {
+        width: 80%;
+    }
     .CodeMirror {
         height: 112px;
         margin: 5px 2px 22px 0;
@@ -361,7 +375,7 @@ textarea {
         .db-item {
             margin-bottom: 3px;
             .dropdown-toggle {
-                width: 70%;
+                width: 90%;
                 overflow: hidden;
                 padding: 0;
             }
@@ -386,9 +400,23 @@ textarea {
     }
 }
 
-/* tool - UAMP */
-.mc-uamp {
-    &.sidebar-collapsed {
+/* Todo */
+.collapse-sidebar-container {
+    position: relative;
+    .collapse-sidebar-trigger {
+        left: 178px;
+        top: 5px;
+    }
+    .span2 {
+        margin-left: 0;
+    }
+}
+.modal-open i.collapse-sidebar-trigger {
+    background-color: #000;
+    border: none;
+}
+.sidebar-collapsed {
+    &.mc-uamp {
         .main-content {
             margin-left: 0;
         }
@@ -399,26 +427,43 @@ textarea {
         }
         .collapse-sidebar-trigger {
             left: 10px;
-            top: 35px;
+            top: -5px;
         }
     }
-    .collapse-sidebar-trigger {
+    .span2 {
+        margin-left: -210px;
         transition: all .5s cubic-bezier(0.25,.46,.45,.94);
-        display: inline-block;
-        cursor: pointer;
-        font-size: 14px;
-        color: #aaa;
-        border: 1px solid #bbb;
-        padding: 0 5px;
-        line-height: 18px;
-        border-radius: 16px;
-        background-color: #fff;
-
-        position: absolute;
-        top: 45px;
-        left: 178px;
-        z-index: 9999;
     }
+    .span10 {
+        margin-left: 0px;
+        width: 100%;
+        transition: all .5s cubic-bezier(0.25,.46,.45,.94);
+    }
+    .collapse-sidebar-trigger {
+        left: 30px;
+        top: -25px;
+    }
+}
+.collapse-sidebar-trigger {
+    transition: all .5s cubic-bezier(0.25,.46,.45,.94);
+    display: inline-block;
+    cursor: pointer;
+    font-size: 14px;
+    color: #aaa;
+    border: 1px solid #bbb;
+    padding: 0 5px;
+    line-height: 18px;
+    border-radius: 16px;
+    background-color: #fff;
+
+    position: absolute;
+    top: 15px;
+    z-index: 9999;
+}
+
+
+/* tool - UAMP */
+.mc-uamp {
     .main-content {
         padding: 10px;
         transition: all .5s cubic-bezier(0.25,.46,.45,.94);
@@ -548,6 +593,13 @@ textarea {
 .i-text-warning-nav {
     color: red!important;
     cursor: not-allowed;
+}
+.i-stop-scrolling {
+  height: 100%;
+  overflow: hidden;
+}
+.i-nowrap-cell {
+    white-space: nowrap;
 }
 
 /* component archive */
