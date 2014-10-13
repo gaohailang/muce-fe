@@ -76,6 +76,13 @@ define([], function() {
             });
 
             if (type === 'report') {
+                function handleShowDisable() {
+                    if ($scope.showDisable) {
+                        delete $scope.filterObj.enable;
+                    } else {
+                        $scope.filterObj.enable = true;
+                    }
+                }
                 $scope.genMetricCardHtml = function(metric) {
                     var rowsHtml = _.map(['name', 'conditions', 'target'], function(t) {
                         return '<tr><td>' + t + '</td><td>' + metric[t] + '</td></tr>';
@@ -84,14 +91,21 @@ define([], function() {
                 };
                 $scope.filterOpts = ['report', 'group', 'category', 'metric', 'dimension', 'owner'];
                 $scope.filterField = 'report';
-                $scope.clearFilter = function() {
-
+                $scope.filterObj = {
+                    enable: true
                 };
-                $scope.filterObj = {};
+                $scope.showDisable = false;
+                $scope.$watch('showDisable', function(val, old) {
+                    if (_.isUndefined(old)) return;
+                    console.log(val);
+                    handleShowDisable($scope.filterObj);
+                });
+
                 $scope.$watch(function() {
                     return [$scope.filterText, $scope.filterField]
                 }, function() {
                     $scope.filterObj = {};
+                    handleShowDisable($scope.filterObj);
                     // TODO: Metric, dimension, category, report : nested array name
                     if ($scope.filterText && $scope.filterField) {
                         if ($scope.filterField === 'report') {
@@ -99,27 +113,24 @@ define([], function() {
                         } else if ($scope.filterField === 'owner') {
                             $scope.filterObj[$scope.filterField] = $scope.filterText;
                         } else {
-                            $scope.filterObj = function(i) {
+                            $scope.filterObj = function(report) {
+                                // Todo hide enable
                                 var _s, passed = false;
-                                _.each(i[pluralize($scope.filterField)], function(i) {
+                                _.each(report[pluralize($scope.filterField)], function(i) {
                                     _s = i.name ? i.name : i;
-                                    console.log(_s);
                                     if (_s.match(new RegExp($scope.filterText))) {
                                         passed = true;
                                     }
                                 });
+                                // 当不展示 disable 的，过滤掉 !enable 的
+                                if (!$scope.showDisable && !report.enable) {
+                                    return false;
+                                }
                                 return passed;
                             };
                         }
                     }
                 }, true);
-                $scope.filterFn = function() {
-                    // cal on each item
-
-                };
-                $scope.applyFilter = function() {
-                    // filter option
-                };
             }
         }]
     });

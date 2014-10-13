@@ -1,10 +1,16 @@
 <div>
     <!-- Search inline ~~ -->
     <p class="report-op-bar">
-        <span>过滤条件：</span>
+        <span>Filter Options</span>
         <select ng-model="filterField">
             <option ng-repeat="f in filterOpts" value="{{f}}">{{f}}</option>
         </select> <b>-</b> <input type="text" ng-model="filterText">
+        <label class="pull-right">
+            Show Disable Report
+            <input name="switch-field-1" ng-model="showDisable"
+                class="ace ace-switch ace-switch-7" type="checkbox">
+            <span class="lbl"></span>
+        </label>
     </p>
     <table class="table table-bordered table-striped">
         <tr>
