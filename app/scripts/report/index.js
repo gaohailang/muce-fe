@@ -102,7 +102,8 @@ define([
             } else {
                 $modal.open({
                     templateUrl: 'report/metric-tabs-modal.html',
-                    size: 'lg'
+                    size: 'lg',
+                    controller: 'metricModalWrapperCtrl'
                 });
             }
         };

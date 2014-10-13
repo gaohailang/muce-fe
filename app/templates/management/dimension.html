@@ -23,7 +23,9 @@
         <td>{{dimension.modifyTime|date:'yyyy-MM-dd'}}</td>
         <td>{{dimension.owner}}</td>
         <td>{{dimension.comment}}</td>
-        <td><div enable-flag-switch></div></td>
+        <td><div enable-flag-switch
+            switch-callback="toggleResStatus"
+            is-enable="{{dimension.enable?1:''}}" type="dimension"></div></td>
         <td>
             <a ng-click="editDimension(dimension)">Edit</a>
             <a ng-click="delDimension(dimension)">Delete</a>

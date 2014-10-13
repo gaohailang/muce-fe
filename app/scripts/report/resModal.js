@@ -206,18 +206,18 @@ define(function() {
             var postData = _.clone($scope.formlyData);
 
             /* before send */
-            postData.metrics = _.map(_.filter($scope.metricList, function(i) {
+            postData.metrics = _.pluck(_.filter($scope.metricList, function(i) {
                 return i.selected;
-            }), function(x) {
-                return x.id;
-            });
+            }), 'id');
             postData.dimensions = _.pluck(_.filter($scope.dimensionList, function(i) {
                 return i.selected;
             }), 'id');
             postData.periods = [];
             if (postData.hour) postData.periods.push(1);
             if (postData.day) postData.periods.push(0);
-            postData.categoryId = postData.category.id;
+            if (!$scope._data) {
+                postData.categoryId = postData.category.id;
+            }
             _.each(['group', 'category', 'hour', 'day'], function(i) {
                 delete postData[i];
             });
@@ -231,31 +231,47 @@ define(function() {
             if (!postData.dimensions || !postData.metrics) $notice.warning('请按照要求填写');
             /* end before send */
 
-            apiHelper('addReport', {
-                data: postData
-            }).then(function(data) {
-                // Todo 区分 add/edit 的后续处理
-                // Todo: 被添加的category 和 currentCategory 是一致的
-                if ($scope.$root.state.category.id === postData.categoryId) {
-                    $scope.$root.state.reportList.push(data);
-                }
-                $scope.$close();
-            });
+            if ($scope._data) {
+                apiHelper('editReport', {
+                    data: postData
+                }).then(function(data) {
+                    // console.log();
+                    $scope.$close();
+                });
+            } else {
+                apiHelper('addReport', {
+                    data: postData
+                }).then(function(data) {
+                    // Todo 区分 add/edit 的后续处理
+                    // Todo: 被添加的category 和 currentCategory 是一致的
+                    if ($scope.$root.state && $scope.$root.state.category) {
+                        if ($scope.$root.state.category.id === postData.categoryId) {
+                            $scope.$root.state.reportList.push(data);
+                        }
+                    }
+                    $scope.$close();
+                });
+            }
+
         },
         metric: function($scope, apiHelper) {
             var postData = _.clone($scope.formlyData);
             postData.type = +(postData.type);
             if ($scope._data) {
+                postData.eventId = postData.event.id;
+                delete postData.event;
                 apiHelper('editMetric', {
                     data: postData
                 }).then(function(data) {
                     replaceInCollection($scope.metricList, postData, 'id');
+                    $scope.$emit('report:editMetric', data);
                     $scope.$close();
                 });
             } else {
                 apiHelper('addMetric', {
                     data: processIdObj(postData, 'event')
-                }).then(function() {
+                }).then(function(retMetric) {
+                    $scope.$emit('report:addMetric', retMetric);
                     $scope.$close();
                 });
             }
@@ -263,14 +279,25 @@ define(function() {
         combinedMetric: function($scope, apiHelper) {
             var postData = _.clone($scope.formlyData);
             $scope.expressionErr = '';
-            if (postData.metricId1 && postData.metricId2 && postData.operator) {
-                apiHelper('addCombineMetric', {
+            if ($scope._data) {
+                // process data
+                apiHelper('editCombineMetric', {
                     data: postData
-                }).then(function() {
+                }).then(function(_ret) {
+                    $scope.$emit('report:editMetric', _ret);
                     $scope.$close();
                 });
             } else {
-                $scope.expressionErr = '请先填写表达式';
+                if (postData.metricId1 && postData.metricId2 && postData.operator) {
+                    apiHelper('addCombineMetric', {
+                        data: postData
+                    }).then(function(data) {
+                        $scope.$emit('report:addMetric', data);
+                        $scope.$close();
+                    });
+                } else {
+                    $scope.expressionErr = '请先填写表达式';
+                }
             }
         },
         dimension: function($scope, apiHelper) {
@@ -282,15 +309,16 @@ define(function() {
                     data: postData
                 }).then(function(data) {
                     replaceInCollection($scope.dimensionList, postData, 'id');
+                    $scope.$emit('report:editDimension', data);
                     $scope.$close();
                 });
             } else {
-                // fuck the ugly data interface
-                // Todo: fieldIds?! []
-                // postData.fieldIds = [1, 2];
                 apiHelper('addDimension', {
                     data: postData
-                }).then(function() {
+                }).then(function(retDimen) {
+                    console.log(retDimen);
+                    // diff res fields with management page
+                    $scope.$emit('report:addDimension', retDimen);
                     $scope.$close();
                 });
             }
@@ -325,23 +353,47 @@ define(function() {
         report: function($scope, apiHelper) {
             if ($scope._data) {
                 $scope.formlyData = $scope._data;
+                // Todo~~
             } else {
-                apiHelper('getGroupList').then(function(data) {
-                    // $scope.formlyData.group = data[0];
-                    $scope.formFields[0].options = data;
-                    $scope.formlyData.day = true;
-                    $scope.formlyData.group = _.find(data, function(i) {
-                        return i.id === $scope.$root.state.group.id;
-                    });
-                });
+                $scope.formlyData.day = true;
             }
+            apiHelper('getGroupList').then(function(data) {
+                $scope.formFields[0].options = data;
+                if (!$scope._data) {
+                    if ($scope.$root.state && $scope.$root.state.group) {
+                        $scope.formlyData.group = _.find(data, function(i) {
+                            return i.id === $scope.$root.state.group.id;
+                        });
+                    } else {
+                        $scope.formlyData.group = data[0];
+                    }
+                }
+            });
 
             apiHelper('getMetricList').then(function(data) {
                 $scope.metricList = data;
+                if ($scope._data) {
+                    _.each($scope._data.metrics, function(i) {
+                        _.each($scope.metricList, function(_i) {
+                            if (i.id === _i.id) {
+                                _i.selected = true;
+                            }
+                        })
+                    });
+                }
             });
 
             apiHelper('getDimensionList').then(function(data) {
                 $scope.dimensionList = data;
+                if ($scope._data) {
+                    _.each($scope._data.dimensions, function(i) {
+                        _.each($scope.dimensionList, function(_i) {
+                            if (i.id === _i.id) {
+                                _i.selected = true;
+                            }
+                        })
+                    });
+                }
             });
 
             $scope.$watch('formlyData.group', function(val) {
@@ -352,7 +404,7 @@ define(function() {
                     }
                 }).then(function(data) {
                     $scope.formFields[1].options = data;
-                    if (val.id === $scope.$root.state.group.id) {
+                    if ($scope.$root.state && $scope.$root.state.group && (val.id === $scope.$root.state.group.id)) {
                         $scope.formlyData.category = _.find(data, function(i) {
                             return i.id === $scope.$root.state.category.id;
                         });
@@ -376,19 +428,17 @@ define(function() {
             }, true);
         },
         metric: function($scope, apiHelper) {
-            if ($scope._data) {
-                if ($scope._data.metricType != 'NORMAL') return;
-                $scope.$root.currentMetricTab = 'normal_metric';
-                $scope.formlyData = $scope._data;
-                // Todo: dataType, eventId
-            } else {
-                $scope.$root.currentMetricTab = 'normal_metric';
-            }
-
             apiHelper('getEventList').then(function(data) {
                 $scope.formFields[0].options = data;
-                $scope.formlyData.event = data[0];
-                $scope.formlyData.type = '0';
+                if ($scope._data) {
+                    $scope.formlyData = $scope._data;
+                    $scope.formlyData.event = _.find(data, function(i) {
+                        return i.id === $scope.formlyData.eventId;
+                    });
+                } else {
+                    $scope.formlyData.event = data[0];
+                    $scope.formlyData.type = '0';
+                }
             });
 
             // watch event to fetch optional fields
@@ -399,23 +449,28 @@ define(function() {
                         eventId: val.id
                     }
                 }).then(function(data) {
-                    console.log(data); // set $scope.form.xx bug!!
                     $scope.optionalFileds = data;
                 });
             }, true);
         },
         combinedMetric: function($scope, apiHelper) {
-            if ($scope._data) {
-                if ($scope._data.metricType != 'COMBINE') return;
-                $scope.$root.currentMetricTab = 'combine_metric';
-                // Todo: need a combined metric
-            }
-
-            $scope.formlyData.type = '0';
+            $scope.metricOperators = _.db.metricOperators;
             apiHelper('getMetricList').then(function(data) {
                 $scope.metricList = data;
+                if ($scope._data) {
+                    $scope.formlyData = $scope._data;
+                    $scope.formlyData.type = '' + $scope.formlyData.type;
+                    // Todo 找不到~ metricId1(变化过的)
+                    $scope.formlyData.metricId1 = _.find(data, function(i) {
+                        return i.id == $scope.formlyData.metricId1;
+                    });
+                    $scope.formlyData.metricId2 = _.find(data, function(i) {
+                        return i.id == $scope.formlyData.metricId2;
+                    });
+                } else {
+                    $scope.formlyData.type = '0';
+                }
             });
-            $scope.metricOperators = _.db.metricOperators;
         },
         dimension: function($scope, apiHelper) {
             apiHelper('getFieldIdList').then(function(data) {
@@ -426,7 +481,7 @@ define(function() {
                     $scope.formlyData = $scope._data;
                     // Todo: dataType, fields bug
                     $scope.formlyData.field = _.find(data, function(i) {
-                        return i.id == $scope._data.fieldIds[0].id;
+                        return i.name == $scope._data.fieldName;
                     });
                 } else {
                     $scope.formlyData.field = data[0];
@@ -502,6 +557,27 @@ define(function() {
         ]);
     });
 
+    resModalModule.controller('metricModalWrapperCtrl', function($scope) {
+        $scope.toggleMetricTypeTab = function(type) {
+            $scope.$root.currentMetricTab = type;
+        };
+
+        $scope.checkViewStats = function(type) {
+            if ($scope._data) {
+                if ($scope._data.metricType == 'COMBINE') {
+                    $scope.$root.currentMetricTab = 'combine_metric';
+                } else {
+                    $scope.$root.currentMetricTab = 'normal_metric';
+                }
+                if ($scope.$root.currentMetricTab == type) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            return true;
+        };
+    });
 
     resModalModule.config(function($validationProvider) {
         // 第一次如何 trigger(onSubmit)

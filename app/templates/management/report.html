@@ -22,9 +22,9 @@
                     {{period|transPeriod}}
                 </span>
             </td>
-            <!-- <td ng-bind-html="report.groupCategories|linizeArray"></td> -->
-            <td></td><!-- Todo remove -->
+            <td ng-bind-html="report.groupCategories|linizeArray"></td>
             <td>
+                <!-- popover card to show more info  -->
                 <span ng-repeat="m in report.metrics">
                     {{m.name}}
                     <i class="icon-info-sign"
@@ -33,12 +33,9 @@
                         popover-animation="true"></i>
                     <br/>
                 </span>
-                <!-- <span ng-bind-html="report.metrics|joinArrExt:{'key': 'name', 'joiner': '<br>'}"></span> -->
-                <!-- popover card to show more info  -->
             </td>
             <td>
                 <span ng-bind-html="report.dimensions|joinArrExt:{'key': 'name', 'joiner': '<br>'}"></span>
-                <!-- popover card to show more info  -->
             </td>
             <!-- <td>{{report.createTime|date:'yyyy-MM-dd'}}</td> -->
             <td>{{report.modifyTime|date:'yyyy-MM-dd'}}</td>
@@ -50,8 +47,8 @@
                     is-enable="{{report.enable?1:''}}" type="report"></div>
             </td>
             <td>
-                <a ng-click="editreport(report)">Edit</a>
-                <a ng-click="delreport(report)">Delete</a>
+                <a ng-click="editReport(report)">Edit</a>
+                <!-- <a ng-click="delReport(report)">Delete</a> -->
             </td>
         </tr>
     </table>

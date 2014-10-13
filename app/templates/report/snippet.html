@@ -12,7 +12,7 @@
 <script type="text/ng-template" id="report/_validateDimension.html">
     <input type="text" name="validate-dimension" ng-model="_validateDimension" style="display: none"
         multi-choose-checker-error-message="Dimensions 数量应该 <= 3"
-        validator="multiChooseChecker" key="dimensionList" gt="0" lt="4">
+        validator="multiChooseChecker" key="dimensionList" gt="-1" lt="4">
 </script>
 
 <script type="text/ng-template" id="report/add_report/period.html">
@@ -55,12 +55,10 @@
     <table class="table table-striped">
         <tr>
             <th>Name</th>
-            <!-- <th>Id</th> -->
             <th>Type</th>
         </tr>
-        <tr ng-repeat="item in optionalFileds">
+        <tr ng-repeat="item in optionalFileds track by $index">
             <td>{{item.name}}</td>
-            <!-- <td>{{item.id}}</td> -->
             <td>{{item.type_name}}</td>
         </tr>
     </table>
@@ -87,13 +85,15 @@
 
     <div class="modal-body">
         <tabset>
-            <tab heading="Normal Metric" select="$root.currentMetricTab = 'normal_metric'">
+            <tab heading="Normal Metric" ng-if="checkViewStats('normal_metric')"
+                select="toggleMetricTypeTab('normal_metric')">
                 <div ng-controller="metricModalCtrl" id="normal_metric"
                     ng-if="$root.currentMetricTab == 'normal_metric'">
                     <formly-form fields="formFields" key="{{formName}}"></formly-form>
                 </div>
             </tab>
-            <tab heading="Combine Metric" select="$root.currentMetricTab = 'combine_metric'">
+            <tab heading="Combine Metric" ng-if="checkViewStats('combine_metric')"
+                select="toggleMetricTypeTab('combine_metric')">
                 <div ng-controller="combinedMetricModalCtrl" id="combine_metric"
                     ng-if="$root.currentMetricTab == 'combine_metric'">
                     <formly-form fields="formFields" key="{{formName}}"></formly-form>

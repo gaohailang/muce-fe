@@ -8,11 +8,15 @@ define([], function() {
     }
 
     var viewCtrls = _.map(['metric', 'dimension', 'report'], function(type) {
-        return ['$scope', 'apiHelper', '$rootScope', '$modal', function($scope, apiHelper, $rootScope, $modal) {
+        return ['$scope', 'apiHelper', '$rootScope', '$modal', '$timeout', function($scope, apiHelper, $rootScope, $modal, $timeout) {
             var capitalizeType = _.capitalize(type);
-            apiHelper('getDetail' + capitalizeType + 'sList').then(function(data) {
-                $scope[type + 'List'] = data;
-            });
+            var _initFetchData = function() {
+                apiHelper('getDetail' + capitalizeType + 'sList').then(function(data) {
+                    $scope[type + 'List'] = data;
+                });
+            };
+            _initFetchData();
+
 
             $scope['del' + capitalizeType] = function(item) {
                 apiHelper('del' + capitalizeType, item.id).then(function() {
@@ -30,16 +34,36 @@ define([], function() {
                 var templateUrl;
                 if (!$scope.delMetric) {
                     templateUrl = 'templates/report/modal.html';
+                    $modal.open({
+                        templateUrl: templateUrl,
+                        controller: type + 'ModalCtrl',
+                        scope: $scope,
+                        size: 'lg'
+                    });
                 } else {
                     templateUrl = 'report/metric-tabs-modal.html';
+                    $modal.open({
+                        templateUrl: templateUrl,
+                        controller: 'metricModalWrapperCtrl',
+                        scope: $scope,
+                        size: 'lg'
+                    });
                 }
-                $modal.open({
-                    templateUrl: templateUrl,
-                    controller: type + 'ModalCtrl',
-                    scope: $scope,
-                    size: 'lg'
-                });
             };
+
+            // when a res is added, inject it to list view model
+            $rootScope.$on('report:add' + capitalizeType, function(e, data) {
+                _initFetchData();
+                return;
+                $scope[type + 'List'].push(data);
+                // Todo: 滚动到最下面
+                $timeout(function() {
+                    $(document).scrollTop(100000);
+                });
+            });
+            $rootScope.$on('report:edit' + capitalizeType, function(e, data) {
+                _initFetchData();
+            });
 
             if (type === 'report') {
                 $scope.genMetricCardHtml = function(metric) {

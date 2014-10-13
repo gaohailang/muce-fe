@@ -34,8 +34,8 @@
                 <a ng-click="downloadJobResultView(job.id)" ng-switch-default>DOWNLOAD</a>
             </td>
 
-            <td ng-show="job.size">{{job.size|humanBytes}}</td>
-            <td ng-hide="job.size">UNKOWN</td>
+            <td ng-if="job.size">{{job.size|humanBytes}}</td>
+            <td ng-if="!job.size">UNKOWN</td>
 
             <td ng-click="setHqlEditor(job.hql)">{{job.hql}}</td>
         </tr>

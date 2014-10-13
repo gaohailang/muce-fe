@@ -29,7 +29,9 @@
             <td>{{metric.modifyTime|date:'yyyy-MM-dd'}}</td>
             <td>{{metric.owner}}</td>
             <td>{{metric.comment}}</td>
-            <td><div enable-flag-switch></div></td>
+            <td><div enable-flag-switch
+                    switch-callback="toggleResStatus"
+                    is-enable="{{metric.enable?1:''}}" type="metric"></div></td>
             <td>
                 <a ng-click="editMetric(metric)">Edit</a>
                 <a ng-click="delMetric(metric)">Delete</a>
