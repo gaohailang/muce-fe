@@ -34,6 +34,8 @@ textarea {
 
 .navbar .navbar-inner {
     min-height: 40px;
+    background-color: #438eb9;
+    background-image: none;
 
     .brand {
         line-height: 40px;
@@ -373,6 +375,16 @@ textarea {
     }
 }
 
+.mc-mgr {
+    margin-top: 20px;
+
+    .report-op-bar {
+        select, input {
+            width: 120px;
+            margin-bottom: 0;
+        }
+    }
+}
 
 /* tool - UAMP */
 .mc-uamp {

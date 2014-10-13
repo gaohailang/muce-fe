@@ -1,4 +1,11 @@
 <div>
+    <!-- Search inline ~~ -->
+    <p class="report-op-bar">
+        <span>过滤条件：</span>
+        <select ng-model="filterField">
+            <option ng-repeat="f in filterOpts" value="{{f}}">{{f}}</option>
+        </select> <b>-</b> <input type="text" ng-model="filterText">
+    </p>
     <table class="table table-bordered table-striped">
         <tr>
             <th>ID</th>
@@ -14,7 +21,7 @@
             <th>isEnable</th>
             <th>Operate</th>
         </tr>
-        <tr ng-repeat="report in reportList">
+        <tr ng-repeat="report in reportList|filter:filterObj">
             <td>{{report.id}}</td>
             <td>{{report.name}}</td>
             <td>
@@ -43,7 +50,7 @@
             <td>{{report.comment}}</td>
             <td>
                 <div enable-flag-switch
-                    switch-callback="toggleResStatus"
+                    switch-callback="toggleResStatus" data="report"
                     is-enable="{{report.enable?1:''}}" type="report"></div>
             </td>
             <td>
