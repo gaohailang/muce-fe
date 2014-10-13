@@ -3,6 +3,7 @@ define([], function() {
     function managementBaseCtrl($scope, apiHelper) {
         $scope.toggleResStatus = function() {
             console.log(arguments);
+            // if error, change status?! - broken because of one-way pass value~~
         };
     }
 
@@ -39,6 +40,15 @@ define([], function() {
                     size: 'lg'
                 });
             };
+
+            if (type === 'report') {
+                $scope.genMetricCardHtml = function(metric) {
+                    var rowsHtml = _.map(['name', 'conditions', 'target'], function(t) {
+                        return '<tr><td>' + t + '</td><td>' + metric[t] + '</td></tr>';
+                    }).join('');
+                    return '<table>##</table>'.replace('##', rowsHtml);
+                };
+            }
         }]
     });
 

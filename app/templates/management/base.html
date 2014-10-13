@@ -37,8 +37,19 @@
         </div>
     </div>
     <div class="span10">
+        <!-- <div class="ace-settings-container">
+            <div class="btn btn-app btn-mini btn-warning ace-settings-btn" ng-class="{'open': $root.isOpenSetting}">
+                <i class="icon-cog bigger-150"
+                    ng-click="$root.isOpenSetting = !$root.isOpenSetting"></i>
+            </div>
+
+            <div class="ace-settings-box" ng-class="{'open': $root.isOpenSetting}">
+                <div muce-include="templates/management/setting-panel.html"></div>
+            </div>
+        </div> -->
         <div ui-view="pannel"></div>
     </div>
+    <!-- Add related snippet -->
 </div>
 
 <div muce-include="templates/report/snippet.html"></div>

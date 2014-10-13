@@ -28,7 +28,7 @@
                 <span ng-repeat="m in report.metrics">
                     {{m.name}}
                     <i class="icon-info-sign"
-                        popover-html-unsafe="m.target+<i>ss</i>"
+                        popover-html-unsafe="{{genMetricCardHtml(m)}}"
                         popover-trigger="mouseenter"
                         popover-animation="true"></i>
                     <br/>
