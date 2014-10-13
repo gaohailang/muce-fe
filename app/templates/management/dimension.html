@@ -24,7 +24,7 @@
         <td>{{dimension.owner}}</td>
         <td>{{dimension.comment}}</td>
         <td><div enable-flag-switch
-            switch-callback="toggleResStatus"
+            switch-callback="toggleResStatus" data="dimension"
             is-enable="{{dimension.enable?1:''}}" type="dimension"></div></td>
         <td>
             <a ng-click="editDimension(dimension)">Edit</a>

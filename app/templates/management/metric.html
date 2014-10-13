@@ -30,7 +30,7 @@
             <td>{{metric.owner}}</td>
             <td>{{metric.comment}}</td>
             <td><div enable-flag-switch
-                    switch-callback="toggleResStatus"
+                    switch-callback="toggleResStatus" data="metric"
                     is-enable="{{metric.enable?1:''}}" type="metric"></div></td>
             <td>
                 <a ng-click="editMetric(metric)">Edit</a>

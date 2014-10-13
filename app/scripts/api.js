@@ -14,10 +14,15 @@ define([], function() {
         // Report
         apiHelper.config({
             'getReport': 'GET /report/:id',
-            'getReportDetail': 'GET /meta/report/:id',
+            'getReportDetail': 'GET /meta/report/:id'
+        });
+
+        // Management
+        apiHelper.config({
             'getDetailMetricsList': 'GET /meta/viewMetrics',
             'getDetailDimensionsList': 'GET /meta/viewDimensions',
-            'getDetailReportsList': 'GET /meta/viewReports'
+            'getDetailReportsList': 'GET /meta/viewReports',
+            'updateEnable': 'PUT /meta/updateEnable'
         });
 
         // Muce Query

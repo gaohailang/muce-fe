@@ -1,9 +1,17 @@
 define([], function() {
 
     function managementBaseCtrl($scope, apiHelper) {
-        $scope.toggleResStatus = function() {
-            console.log(arguments);
-            // if error, change status?! - broken because of one-way pass value~~
+        $scope.toggleResStatus = function(enable, type, data) {
+            apiHelper('updateEnable', {
+                params: {
+                    id: data.id,
+                    name: data.name,
+                    type: type,
+                    enable: enable
+                }
+            }).then(function() {}, function() {
+                // error~ refresh?! or reset switch
+            });
         };
     }
 
