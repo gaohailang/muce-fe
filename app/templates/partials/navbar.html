@@ -26,11 +26,15 @@
                     <a href="https://docs.google.com/a/wandoujia.com/document/d/1yG3Dx-Cyvyu91QBiVz36RSs_IOoj1a9-Q4Flv-cZUrM/edit" target="_blank">Help</a>
                 </li>
 
-                <li>
-                    <a data-toggle="dropdown" href="#" class="dropdown-toggle">
-                        {{userInfo.username}}
+                <li class="dropdown">
+                    <a class="dropdown-toggle">
+                        <img ng-src="{{userInfo.img||'http://img.wdjimg.com/who/avatar2.png'}}" width="26">
+                        {{userInfo.mail.split('@')[0]}}
                         <i class="icon-caret-down"></i>
                     </a>
+                    <ul class="dropdown-menu">
+                      <li><a ui-sref="#">LogOut</a></li>
+                    </ul>
                 </li>
             </ul>
 
