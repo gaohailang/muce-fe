@@ -133,8 +133,9 @@ define(function() {
             if (field.id === 'date') {
                 return 'date';
             }
+            // check ratio/percent - green/red etc
             if (_.isNumber(field.id)) {
-                if (data[field.id] === '0.00') {
+                if (!data[field.id]) {
                     return 'empty';
                 } else {
                     return 'metric';
