@@ -11,7 +11,7 @@
 
 <script type="text/ng-template" id="report/_validateDimension.html">
     <input type="text" name="validate-dimension" ng-model="_validateDimension" style="display: none"
-        multi-choose-checker-error-message="Dimensions都可以选择，一次只能选不大于3个"
+        multi-choose-checker-error-message="Dimensions 数量应该 <= 3"
         validator="multiChooseChecker" key="dimensionList" gt="0" lt="4">
 </script>
 
@@ -37,8 +37,9 @@
                 ng-options="opt.id as opt.name for opt in metricList"></select>
             <br>
             <select validator="required" name="operator" style="width: 50px"
-                id="operator" ng-model="formlyData.operator" required
-                ng-options="$index as opt for opt in metricOperators"></select>
+                id="operator" ng-model="formlyData.operator" required>
+                <option ng-repeat="i in metricOperators track by $index" value="{{$index}}">{{i}}</option>
+            </select>
             <br>
             <select validator="required" name="metric_id2"
                 id="metric_id2" ng-model="formlyData.metricId2" required

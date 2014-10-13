@@ -7,6 +7,7 @@ define(function() {
                 return {
                     'responseError': function(response) {
                         if (response.status === 403) {
+                            console.log('1 sso');
                             window.location.href = SSO_LOCATION + '?redirect=' + window.location.href;
                             return;
                         }
@@ -25,6 +26,7 @@ define(function() {
                 if (data.code == 200) {
                     $rootScope.userInfo = data.result;
                 } else {
+                    console.log('2 sso');
                     window.location.href = SSO_LOCATION + '?redirect=' + window.location.href;
                 }
             });

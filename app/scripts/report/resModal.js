@@ -89,14 +89,13 @@ define(function() {
             }, {
                 controlHtml: '<div multi-chooser choices-list="dimensionList"></div>',
                 label: 'Dimension'
-            },
-            /*{
+            }, {
                 controlTpl: 'report/_validateDimension.html',
                 label: '',
                 wrapAttr: {
                     style: 'margin-top: -20px'
                 }
-            },*/
+            },
             dataDict.commentField
         ],
 
@@ -330,6 +329,7 @@ define(function() {
                 apiHelper('getGroupList').then(function(data) {
                     // $scope.formlyData.group = data[0];
                     $scope.formFields[0].options = data;
+                    $scope.formlyData.day = true;
                     $scope.formlyData.group = _.find(data, function(i) {
                         return i.id === $scope.$root.state.group.id;
                     });

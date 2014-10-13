@@ -9,7 +9,7 @@ define([], function() {
     };
 
     function UAMPCtrl($scope, $rootScope, apiHelper, $filter, $timeout) {
-
+        $rootScope.appTitle = 'UA Metric Platform';
         // reportList 和 state.report, state.period, state.dimension, state.chartMetri, state.dateTime
         $scope.state = {
             isSelectMetricMode: false,
