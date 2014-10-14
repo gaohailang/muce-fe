@@ -12,7 +12,8 @@ define(function() {
             apiHelper('getJobList', {
                 params: {
                     user: $scope.target.id
-                }
+                },
+                busy: 'global'
             }).then(function(data) {
                 $scope.hasQueryJobList = true;
                 $scope.jobList = data ? data.reverse() : [];

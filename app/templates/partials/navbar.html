@@ -2,11 +2,37 @@
     <div class="navbar-inner">
         <div class="container-fluid">
 
-            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
+            <!-- <li class="dropdown">
+                <button class="btn btn-navbar" class="dropdown-toggle">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+                <ul class="nav dropdown-menu">
+                    <li ng-class="{ active: $state.is('report.detail') }">
+                        <a class="muce-nav-tab" ui-sref="report">
+                            Report
+                        </a>
+                    </li>
+
+                    <li ng-class="{ active: $state.includes('report.management') }">
+                        <a class="muce-nav-tab" href="/#/management">
+                            Management
+                        </a>
+                    </li>
+
+                    <li ui-sref-active="active">
+                        <a class="muce-nav-tab" ui-sref="mq.history">
+                            MuceQuery
+                        </a>
+                    </li>
+
+                    <li ui-sref-active="active">
+                        <a class="muce-nav-tab" ui-sref="tool-uamp">KeyMetrics</a>
+                    </li>
+                </ul>
+            </li> -->
 
             <a class="brand" ui-sref="report.detail">
                 Muce<b>Beta</b>

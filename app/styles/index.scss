@@ -23,15 +23,11 @@ label > input[type=checkbox] {
     cursor: pointer;
     &:hover {
         cursor: pointer;
-        color: red;
+        color: #87b87f;
         transition: all .5s ease;
     }
 }
-double-bounce-spinner {
-    position: fixed;
-    bottom: -85px;
-    left: 55%;
-}
+
 
 textarea {
     transition: all linear .2s;
@@ -77,6 +73,15 @@ textarea {
     .select2-container .select2-choice abbr,
     .select2-container .select2-choice .select2-arrow b {
         background-image: none !important;
+    }
+}
+
+.form-horizontal {
+    /* multi-chooser */
+    .search-select-wrapper {
+        width: 220px;
+        border: 1px solid #ccc;
+        padding: 10px;
     }
 }
 
@@ -232,6 +237,12 @@ textarea {
             i {
                 padding-left: 10px;
             }
+        }
+
+        double-bounce-spinner {
+            position: fixed;
+            bottom: -85px;
+            left: 55%;
         }
     }
 }
@@ -555,6 +566,13 @@ textarea {
     .checkbox-wrapper {
         max-height: 300px;
         overflow: auto;
+        min-height: 100px;
+        position: relative;
+        .loading-indicator {
+            position: absolute;
+            top: 40px;
+            left: 40px;
+        }
     }
     .selected-wrapper {
         font-size: 14px;

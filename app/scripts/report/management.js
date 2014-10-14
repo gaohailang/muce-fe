@@ -6,9 +6,8 @@ define([], function() {
     function managementBaseCtrl($scope, apiHelper) {
         $scope.toggleResStatus = function(enable, type, data) {
             apiHelper('updateEnable', {
-                params: {
+                data: {
                     id: data.id,
-                    name: data.name,
                     type: type,
                     enable: enable
                 }
