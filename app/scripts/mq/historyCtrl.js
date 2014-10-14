@@ -1,17 +1,21 @@
 define(function() {
     function mqHistoryCtrl($scope, $rootScope, apiHelper) {
         // 支持 选项： order, querys_showed, more_querys
-        function fetchHistory() {
+        function fetchHistory(type) {
             apiHelper('getJobList', {
-                busy: 'global'
+                busy: type
             }).then(function(data) {
                 $scope.jobList = data ? data.reverse() : [];
             });
         }
 
-        fetchHistory();
-        $rootScope.$on('mq:fetchHistory', function(e) {
-            fetchHistory();
+        fetchHistory('global');
+        $rootScope.$on('mq:fetchHistory', function(e, opt) {
+            if (opt && opt.channel === 'auto') {
+                fetchHistory('hide');
+            } else {
+                fetchHistory('global');
+            }
         });
     }
 

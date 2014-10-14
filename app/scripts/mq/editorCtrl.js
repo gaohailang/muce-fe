@@ -4,6 +4,23 @@ define(['mq/muce-hint'], function() {
 
 
         var runTimer, runStatusTimer;
+
+        function updateStatus(data) {
+            $rootScope.$emit('mq:fetchHistory', {
+                channel: 'auto'
+            });
+            apiHelper('getJob', data.id).then(function(job) {
+                $scope.currentJob = job;
+                if ((job.status === 'COMPLETED') || (job.status === 'FAILED')) {
+                    cancelCurrentJob();
+                    // NOTICE BY TOGGLE document.title
+                }
+            }, function() {
+                cancelCurrentJob();
+                // same with
+            });
+        }
+
         $scope.runQuery = function() {
             var curTime = 0;
 
@@ -15,24 +32,14 @@ define(['mq/muce-hint'], function() {
                 if (!$state.is('mq.history')) {
                     $state.go('mq.history');
                 }
-                $rootScope.$emit('mq:fetchHistory');
                 runTimer = $interval(function() {
                     $scope.runTimeText = getFormatedTimeDelta(curTime);
                     curTime += 7;
                 }, 70);
                 runStatusTimer = $interval(function() {
-                    $rootScope.$emit('mq:fetchHistory');
-                    apiHelper('getJob', data.id).then(function(job) {
-                        $scope.currentJob = job;
-                        if ((job.status === 'COMPLETED') || (job.status === 'FAILED')) {
-                            cancelCurrentJob();
-                            // NOTICE BY TOGGLE document.title
-                        }
-                    }, function() {
-                        cancelCurrentJob();
-                        // same with
-                    });
+                    updateStatus(data);
                 }, 3000);
+                updateStatus(data);
             }, function() {
                 // error handler
                 // alert-error(error.reason)

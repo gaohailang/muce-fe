@@ -64,7 +64,7 @@
                 <button class="btn"
                     ng-show="state.reportDetail.dimensions.length"
                     ng-class="{'active': state.dimenAdv.filters}">
-                    <span ng-if="!state.dimenAdv.filters" ng-click="openAdvancedPanel()">Advanced</span>
+                    <span ng-if="!state.dimenAdv.filters || (state.dimenAdv.filters.length == 0)" ng-click="openAdvancedPanel()">Advanced</span>
                     <span ng-if="state.dimenAdv.filters" ng-click="openAdvancedPanel()">Advanced Filter ON
                             <i class="icon-trash" ng-click="state.dimenAdv.removeFilters()"></i>
                     </span>

@@ -394,9 +394,7 @@ textarea {
     }
 
     .mq-job-history {
-        tr > td:last-of-type {
-            cursor: pointer;
-        }
+
     }
 }
 
@@ -618,6 +616,9 @@ textarea {
 }
 .i-nowrap-cell {
     white-space: nowrap;
+}
+.i-cursor-handle {
+    cursor: pointer;
 }
 
 /* component archive */

@@ -4,40 +4,35 @@
             <th>Job Id</th>
             <td>Submit Time</td>
             <th>Status</th>
-            <th>View</th>
-            <th>Download</th>
             <th>Size</th>
             <th>Hql&nbsp;&nbsp;
                 <i class="icon-question-sign" tooltip-placement="right"
                     tooltip="Tip: 点击特定的 HQL，快速复制到 SQL 编辑器中"></i></th>
+            <th>Operate</th>
         </tr>
     </thead>
     <tbody>
         <tr ng-repeat="job in jobList track by $index"
             ng-class="{'error': job.status == 'FAILED',
-                       'info': job.status == 'PENDING',
-                       'info': job.status == 'RUNNING'}">
+                       'info': (job.status == 'PENDING') || (job.status == 'RUNNING')}">
             <td>{{job.id}}</td>
             <td>{{job.sTime|date: 'yyyy/MM/dd HH:mm:ss'}}</td>
             <td>{{job.status}}</td>
 
-            <td ng-switch on="job.status">
-                <span ng-switch-when="PENDING">pending... </span>
-                <span ng-switch-when="RUNNING">running... </span>
-                <a ng-href="{{job.reason}}" target="_blank" ng-switch-when="FAILED">VIEW</a>
-                <a ng-click="openJobResultView(job)" ng-switch-default>VIEW</a>
-            </td>
-
-            <td ng-switch on="job.status">
-                <span ng-switch-when="PENDING">pending... </span>
-                <span ng-switch-when="RUNNING">running... </span>
-                <a ng-click="downloadJobResultView(job.id)" ng-switch-default>DOWNLOAD</a>
-            </td>
-
             <td ng-if="job.size">{{job.size|humanBytes}}</td>
             <td ng-if="!job.size">UNKOWN</td>
 
-            <td ng-click="setHqlEditor(job.hql)">{{job.hql}}</td>
+            <td class="i-cursor-handle" ng-click="setHqlEditor(job.hql)">{{job.hql}}</td>
+
+            <!-- 操作 -->
+            <td ng-switch on="job.status">
+                <a ng-switch-when="PENDING" ng-click="killJob(job.id)">Kill</a>
+                <a ng-switch-when="RUNNING" ng-click="killJob(job.id)">Kill</span>
+                <a ng-href="{{job.reason}}" target="_blank" ng-switch-when="FAILED">VIEW</a>
+                <a ng-click="openJobResultView(job)" ng-switch-default>VIEW</a>
+                <a ng-click="downloadJobResultView(job.id)" ng-switch-default>DOWNLOAD</a>
+            </td>
+
         </tr>
         <tr ng-if="!jobList.length && hasQueryJobList">
             <td> 暂无结果 </td>
