@@ -36,7 +36,7 @@ define([], function() {
         apiHelper('getUAMPReportList').then(function(data) {
             $scope.reportList = data;
             // first or from url
-            $scope.selectReport(1);
+            $scope.selectReport(data[0].id);
         });
 
         // 左面切换 report
@@ -55,9 +55,11 @@ define([], function() {
                     };
                 });
                 $timeout(function() {
-                    setDimensionSelectVals();
                     $scope.fetchReportData();
-                }, 100);
+                }, 10);
+                $timeout(function() {
+                    setDimensionSelectVals();
+                }, 500);
             });
         };
 
@@ -114,7 +116,7 @@ define([], function() {
         $scope.fetchChartDataRender = function() {
             var idListSelected = _.pluck(_.filter($scope.flatMetricsData, function(i) {
                 return i.selected;
-            }), 'metricid');
+            }), 'id');
             if (!idListSelected.length) return;
             apiHelper('getUAMPChartData', {
                 params: {
@@ -131,13 +133,13 @@ define([], function() {
                 delete data.dateTimeList;
                 var _seriesData = _.map(_.values(data), function(i) {
                     i.pointInterval = _state.timespan * 60000;
-                    i.pointStart = dateRangerHelper.getStartTime();
+                    i.pointStart = dateRangerHelper.getStartTime() + _state.timespan * 60000;
                     return i;
                 });
                 $scope.chartConfig = {
                     options: {
                         chart: {
-                            type: 'spline', // spline
+                            type: 'spline',
                             zoomType: 'x'
                         }
                     },
@@ -205,6 +207,7 @@ define([], function() {
                 // http://stackoverflow.com/questions/23816005/anchor-tag-download-attribute-not-working-bug-in-chrome-35-0-1916-114
                 return URL.createObjectURL(new Blob([csvContent], {
                     type: 'text/csv'
+                    // ty:'application\/octet-stream'
                 }));
             }
 
@@ -324,16 +327,7 @@ define([], function() {
             return ret;
         };
 
-        // Todo
-        $scope.checkCollapsable = function() {
-            try {
-                return !_.isUndefined($scope.reportData.tableData[0].haschild);
-            } catch (e) {}
-            return false;
-        };
-
         // inner function
-
         function callReportDataApi(id, metricid) {
             // 依赖于_state.report 和 日期，dimension_选择情况 - check 下
             var _d = getDimensionSelectVals();
@@ -407,11 +401,7 @@ define([], function() {
 
         function getPrevMonday() {
             var x = new Date();
-            if (x.getDay() != 0) {
-                x.setDate(x.getDate() - 7 - 6);
-            } else {
-                x.setDate(x.getDate() - x.getDay() - 6);
-            }
+            x.setDate(x.getDate() + 1 - x.getDay());
             return x;
         }
 

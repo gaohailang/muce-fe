@@ -17,7 +17,7 @@
     <i class="icon-double-angle-left collapse-sidebar-trigger"></i>
     <div class="sidebar">
         <h3>
-            <i class="icon-bar-chart"></i>UA 指标
+            <i class="icon-bar-chart"></i>Key Metrics
         </h3>
         <ul class="nav nav-list">
             <li ng-repeat="report in reportList"
@@ -73,10 +73,10 @@
                 <td ng-if="state.isSelectMetricMode">选择</td>
                 <td ng-repeat="th in reportData.tableTitle track by $index">
                     {{th.disp_name}}
-                    <!-- <i ng-show="checkCollapsable()" ng-click="toggleRowSort($index)" ng-class="{
+                    <i ng-show="state.report.order" ng-click="toggleRowSort($index)" ng-class="{
                         'icon-sort': $index !== sortType,
                         'icon-arrow-up': $index == sortType && !sortReverse,
-                        'icon-arrow-down': $index == sortType && sortReverse}"></i> -->
+                        'icon-arrow-down': $index == sortType && sortReverse}"></i>
                 </td>
             </tr>
             <tr ng-repeat="metric in flatMetricsData" ng-show="inferFromParent(metric)">
