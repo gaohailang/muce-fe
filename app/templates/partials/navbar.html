@@ -2,38 +2,6 @@
     <div class="navbar-inner">
         <div class="container-fluid">
 
-            <!-- <li class="dropdown">
-                <button class="btn btn-navbar" class="dropdown-toggle">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-
-                <ul class="nav dropdown-menu">
-                    <li ng-class="{ active: $state.is('report.detail') }">
-                        <a class="muce-nav-tab" ui-sref="report">
-                            Report
-                        </a>
-                    </li>
-
-                    <li ng-class="{ active: $state.includes('report.management') }">
-                        <a class="muce-nav-tab" href="/#/management">
-                            Management
-                        </a>
-                    </li>
-
-                    <li ui-sref-active="active">
-                        <a class="muce-nav-tab" ui-sref="mq.history">
-                            MuceQuery
-                        </a>
-                    </li>
-
-                    <li ui-sref-active="active">
-                        <a class="muce-nav-tab" ui-sref="tool-uamp">KeyMetrics</a>
-                    </li>
-                </ul>
-            </li> -->
-
             <a class="brand" ui-sref="report.detail">
                 Muce<b>Beta</b>
             </a>
@@ -42,13 +10,8 @@
                 <li>
                     <a class="i-text-warning-nav" >CONFIDENTIAL!</a>
                 </li>
-
                 <li>
-                    <a class="muce-nav-tab" ui-sref-active="selected" ui-sref="feedback">
-                        Feedback
-                    </a>
-                </li>
-                <li>
+                    <!-- Todo: replace muce3 help manual -->
                     <a href="https://docs.google.com/a/wandoujia.com/document/d/1yG3Dx-Cyvyu91QBiVz36RSs_IOoj1a9-Q4Flv-cZUrM/edit" target="_blank">Help</a>
                 </li>
 
@@ -58,9 +21,9 @@
                         {{userInfo.mail.split('@')[0]}}
                         <i class="icon-caret-down"></i>
                     </a>
-                    <ul class="dropdown-menu">
+                    <!-- <ul class="dropdown-menu">
                       <li><a ui-sref="#">LogOut</a></li>
-                    </ul>
+                    </ul> -->
                 </li>
             </ul>
 

@@ -26,11 +26,11 @@
 
             <!-- 操作 -->
             <td ng-switch on="job.status">
-                <a ng-switch-when="PENDING" ng-click="killJob(job.id)">Kill</a>
-                <a ng-switch-when="RUNNING" ng-click="killJob(job.id)">Kill</span>
+                <!-- <a ng-switch-when="PENDING" ng-click="killJob(job.id)">Kill</a>
+                <a ng-switch-when="RUNNING" ng-click="killJob(job.id)">Kill</span> -->
                 <a ng-href="{{job.reason}}" target="_blank" ng-switch-when="FAILED">VIEW</a>
-                <a ng-click="openJobResultView(job)" ng-switch-default>VIEW</a>
-                <a ng-click="downloadJobResultView(job.id)" ng-switch-default>DOWNLOAD</a>
+                <a ng-click="openJobResultView(job)" ng-switch-when="COMPLETED">VIEW</a>
+                <a ng-click="downloadJobResultView(job.id)" ng-switch-when="COMPLETED">DOWNLOAD</a>
             </td>
 
         </tr>

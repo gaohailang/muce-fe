@@ -102,15 +102,6 @@ define(function() {
                 wrapAttr: {
                     style: 'margin-top: -20px'
                 }
-            }, {
-                label: '行列转置',
-                controlTpl: 'report/modal/transform-relation.html'
-            }, {
-                controlTpl: 'report/_validateChainOpt.html',
-                label: '',
-                wrapAttr: {
-                    style: 'margin-top: -20px'
-                }
             },
             dataDict.commentField
         ],

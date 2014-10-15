@@ -152,17 +152,6 @@ textarea {
         margin: 0;
     }
 
-    .report-detail-triiger {
-        cursor: pointer;
-        background: none;
-        border: none;
-        margin-top: 10px;
-
-        i {
-            font-size: 16px;
-        }
-    }
-
     .chart-wrapper {
         height: 450px;
         max-height: 450px;
@@ -643,6 +632,16 @@ textarea {
 }
 .i-cursor-handle {
     cursor: pointer;
+}
+.i-ng-bg-btn {
+    cursor: pointer;
+    background: none;
+    border: none;
+    margin-top: 10px;
+
+    i {
+        font-size: 16px;
+    }
 }
 
 /* component archive */

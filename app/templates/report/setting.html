@@ -23,12 +23,12 @@
                     date-filter='endDateFilter'
                     ng-model='state.endDate' disable-timepicker="true"></quick-datepicker>
 
-                <div class="btn-group">
+                <!-- <div class="btn-group">
                   <button type="button" class="btn btn-default"
                     ng-repeat="i in state.reportDetail.periods"
                     ng-class="{'active': (state.period == i)}"
                     ng-click="state.period = i">{{i|transPeriod}}</button>
-                </div>
+                </div> -->
 
                 <!-- <button class="btn"
                     ng-show="state.reportDetail.dimensions.length"
@@ -61,7 +61,7 @@
                         <option ng-value="ghostDimension"></option>
                     </select>
                 </label>
-                <button class="btn"
+                <button class="btn i-ng-bg-btn"
                     ng-show="state.reportDetail.dimensions.length"
                     ng-class="{'active': state.dimenAdv.filters}">
                     <span ng-if="!state.dimenAdv.filters || (state.dimenAdv.filters.length == 0)" ng-click="openAdvancedPanel()">Advanced</span>
@@ -75,7 +75,7 @@
         <div class="trigger-wrapper span2" ng-init="isShowDetailInfo = false">
             <button class="btn btn-primary refresh-report" ng-click="fetchReports()">apply</button>
 
-            <button class="report-detail-triiger"
+            <button class="i-ng-bg-btn report-detail-triiger"
                 ng-click="isShowDetailInfo = !isShowDetailInfo">
                 <i ng-class="{'icon-folder-close': !isShowDetailInfo, 'icon-folder-open': isShowDetailInfo}"
                     tooltip="{{isShowDetailInfo?'Hide Report Detail':'Show Report Detail'}}">&nbsp;Report Detail</i>
