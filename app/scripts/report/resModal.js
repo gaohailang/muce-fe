@@ -95,6 +95,15 @@ define(function() {
                 wrapAttr: {
                     style: 'margin-top: -20px'
                 }
+            }, {
+                label: '行列转置',
+                controlTpl: 'report/modal/transform-relation.html'
+            }, {
+                controlTpl: 'report/_validateChainOpt.html',
+                label: '',
+                wrapAttr: {
+                    style: 'margin-top: -20px'
+                }
             },
             dataDict.commentField
         ],
@@ -396,6 +405,18 @@ define(function() {
                 }
             });
 
+            // chain option related
+            $scope.chainTypes = [{
+                alias: 'YESTERDAY',
+                name: '昨天'
+            }, {
+                alias: 'LAST_WEEK',
+                name: '上周'
+            }, {
+                alias: 'LAST_MONTH',
+                name: '上月'
+            }];
+
             $scope.$watch('formlyData.group', function(val) {
                 if (!val) return;
                 apiHelper('getCategoryList', {
@@ -582,6 +603,22 @@ define(function() {
     resModalModule.config(function($validationProvider) {
         // 第一次如何 trigger(onSubmit)
         $validationProvider.setExpression({
+            chainOptConstraint: function(val, scope, element, attrs) {
+                var _formScope = element.scope().formlyData;
+                if (!_formScope.isChainSupport) return true;
+                console.log(arguments);
+                if (!_formScope.chainSetting) return false;
+                var _validate = false;
+                _validate = _.every(_formScope.chainSetting, function(val, key) {
+                    if (val.enable) {
+                        return val.SUBTRACT || val.DIVIDE;
+                    } else {
+                        return true;
+                    }
+                    // 整理数据给后端 at here
+                });
+                return _validate;
+            },
             periodChooser: function(value, scope, element, attrs) {
                 var form = element.scope().formlyData;
                 if (form.day || form.hour) {
@@ -602,6 +639,10 @@ define(function() {
             },
             multiChooseChecker: {
                 error: 'Please choose correct number items'
+            },
+            chainOptConstraint: {
+                error: 'Please choose correct comparsion type',
+                success: ''
             }
         });
     });

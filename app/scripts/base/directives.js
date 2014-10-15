@@ -141,5 +141,15 @@ define([
                     });
                 }
             }
+        })
+        .directive('chainOptBar', function() {
+            return {
+                replace: true,
+                templateUrl: 'templates/widgets/chain-opt-bar.html',
+                scope: {
+                    setting: '=',
+                    data: '='
+                }
+            }
         });
 });

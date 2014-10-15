@@ -4,8 +4,8 @@
 </script>
 
 <script type="text/ng-template" id="report/_validateMetric.html">
-    <input type="text" name="validate-metric" ng-model="_validateMetric" style="display: none"
-        multi-choose-checker-error-message="Metrics 数量应该 <= 10"
+    <input type="text" name="validate-metric" ng-model="_validateMetric"
+        style="display: none" multi-choose-checker-error-message="Metrics 数量应该 <= 10"
         validator="multiChooseChecker" key="metricList" gt="0" lt="11">
 </script>
 
@@ -38,7 +38,8 @@
             <br>
             <select validator="required" name="operator" style="width: 50px"
                 id="operator" ng-model="formlyData.operator" required>
-                <option ng-repeat="i in metricOperators track by $index" value="{{$index}}">{{i}}</option>
+                <option ng-repeat="i in metricOperators track by $index"
+                    value="{{$index}}">{{i}}</option>
             </select>
             <br>
             <select validator="required" name="metric_id2"
@@ -166,4 +167,19 @@
         <button class="btn btn-primary" ng-click="state.dimenAdv.saveFilters()">Save Changes</button>
     </div>
 </script>
+
+<script type="text/ng-template" id="report/modal/transform-relation.html">
+    <input type="checkbox" ng-model="formlyData.isChainSupport" >
+    <div ng-if="formlyData.isChainSupport" class="chain-opt-wrapper">
+        <!-- setting: [{name: 'YESTERDAY', alias: '昨天'}, // 上周,上月] -->
+        <p chain-opt-bar ng-repeat="type in chainTypes"
+            data="formlyData.chainSetting" setting="type"></p>
+    </div>
+</script>
+<script type="text/ng-template" id="report/_validateChainOpt.html">
+    <input type="text" name="validate-chain-opt" ng-model="_validateChainOpt"
+        style="display: none" validator="chainOptConstraint">
+</script>
+
+
 
