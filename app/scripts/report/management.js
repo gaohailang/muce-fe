@@ -88,6 +88,75 @@ define([], function() {
                     }).join('');
                     return '<table>##</table>'.replace('##', rowsHtml);
                 };
+
+                $scope.invokeSQLModal = function() {
+                    // get report.sql. invoke $modal
+                    var newScope = $scope.$new(true);
+                    // $scope.sql = _.clone(data);
+
+                    $modal.open({
+                        templateUrl: 'templates/management/partials/report-sql-modal.html',
+                        scope: newScope,
+                        size: 'lg'
+                    });
+                };
+
+                $scope.invokeRelationModal = function(report) {
+                    var newScope = $scope.$new();
+                    newScope.report = report;
+                    $modal.open({
+                        templateUrl: 'templates/management/report-relation.html',
+                        size: 'lg',
+                        scope: newScope,
+                        controller: function($scope, apiHelper) {
+                            $scope.state = {};
+                            apiHelper('getGroupList').then(function(data) {
+                                $scope.groupList = data;
+                                $scope.state.group = data[0];
+                            });
+
+                            $scope.$watch('state.group', function(val) {
+                                if (!val) return;
+                                apiHelper('getCategoryList', {
+                                    params: {
+                                        groupId: val.id
+                                    }
+                                }).then(function(data) {
+                                    $scope.categoryList = data;
+                                    $scope.state.category = data[0];
+                                });
+                            }, true);
+
+                            $scope.addRelation = function() {
+                                console.log($scope.state);
+                                // check group/category
+                                // submit data then refresh report -list
+                            };
+                        }
+                    });
+                };
+
+                $scope.delReportRelation = function(relStr, report) {
+                    // build confirm string
+                    // Todo: bugize - name with . in it~~
+                    // Todo: group/category with id,name
+                    var category = _.find(report.categories, function(i) {
+                        i.name === relStr.split('.')[1];
+                    });
+                    if (!window.confirm(Config.delAlertPrefix + 'report ' + report.name + ' relationship with category ' + category.name)) return;
+                    apiHelper('delCategoryReportRelation', {
+                        params: {
+                            categoryId: category.id,
+                            reportId: report.id
+                        }
+                    }).then(function(data) {
+                        // remove from report groupCategories
+                        report.groupCategories.splice(report.groupCategories.indexOf(relStr), 1);
+                    });
+                };
+
+                // search report by category/metric etc
+                // hide disable report etc
                 $scope.filterOpts = ['report', 'group', 'category', 'metric', 'dimension', 'owner'];
                 $scope.filterField = 'report';
                 $scope.filterObj = {

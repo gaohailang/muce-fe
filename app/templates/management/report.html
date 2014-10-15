@@ -35,7 +35,13 @@
                     {{period|transPeriod}}
                 </span>
             </td>
-            <td ng-bind-html="report.groupCategories|linizeArray"></td>
+            <td>
+                <span ng-repeat="i in report.groupCategories">
+                    {{i}}
+                    <i class="icon-trash" tooltip="remove relationship"
+                        ng-click="delReportRelation(i, report)"></i>
+                </span>
+            </td>
             <td class="i-nowrap-cell">
                 <!-- popover card to show more info  -->
                 <span ng-repeat="m in report.metrics">
@@ -62,6 +68,8 @@
             <td>
                 <a ng-click="editReport(report)">Edit</a>
                 <!-- <a ng-click="delReport(report)">Delete</a> -->
+                <a ng-click="invokeRelationModal(report)">Relation</a>
+                <a ng-click="invokeSQLModal(report)">View SQL</a>
             </td>
         </tr>
     </table>
