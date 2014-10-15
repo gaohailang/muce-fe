@@ -24,7 +24,7 @@
                 <h3>Add:</h3>
                 <ul class="nav nav-list sidebar-list">
                     <li ng-repeat="type in addTypes">
-                        <a ng-click="openModal(type)">Add {{type|capitalize}}</a>
+                        <a ng-click="openModal($event, type)">Add {{type|capitalize}}</a>
                     </li>
                 </ul>
             </li>

@@ -102,6 +102,15 @@ define(function() {
                 wrapAttr: {
                     style: 'margin-top: -20px'
                 }
+            }, {
+                label: '行列转置',
+                controlTpl: 'report/modal/transform-relation.html'
+            }, {
+                controlTpl: 'report/_validateChainOpt.html',
+                label: '',
+                wrapAttr: {
+                    style: 'margin-top: -20px'
+                }
             },
             dataDict.commentField
         ],
@@ -239,6 +248,29 @@ define(function() {
             if (!postData.dimensions || !postData.metrics) $notice.warning('请按照要求填写');
             /* end before send */
 
+            // process chain option
+            if (postData.isChainSupport) {
+                var _chainArr = [],
+                    _tmpOpt;
+                _.each(postData.chainSetting, function(val, key) {
+                    if (val.enable) {
+                        _.each(val, function(v, k) {
+                            if (k !== 'enable') {
+                                if (v) {
+                                    _tmpOpt = {};
+                                    _tmpOpt[key] = k;
+                                    _chainArr.push(_tmpOpt);
+                                }
+                            }
+                        });
+                    }
+                });
+                postData.transposition = _chainArr;
+                console.log(_chainArr);
+            }
+            delete postData.chainSetting;
+            delete postData.isChainSupport;
+
             if ($scope._data) {
                 apiHelper('editReport', {
                     data: postData
@@ -360,6 +392,20 @@ define(function() {
         report: function($scope, apiHelper) {
             if ($scope._data) {
                 $scope.formlyData = $scope._data;
+                $scope.formlyData.day = true;
+                $scope.formlyData.defaultChart = '0';
+                if ($scope._data.transposition && $scope._data.transposition.length) {
+                    $scope.formlyData.isChainSupport = true;
+                    // dateType, metricType
+                    $scope.formlyData.chainSetting = {};
+                    _.each($scope._data.transposition, function(i) {
+                        if (!$scope.formlyData.chainSetting[i.dateType]) {
+                            $scope.formlyData.chainSetting[i.dateType] = {};
+                        }
+                        $scope.formlyData.chainSetting[i.dateType].enable = true;
+                        $scope.formlyData.chainSetting[i.dateType][i.metricType] = true;
+                    });
+                }
                 // Todo~~
             } else {
                 $scope.formlyData.day = true;
@@ -406,14 +452,14 @@ define(function() {
 
             // chain option related
             $scope.chainTypes = [{
-                alias: 'YESTERDAY',
-                name: '昨天'
+                alias: '昨天',
+                name: 'YESTERDAY'
             }, {
-                alias: 'LAST_WEEK',
-                name: '上周'
+                alias: '上周',
+                name: 'LAST_WEEK'
             }, {
-                alias: 'LAST_MONTH',
-                name: '上月'
+                alias: '上月',
+                name: 'LAST_MONTH'
             }];
 
             $scope.$watch('formlyData.group', function(val) {
