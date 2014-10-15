@@ -5,6 +5,7 @@
 @import "component/animate";
 
 /* global setting */
+
 a {
     cursor: pointer;
     &.active {
@@ -27,7 +28,6 @@ label > input[type=checkbox] {
         transition: all .5s ease;
     }
 }
-
 
 textarea {
     transition: all linear .2s;
@@ -60,6 +60,13 @@ textarea {
     width: 320px;
     .select2-results {
         overflow-x: auto;
+    }
+}
+
+/* 同比环比~~ */
+.chain-opt-wrapper {
+    p > label {
+        display: inline;
     }
 }
 
@@ -472,6 +479,7 @@ textarea {
 
 
 /* tool - UAMP */
+
 .mc-uamp {
     .main-content {
         padding: 10px;
@@ -480,6 +488,10 @@ textarea {
     .sidebar {
         transition: all .2s cubic-bezier(0.25,.46,.45,.94);
         text-align: center;
+        &::before {
+            margin-left: 0;
+            background-color: #fff;
+        };
         h3{
             font-size: 18px;
             line-height: 24px;
@@ -535,9 +547,21 @@ textarea {
             right: 10px;
             top: -50px;
             z-index: 1000;
+            .input-prepend {
+                margin-bottom: 0;
+            }
         }
     }
-
+    table {
+        td {
+            a {
+                text-decoration: none;
+                i {
+                    margin-left: 5px;
+                }
+            }
+        }
+    }
 }
 
 

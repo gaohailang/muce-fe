@@ -2,14 +2,14 @@ define([], function() {
 
     var routeInfo = {
         'tool-uamp': {
-            url: '/tool/ua-metric-platform',
+            url: '/tool/key-metrics',
             templateUrl: 'templates/tool/ua-metric-platform.html',
             controller: 'UAMPCtrl'
         }
     };
 
     function UAMPCtrl($scope, $rootScope, apiHelper, $filter, $timeout) {
-        $rootScope.appTitle = 'UA Metric Platform';
+        $rootScope.appTitle = 'Key Metrics';
         // reportList 和 state.report, state.period, state.dimension, state.chartMetri, state.dateTime
         $scope.state = {
             isSelectMetricMode: false,
@@ -33,7 +33,9 @@ define([], function() {
             opens: 'left'
         });
 
-        apiHelper('getUAMPReportList').then(function(data) {
+        apiHelper('getUAMPReportList', {
+            busy: 'global'
+        }).then(function(data) {
             $scope.reportList = data;
             // first or from url
             $scope.selectReport(data[0].id);
@@ -41,6 +43,7 @@ define([], function() {
 
         // 左面切换 report
         $scope.selectReport = function(id) {
+            if (_state.report && (_state.report.id === id)) return;
             _state.isShowChart = false;
             _state.isSelectMetricMode = false;
             _state.hasFetchData = false;
@@ -72,7 +75,7 @@ define([], function() {
                 $scope.reportData = data;
                 $timeout(function() {
                     _state.hasFetchData = true;
-                }, 100);
+                }, 200);
             });
         };
 
@@ -226,6 +229,7 @@ define([], function() {
         // sort by name
         $scope.sortReverse = false;
         $scope.toggleRowSort = function(idx) {
+            if (!_state.report.order) return;
             // use native sort method, instead of angular's filter orderBy
             $scope.sortType = idx;
             $scope.sortReverse = !$scope.sortReverse;
@@ -234,8 +238,12 @@ define([], function() {
                 if (idx === 0) {
                     return item.name;
                 } else {
-                    // Todo - numberic converter
-                    return item.data[idx + 1];
+                    var _v = item.data[idx - 1];
+                    if (_.isNaN(+_v)) {
+                        return _v;
+                    } else {
+                        return +_v;
+                    }
                 }
             });
             if ($scope.sortReverse) {
@@ -400,9 +408,7 @@ define([], function() {
         }
 
         function getPrevMonday() {
-            var x = new Date();
-            x.setDate(x.getDate() + 1 - x.getDay());
-            return x;
+            return moment().subtract(new Date().getDay() - 1, 'days').toDate();
         }
 
         function getPrevMonth() {

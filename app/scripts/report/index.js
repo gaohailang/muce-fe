@@ -92,7 +92,8 @@ define([
     /* add modal */
     function addModalCtrl($scope, $modal) {
         $scope.addTypes = ['group', 'category', 'report', 'metric', 'dimension'];
-        $scope.openModal = function(type) {
+        $scope.openModal = function(e, type) {
+            e.preventDefault();
             if (type !== 'metric') {
                 $modal.open({
                     templateUrl: 'templates/report/modal.html',

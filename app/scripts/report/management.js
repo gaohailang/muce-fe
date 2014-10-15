@@ -4,6 +4,7 @@ define([], function() {
     }
 
     function managementBaseCtrl($scope, apiHelper) {
+        $scope.$root.appTitle = 'Management';
         $scope.toggleResStatus = function(enable, type, data) {
             apiHelper('updateEnable', {
                 data: {

@@ -7,12 +7,6 @@
 <script src="assets/js/date-time/moment.min.js"></script>
 <script src="assets/js/date-time/daterangepicker.js"></script>
 
-<style type="text/css">
-    body > .container-fluid {
-        padding: 0;
-    }
-</style>
-
 <div class="mc-uamp collapse-sidebar-container">
     <i class="icon-double-angle-left collapse-sidebar-trigger"></i>
     <div class="sidebar">
@@ -72,11 +66,12 @@
             <tr>
                 <td ng-if="state.isSelectMetricMode">选择</td>
                 <td ng-repeat="th in reportData.tableTitle track by $index">
-                    {{th.disp_name}}
-                    <i ng-show="state.report.order" ng-click="toggleRowSort($index)" ng-class="{
-                        'icon-sort': $index !== sortType,
-                        'icon-arrow-up': $index == sortType && !sortReverse,
-                        'icon-arrow-down': $index == sortType && sortReverse}"></i>
+                    <a ng-click="toggleRowSort($index)">
+                        {{th.disp_name}}<i ng-show="state.report.order" ng-class="{
+                            'icon-sort': $index !== sortType,
+                            'icon-arrow-up': $index == sortType && !sortReverse,
+                            'icon-arrow-down': $index == sortType && sortReverse}"></i>
+                    </a>
                 </td>
             </tr>
             <tr ng-repeat="metric in flatMetricsData" ng-show="inferFromParent(metric)">

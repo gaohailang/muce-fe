@@ -1,6 +1,7 @@
 define(function() {
     // @ngInject
     function reportBaseCtrl($scope, $modal, apiHelper, $state, $rootScope) {
+        $rootScope.appTitle = 'Report';
         $rootScope.state = {};
         var _state = $rootScope.state;
         console.log('reportBaseCtrl');

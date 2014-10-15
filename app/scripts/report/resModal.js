@@ -26,6 +26,7 @@ define(function() {
                 validator: 'required'
             }
         },
+        chartOptions: ['Line'],
 
         // modifyTime, createTime, owner fields for edit mode
         modifyTimeField: {
@@ -77,6 +78,12 @@ define(function() {
             }, {
                 controlTpl: 'report/add_report/period.html',
                 label: 'Report Period'
+            }, {
+                label: 'Default Chart',
+                key: 'defaultChart',
+                type: 'select',
+                options: dataDict.chartOptions,
+                optionStr: 'i for i in options.options'
             }, {
                 controlHtml: '<div multi-chooser choices-list="metricList"></div>',
                 label: 'Metric'
@@ -230,6 +237,7 @@ define(function() {
             _.each(['group', 'category', 'hour', 'day'], function(i) {
                 delete postData[i];
             });
+            postData.defaultChart = +postData.defaultChart;
             // 注：所有Dimensions都可以选择，一次只能选3个 ，Metrics 数量应该 <= 10
             if (postData.dimensions.length > 3) {
                 $notice.warning('Dimensions, 一次只能选3个');
@@ -244,7 +252,6 @@ define(function() {
                 apiHelper('editReport', {
                     data: postData
                 }).then(function(data) {
-                    // console.log();
                     $scope.$close();
                 });
             } else {
@@ -365,6 +372,7 @@ define(function() {
                 // Todo~~
             } else {
                 $scope.formlyData.day = true;
+                $scope.formlyData.defaultChart = '0';
             }
             apiHelper('getGroupList').then(function(data) {
                 $scope.formFields[0].options = data;
