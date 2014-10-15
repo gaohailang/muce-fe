@@ -28,6 +28,15 @@ define(function() {
             }
         };
 
+        $scope.killJob = function(id) {
+            apiHelper('delJob', id).then(function() {
+                // refresh ?!
+                $rootScope.$emit('mq:fetchHistory', {
+                    channel: 'auto'
+                });
+            });
+        };
+
         $scope.downloadJobResultView = function(id) {
             downloadFile(apiHelper.getUrl('getJobResult', id));
         };

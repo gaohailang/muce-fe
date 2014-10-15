@@ -11,7 +11,7 @@ define(['mq/muce-hint'], function() {
             });
             apiHelper('getJob', data.id).then(function(job) {
                 $scope.currentJob = job;
-                if ((job.status === 'COMPLETED') || (job.status === 'FAILED')) {
+                if (job.status === 'COMPLETED' || job.status === 'FAILED' || job.status === 'TO_KILL' || job.status === 'KILLED') {
                     cancelCurrentJob();
                     // NOTICE BY TOGGLE document.title
                 }
