@@ -22,6 +22,8 @@
     "angular-loading-bar": "~0.6.0",
     "multiple-select": "~1.1.0",
     "ngInfiniteScroll": "~1.1.2",
-    "angular-spinkit": "~0.3.2"
+    "angular-spinkit": "~0.3.2",
+    "zeroclipboard": "~2.1.6",
+    "ng-clip": "~0.2.4"
   }
 }

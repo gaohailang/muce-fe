@@ -90,15 +90,24 @@ define([], function() {
                     return '<table>##</table>'.replace('##', rowsHtml);
                 };
 
-                $scope.invokeSQLModal = function() {
+                $scope.invokeSQLModal = function(report) {
                     // get report.sql. invoke $modal
                     var newScope = $scope.$new(true);
-                    // $scope.sql = _.clone(data);
+                    newScope.report = report;
 
                     $modal.open({
                         templateUrl: 'templates/management/partials/report-sql-modal.html',
                         scope: newScope,
-                        size: 'lg'
+                        size: 'lg',
+                        controller: function($scope, $timeout) {
+                            $scope.infoStr = 'Click To Copy';
+                            $scope.copySqlCallback = function() {
+                                $scope.infoStr = 'Copied!'
+                                $timeout(function() {
+                                    $scope.infoStr = 'Click To Copy';
+                                }, 2000);
+                            };
+                        }
                     });
                 };
 
@@ -155,6 +164,7 @@ define([], function() {
                         report.groupCategories.splice(report.groupCategories.indexOf(relStr), 1);
                     });
                 };
+
 
                 // search report by category/metric etc
                 // hide disable report etc
