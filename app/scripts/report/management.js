@@ -83,6 +83,45 @@ define([], function() {
                         $scope.filterObj.enable = true;
                     }
                 }
+
+                // @ngInject
+                function sqlModalCtrl($scope, $timeout) {
+                    $scope.infoStr = 'Click To Copy';
+                    $scope.copySqlCallback = function() {
+                        $scope.infoStr = 'Copied!'
+                        $timeout(function() {
+                            $scope.infoStr = 'Click To Copy';
+                        }, 2000);
+                    };
+                }
+
+                // @ngInject
+                function relationModalCtrl($scope, apiHelper) {
+                    $scope.state = {};
+                    apiHelper('getGroupList').then(function(data) {
+                        $scope.groupList = data;
+                        $scope.state.group = data[0];
+                    });
+
+                    $scope.$watch('state.group', function(val) {
+                        if (!val) return;
+                        apiHelper('getCategoryList', {
+                            params: {
+                                groupId: val.id
+                            }
+                        }).then(function(data) {
+                            $scope.categoryList = data;
+                            $scope.state.category = data[0];
+                        });
+                    }, true);
+
+                    $scope.addRelation = function() {
+                        console.log($scope.state);
+                        // check group/category
+                        // submit data then refresh report -list
+                    };
+                }
+
                 $scope.genMetricCardHtml = function(metric) {
                     var rowsHtml = _.map(['name', 'conditions', 'target'], function(t) {
                         return '<tr><td>' + t + '</td><td>' + metric[t] + '</td></tr>';
@@ -99,15 +138,7 @@ define([], function() {
                         templateUrl: 'templates/management/partials/report-sql-modal.html',
                         scope: newScope,
                         size: 'lg',
-                        controller: function($scope, $timeout) {
-                            $scope.infoStr = 'Click To Copy';
-                            $scope.copySqlCallback = function() {
-                                $scope.infoStr = 'Copied!'
-                                $timeout(function() {
-                                    $scope.infoStr = 'Click To Copy';
-                                }, 2000);
-                            };
-                        }
+                        controller: sqlModalCtrl
                     });
                 };
 
@@ -118,31 +149,7 @@ define([], function() {
                         templateUrl: 'templates/management/report-relation.html',
                         size: 'lg',
                         scope: newScope,
-                        controller: function($scope, apiHelper) {
-                            $scope.state = {};
-                            apiHelper('getGroupList').then(function(data) {
-                                $scope.groupList = data;
-                                $scope.state.group = data[0];
-                            });
-
-                            $scope.$watch('state.group', function(val) {
-                                if (!val) return;
-                                apiHelper('getCategoryList', {
-                                    params: {
-                                        groupId: val.id
-                                    }
-                                }).then(function(data) {
-                                    $scope.categoryList = data;
-                                    $scope.state.category = data[0];
-                                });
-                            }, true);
-
-                            $scope.addRelation = function() {
-                                console.log($scope.state);
-                                // check group/category
-                                // submit data then refresh report -list
-                            };
-                        }
+                        controller: relationModalCtrl
                     });
                 };
 
