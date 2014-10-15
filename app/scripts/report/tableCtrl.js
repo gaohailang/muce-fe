@@ -5,13 +5,18 @@ define(function() {
         var _tableDataPg = 1;
         var _allTableData = [],
             _reportDetail,
+            _metricTypeMap = {},
             _pageSize = 50,
             _totalPg; // store all tableData
         $scope.tableRows = [];
         $rootScope.$on('report:renderReportData', function(event, opt) {
             // store full amount data inner
+            var _tmp;
             _reportDetail = opt[0];
             _allTableData = opt[1];
+            _.each(_reportDetail.metrics, function(i) {
+                _metricTypeMap[i.id] = i.type;
+            });
             _totalPg = Math.ceil(_allTableData.result.length / _pageSize);
             buildGridHeader(_reportDetail, _allTableData);
             buildGridData();
@@ -116,7 +121,7 @@ define(function() {
                 }).join('\n');
                 // http://stackoverflow.com/questions/23816005/anchor-tag-download-attribute-not-working-bug-in-chrome-35-0-1916-114
                 return URL.createObjectURL(new Blob([csvContent], {
-                    type: 'text/csv'
+                    type: 'text/plain'
                 }));
             }
 
@@ -144,6 +149,13 @@ define(function() {
                 if (!data[field.id]) {
                     return 'empty';
                 } else {
+                    // Todo -
+                    if (_metricTypeMap[field.id] === 2) {
+                        return 'percent';
+                    }
+                    /*if (_metricTypeMap[field.id] === 1) {
+                        return 'float';
+                    }*/
                     return 'metric';
                 }
             } else {

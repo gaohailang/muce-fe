@@ -26,6 +26,7 @@
                     <span bo-switch-when="empty">
                         <b class="w-text-warning">No Data</b>
                     </span>
+                    <span bo-switch-when="percent" bo-text="row[i.id]|percentage"></span>
                     <span bo-switch-when="metric" bo-text="row[i.id] | number"></span>
                     <span bo-switch-when="dimension" bo-text="row[i.id]"></span>
                 </td>

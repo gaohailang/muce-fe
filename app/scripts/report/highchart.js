@@ -159,7 +159,7 @@ define([
         var chartOptions = {
             chart: {
                 renderTo: 'highcharts_wrapper',
-                type: 'line',
+                type: 'spline',
                 zoomType: 'x',
                 marginRight: 50,
                 events: {
