@@ -1,4 +1,4 @@
-define([], function() {
+define(['base/helper'], function(helper) {
 
     var routeInfo = {
         'tool-uamp': {
@@ -132,13 +132,23 @@ define([], function() {
                 busy: 'global'
             }).then(function(data) {
                 // set chartConfig data option
-                var dateList = data.dateTimeList;
-                delete data.dateTimeList;
-                var _seriesData = _.map(_.values(data), function(i) {
-                    i.pointInterval = _state.timespan * 60000;
-                    i.pointStart = dateRangerHelper.getStartTime() + _state.timespan * 60000;
-                    return i;
+                var dateList = _.map(data.dateTimeList, function(i) {
+                    return helper.getUTCDateByDateAndPeriod(i);
                 });
+                delete data.dateTimeList;
+                var _seriesData;
+                if (_state.timespan === 43200) {
+                    _seriesData = _.map(_.values(data), function(i) {
+                        i.data = _.zip(dateList, i.data);
+                        return i;
+                    });
+                } else {
+                    _seriesData = _.map(_.values(data), function(i) {
+                        i.pointInterval = _state.timespan * 60000;
+                        i.pointStart = dateRangerHelper.getStartTime() + _state.timespan * 60000;
+                        return i;
+                    });
+                }
                 $scope.chartConfig = {
                     options: {
                         chart: {
@@ -257,6 +267,8 @@ define([], function() {
         // set datepicker jquery plugin
         $scope.$watch('state.timespan', function(timespan) {
             if (!timespan) return;
+            _state.isShowChart = false;
+            _state.isSelectMetricMode = false;
             var baseOpt = {
                 autoclose: true,
                 todayHighlight: true,
@@ -408,7 +420,7 @@ define([], function() {
         }
 
         function getPrevMonday() {
-            return moment().subtract(new Date().getDay() - 1, 'days').toDate();
+            return moment().subtract(new Date().getDay() + 6, 'days').toDate();
         }
 
         function getPrevMonth() {
