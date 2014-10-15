@@ -1,11 +1,14 @@
-<div>
+<div ng-intro-options="IntroOptions" ng-intro-method="showIntro">
     <!-- Search inline ~~ -->
     <p class="report-op-bar">
         <span>Filter Options</span>
-        <select ng-model="filterField">
+        <select ng-model="filterField" id="intro-management-search_type">
             <option ng-repeat="f in filterOpts" value="{{f}}">{{f}}</option>
         </select> <b>-</b> <input type="text" ng-model="filterText">
-        <label class="pull-right">
+
+        <a ng-click="showIntro()">Intro Me!</a>
+
+        <label class="pull-right" id="intro-management-show_disable_report">
             Show Disable Report
             <input name="switch-field-1" ng-model="showDisable"
                 class="ace ace-switch ace-switch-7" type="checkbox">
@@ -27,7 +30,7 @@
             <th>isEnable</th>
             <th>Operate</th>
         </tr>
-        <tr ng-repeat="report in reportList|filter:filterObj">
+        <tr ng-repeat="report in reportList|filter:filterObj track by $index" id="{{mgr-report-$index}}">
             <td>{{report.id}}</td>
             <td>{{report.name}}</td>
             <td>
@@ -35,7 +38,7 @@
                     {{period|transPeriod}}
                 </span>
             </td>
-            <td>
+            <td id="group-categories-{{$index}}">
                 <span ng-repeat="i in report.groupCategories">
                     {{i}}<br>
                     <!-- <i class="icon-trash" tooltip="remove relationship"

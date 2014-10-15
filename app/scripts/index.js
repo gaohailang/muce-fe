@@ -37,6 +37,7 @@ require([
         'toaster',
         'QuickList',
         'angular-spinkit',
+        'angular-intro',
 
         'muceApp.api',
         'muceApp.base',

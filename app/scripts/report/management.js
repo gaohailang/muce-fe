@@ -165,6 +165,18 @@ define([], function() {
                     });
                 };
 
+                $scope.IntroOptions = {
+                    steps: [{
+                        element: '#intro-management-search_type',
+                        intro: '切换不同类型，来搜索 Report，如 metric, category 等'
+                    }, {
+                        element: '#intro-management-show_disable_report',
+                        intro: '点击后查看被 Disable 掉的报表'
+                    }, {
+                        element: '#group-categories-0',
+                        intro: 'Tip: 一个报表可以从属于多个Categories 下，方便查看~'
+                    }]
+                };
 
                 // search report by category/metric etc
                 // hide disable report etc
