@@ -87,6 +87,73 @@ define([
 
         function addAnotation(event) {
             return;
+            $('.annotation-container').remove();
+            var annotationId; // Todo: fix annotation edit(not found?!)
+            if (event.point.marker) {
+                var symbol = event.point.marker.symbol;
+                var matchAry = symbol.match(/\?id=(\d+)/);
+                if (matchAry) {
+                    annotationId = matchAry[1];
+                }
+            }
+
+            var container = $('<div/>').addClass('annotation-container alert fade in')
+                .css({
+                    left: event.point.pageX,
+                    top: event.point.pageY
+                });
+            var heading = $('<h4/>').addClass('alert-heading')
+                .append(this.name);
+            var closeBtn = $('<button/>').addClass('close')
+                .attr('data-dismiss', 'alert')
+                .append('x');
+
+            var textarea = $('<textarea/>').addClass('textarea');
+            var saveBtn = $('<button/>').addClass('save btn')
+                .append('Save');
+            var deleteBtn = $('<a/>')
+                .addClass('delete')
+                .append('Delete');
+
+            if (annotationId) {
+                var annotationInfo = _.find(data.annotations, function(item) {
+                    return item.id == annotationId;
+                });
+                textarea.val(annotationInfo.comment);
+                deleteBtn.show();
+            } else {
+                deleteBtn.hide();
+                textarea.val('');
+            }
+
+            container.append(closeBtn)
+                .append(heading)
+                .append(textarea)
+                .append(deleteBtn)
+                .append(saveBtn);
+
+            $(document.body).append(container);
+
+            saveBtn.on('click', function() {
+                // Todo
+                var data = {
+                    metric: _.find(currentReport.metrics, function(item) {
+                        return item.name === this.name;
+                    }.bind(this)).id,
+                    x_axis: Highcharts.dateFormat('%Y%m%d%H', event.point.x),
+                    // period: MuceCom.getCurrentPeriod(),
+                    filters: undefined, // MuceCom.stringifyObj(currentData.table_filters)
+                    // user: helper.getNameFromCookie(),
+                    comment: $('.annotation-container .textarea').val(),
+                    type: 'put'
+                };
+                if (annotationId) {
+                    data.id = annotationId;
+                    data.type = 'post';
+                }
+                // apiHelper('addAnnotation', data).then(function() {$('.annotation-container').alert('close');})
+            }.bind(this));
+
         }
 
         var chartOptions = {
@@ -97,8 +164,9 @@ define([
                 marginRight: 50,
                 events: {
                     click: function(event) {
+                        return;
                         // 清理 annotation click popover
-                        // $('.annotation-container').alert('close');
+                        $('.annotation-container').alert('close');
                     }
                 }
             },
