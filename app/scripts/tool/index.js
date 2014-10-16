@@ -9,9 +9,20 @@ define(['base/helper'], function(helper) {
         'tool-realtime-dashboard': {
             url: '/tool/realtime-dashboard',
             templateUrl: 'templates/tool/realtime-dashboard.html',
-            itentifier: 'tool-realtime-dashboard'
+            itentifier: 'tool-realtime-dashboard',
+            controller: 'realtimeDashboardCtrl'
+        },
+        'tool-realtime-dashboard-mgr': {
+            url: '/tool/realtime-dashboard/admin',
+            templateUrl: 'templates/tool/realtime-dashboard-mgr.html',
+            itentifier: 'tool-realtime-dashboard',
+            controller: 'realtimeDashboardCtrl'
         }
     };
+
+    function realtimeDashboardCtrl($rootScope) {
+        $rootScope.appTitle = '[Beta] - RealTime Dashboard';
+    }
 
     function UAMPCtrl($scope, $rootScope, apiHelper, $filter, $timeout) {
         $rootScope.appTitle = 'Key Metrics';
@@ -506,6 +517,7 @@ define(['base/helper'], function(helper) {
             }
         })
         .controller('UAMPCtrl', UAMPCtrl)
+        .controller('realtimeDashboardCtrl', realtimeDashboardCtrl)
         .config(function($stateProvider) {
             _.each(routeInfo, function(opt, name) {
                 $stateProvider.state(name, opt);

@@ -5,6 +5,18 @@
 @import "component/animate";
 
 /* global setting */
+.tool-realtime-dashboard, .tool-realtime-dashboard-mgr {
+    .navbar .navbar-inner {
+        background-color: #000;
+    }
+    .container-wrapper {
+        margin-top: 40px;
+        padding: 0;
+    }
+    .scroll-key {
+        display: none;
+    }
+}
 
 a {
     cursor: pointer;
