@@ -40,9 +40,10 @@
             </td>
             <td id="group-categories-{{$index}}">
                 <span ng-repeat="i in report.groupCategories">
-                    {{i}}<br>
-                    <!-- <i class="icon-trash" tooltip="remove relationship"
-                        ng-click="delReportRelation(i, report)"></i> -->
+                    {{i}}
+                    <i class="icon-trash" tooltip="remove relationship"
+                        ng-click="delReportRelation(i, report)"></i>
+                    <br>
                 </span>
             </td>
             <td class="i-nowrap-cell">

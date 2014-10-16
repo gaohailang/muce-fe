@@ -117,6 +117,15 @@ define([], function() {
 
                     $scope.addRelation = function() {
                         console.log($scope.state);
+                        apiHelper('addCategoryReportRelation', {
+                            data: {
+                                reportId: $scope.report.id,
+                                categoryId: $scope.state.category.id
+                            }
+                        }).then(function() {
+                            _initFetchData();
+                            $scope.$close();
+                        });
                         // check group/category
                         // submit data then refresh report -list
                     };
@@ -158,7 +167,7 @@ define([], function() {
                     // Todo: bugize - name with . in it~~
                     // Todo: group/category with id,name
                     var category = _.find(report.categories, function(i) {
-                        i.name === relStr.split('.')[1];
+                        return i.name === relStr.split('.')[1];
                     });
                     if (!window.confirm(Config.delAlertPrefix + 'report ' + report.name + ' relationship with category ' + category.name)) return;
                     apiHelper('delCategoryReportRelation', {

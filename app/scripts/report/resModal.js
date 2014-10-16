@@ -194,7 +194,9 @@ define(function() {
                 apiHelper('addGroup', {
                     data: postData
                 }).then(function(data) {
-                    $scope.$root.state.groupList.push(data);
+                    try {
+                        $scope.$root.state.groupList.push(data);
+                    } catch (e) {}
                     $scope.$close();
                 });
             }
@@ -213,7 +215,9 @@ define(function() {
                 apiHelper('addCategory', {
                     data: postData
                 }).then(function(data) {
-                    $scope.$root.state.categoryList.push(data);
+                    try {
+                        $scope.$root.state.categoryList.push(data);
+                    } catch (e) {}
                     $scope.$close();
                 });
             }
@@ -283,11 +287,11 @@ define(function() {
                 }).then(function(data) {
                     // Todo 区分 add/edit 的后续处理
                     // Todo: 被添加的category 和 currentCategory 是一致的
-                    if ($scope.$root.state && $scope.$root.state.category) {
+                    try {
                         if ($scope.$root.state.category.id === postData.categoryId) {
                             $scope.$root.state.reportList.push(data);
                         }
-                    }
+                    } catch (e) {}
                     $scope.$close();
                 });
             }
@@ -389,7 +393,7 @@ define(function() {
                 }
             });
         },
-        report: function($scope, apiHelper) {
+        report: function($scope, apiHelper, $timeout) {
             if ($scope._data) {
                 $scope.formlyData = $scope._data;
                 $scope.formlyData.day = true;
@@ -411,43 +415,46 @@ define(function() {
                 $scope.formlyData.day = true;
                 $scope.formlyData.defaultChart = '0';
             }
-            apiHelper('getGroupList').then(function(data) {
-                $scope.formFields[0].options = data;
-                if (!$scope._data) {
-                    if ($scope.$root.state && $scope.$root.state.group) {
-                        $scope.formlyData.group = _.find(data, function(i) {
-                            return i.id === $scope.$root.state.group.id;
-                        });
-                    } else {
-                        $scope.formlyData.group = data[0];
+
+            $timeout(function() {
+                apiHelper('getGroupList').then(function(data) {
+                    $scope.formFields[0].options = data;
+                    if (!$scope._data) {
+                        if ($scope.$root.state && $scope.$root.state.group) {
+                            $scope.formlyData.group = _.find(data, function(i) {
+                                return i.id === $scope.$root.state.group.id;
+                            });
+                        } else {
+                            $scope.formlyData.group = data[0];
+                        }
                     }
-                }
-            });
+                });
 
-            apiHelper('getMetricList').then(function(data) {
-                $scope.metricList = data;
-                if ($scope._data) {
-                    _.each($scope._data.metrics, function(i) {
-                        _.each($scope.metricList, function(_i) {
-                            if (i.id === _i.id) {
-                                _i.selected = true;
-                            }
-                        })
-                    });
-                }
-            });
+                apiHelper('getMetricList').then(function(data) {
+                    $scope.metricList = data;
+                    if ($scope._data) {
+                        _.each($scope._data.metrics, function(i) {
+                            _.each($scope.metricList, function(_i) {
+                                if (i.id === _i.id) {
+                                    _i.selected = true;
+                                }
+                            })
+                        });
+                    }
+                });
 
-            apiHelper('getDimensionList').then(function(data) {
-                $scope.dimensionList = data;
-                if ($scope._data) {
-                    _.each($scope._data.dimensions, function(i) {
-                        _.each($scope.dimensionList, function(_i) {
-                            if (i.id === _i.id) {
-                                _i.selected = true;
-                            }
-                        })
-                    });
-                }
+                apiHelper('getDimensionList').then(function(data) {
+                    $scope.dimensionList = data;
+                    if ($scope._data) {
+                        _.each($scope._data.dimensions, function(i) {
+                            _.each($scope.dimensionList, function(_i) {
+                                if (i.id === _i.id) {
+                                    _i.selected = true;
+                                }
+                            })
+                        });
+                    }
+                });
             });
 
             // chain option related
@@ -575,8 +582,8 @@ define(function() {
     }
 
     _.each(fieldsDict, function(formFields, key) {
-        resModalModule.controller(key + 'ModalCtrl', ['$scope', 'apiHelper', '$notice', '$rootScope', '$filter',
-            function($scope, apiHelper, $notice, $rootScope, $filter) {
+        resModalModule.controller(key + 'ModalCtrl', ['$scope', 'apiHelper', '$notice', '$rootScope', '$filter', '$timeout',
+            function($scope, apiHelper, $notice, $rootScope, $filter, $timeout) {
                 var prefix = $scope._data ? '(TEMP) - Edit ' : 'Add ';
                 $scope.modalTitle = prefix + _.capitalize(key);
                 $scope.formFields = formFields;
@@ -614,7 +621,7 @@ define(function() {
                 $scope.formName = 'formly';
                 $scope.formlyData = {};
 
-                initMap[key]($scope, apiHelper);
+                initMap[key]($scope, apiHelper, $timeout);
                 $scope.submit = function() {
                     console.log($scope.formlyData);
                     submitMap[key]($scope, apiHelper, $notice);

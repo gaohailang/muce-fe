@@ -87,8 +87,6 @@ textarea {
     /* multi-chooser */
     .search-select-wrapper {
         width: 220px;
-        border: 1px solid #ccc;
-        padding: 10px;
     }
 }
 
@@ -317,8 +315,6 @@ textarea {
     }
 
     .report-list {
-        max-height: 400px;
-        overflow: auto;
 
         & > li {
             i.icon-pencil {
@@ -576,7 +572,7 @@ textarea {
 .i-multi-choose-wrapper {
     .checkbox-wrapper {
         max-height: 300px;
-        overflow: auto;
+        overflow: scroll;
         min-height: 100px;
         position: relative;
         .loading-indicator {
@@ -590,6 +586,8 @@ textarea {
         margin-bottom: 5px;
     }
     .search-select-wrapper {
+        border: 1px solid #ccc;
+        padding: 10px;
         label {
             white-space: nowrap;
         }
