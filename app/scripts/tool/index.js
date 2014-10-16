@@ -5,6 +5,11 @@ define(['base/helper'], function(helper) {
             url: '/tool/key-metrics',
             templateUrl: 'templates/tool/ua-metric-platform.html',
             controller: 'UAMPCtrl'
+        },
+        'tool-realtime-dashboard': {
+            url: '/tool/realtime-dashboard',
+            templateUrl: 'templates/tool/realtime-dashboard.html',
+            itentifier: 'tool-realtime-dashboard'
         }
     };
 

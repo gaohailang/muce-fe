@@ -47,5 +47,9 @@ define([
                     $rootScope.$broadcast('base:sidebar-collapsed', false);
                 }
             });
+
+            ZeroClipboard.config({
+                swfPath: 'http://static.wdjimg.com/ajax/libs/zeroclipboard/2.1.6/ZeroClipboard.swf'
+            });
         });
 });

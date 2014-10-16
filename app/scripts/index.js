@@ -70,8 +70,11 @@ require([
         uiSelectConfig.theme = 'select2';
     });
 
-    muceApp.controller('baseCtrl', function($scope, $state) {
+    muceApp.controller('baseCtrl', function($scope, $state, $rootScope) {
         $scope.$state = $state;
+        $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+            $rootScope._pageClass = toState.name.replace(/\./g, '-');
+        });
     }).controller('feedbackCtrl', function($scope) {
         console.log('in feedbackCtrl');
     });
