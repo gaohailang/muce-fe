@@ -72,14 +72,14 @@ var connectOpt = {
             },
             changeOrigin: true,
             headers: {
-                cookie: 'sso_session_id=20ca0a0f275dce09f7e456171fddc60e'
+                cookie: 'sso_session_id=af4cb0a8f5f015705877b8f0d0c7f77a'
             }
         }, {
             context: '/api/v1',
             host: 'muce3.wandoulabs.com',
             changeOrigin: true,
             headers: {
-                cookie: 'sso_session_id=be61feafd9c5bf017953f96ecebe3510'
+                cookie: 'sso_session_id=c1a10025455fd410b348b3a142f6bc1a'
             }
         }]
     }
@@ -316,19 +316,7 @@ module.exports = function(grunt) {
     ]);
 
     grunt.registerTask('build:staging', [
-        'clean:dist',
-        'concurrent:dist',
-        // 'ngAnnotate',
-        // 'useminPrepare',
-        // 'concat',
-        // 'uglify',
-        // 'cssmin', // Uncomment this line if using none-sass style
-        // 'requirejs:dist', // Uncomment this line if using RequireJS in your project
-        // 'rev',
-        'copy:compass',
-        // 'imagemin',
-        // 'usemin'
-        'copy:dist'
+        'build'
     ]);
 
     grunt.registerTask('build:production', [
