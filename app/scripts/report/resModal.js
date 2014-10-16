@@ -94,19 +94,19 @@ define(function() {
                     style: 'margin-top: -20px'
                 }
             }, {
-                controlHtml: '<div multi-chooser choices-list="dimensionList"></div>',
-                label: 'Dimension'
+                label: '行列转置',
+                controlTpl: 'report/modal/transform-relation.html'
             }, {
-                controlTpl: 'report/_validateDimension.html',
+                controlTpl: 'report/_validateChainOpt.html',
                 label: '',
                 wrapAttr: {
                     style: 'margin-top: -20px'
                 }
             }, {
-                label: '行列转置',
-                controlTpl: 'report/modal/transform-relation.html'
+                controlHtml: '<div multi-chooser choices-list="dimensionList" ng-show="!formlyData.isChainSupport"></div><span ng-show="formlyData.isChainSupport">设置行列转置后，无法选择</span>',
+                label: 'Dimension'
             }, {
-                controlTpl: 'report/_validateChainOpt.html',
+                controlTpl: 'report/_validateDimension.html',
                 label: '',
                 wrapAttr: {
                     style: 'margin-top: -20px'
@@ -243,13 +243,13 @@ define(function() {
             });
             postData.defaultChart = +postData.defaultChart;
             // 注：所有Dimensions都可以选择，一次只能选3个 ，Metrics 数量应该 <= 10
-            if (postData.dimensions.length > 3) {
-                $notice.warning('Dimensions, 一次只能选3个');
-            }
-            if (postData.metrics.length > 10) {
-                $notice.warning('Metrics 数量应该 <= 10');
-            }
-            if (!postData.dimensions || !postData.metrics) $notice.warning('请按照要求填写');
+            // if (postData.dimensions.length > 3) {
+            //     $notice.warning('Dimensions, 一次只能选3个');
+            // }
+            // if (postData.metrics.length > 10) {
+            //     $notice.warning('Metrics 数量应该 <= 10');
+            // }
+            // if (!postData.dimensions || !postData.metrics) $notice.warning('请按照要求填写');
             /* end before send */
 
             // process chain option
@@ -271,6 +271,7 @@ define(function() {
                 });
                 postData.transposition = _chainArr;
                 console.log(_chainArr);
+                postData.dimensions = []; // chain not allow dimensions
             }
             delete postData.chainSetting;
             delete postData.isChainSupport;

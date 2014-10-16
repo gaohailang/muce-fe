@@ -136,7 +136,7 @@ define([
                     });
                     $scope.$watch('isEnable', function(val, old) {
                         if (_.isUndefined(old)) return;
-                        if (val === '') return;
+                        if (val === '' || val === '1') return; // bzc track by $index
                         if (val == old) return; // trans 0/1 into false/true
                         $scope.switchCallback($scope.isEnable, $scope.type, $scope.data);
                     });
