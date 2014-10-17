@@ -14,12 +14,20 @@ define(function() {
             var _tmp;
             _reportDetail = opt[0];
             _allTableData = opt[1];
-            _.each(_reportDetail.metrics, function(i) {
-                _metricTypeMap[i.id] = i.type;
-            });
-            _totalPg = Math.ceil(_allTableData.result.length / _pageSize);
-            buildGridHeader(_reportDetail, _allTableData);
-            buildGridData();
+            if (_reportDetail.transMetrics) {
+                // 行列转置
+                var tbFields = _reportDetail.transMetrics;
+                $scope.tbFields = tbFields;
+                $scope.tableRows = _allTableData.result;
+            } else {
+                // 普通的处理逻辑
+                _.each(_reportDetail.metrics, function(i) {
+                    _metricTypeMap[i.id] = i.type;
+                });
+                _totalPg = Math.ceil(_allTableData.result.length / _pageSize);
+                buildGridHeader(_reportDetail, _allTableData);
+                buildGridData();
+            }
         });
 
         /* Data Table */
@@ -55,7 +63,7 @@ define(function() {
                 return i;
             });*/
             $timeout(function() {
-                var _updates = _allTableData.result.slice(0, _pageSize);
+                var _updates = _allTableData.result.slice(_pageSize * (_tableDataPg - 1), _pageSize * _tableDataPg);
                 $scope.tableRows = $scope.tableRows.concat(_updates);
                 $timeout(function() {
                     _state._fetchingReportTableData = false;
@@ -93,6 +101,11 @@ define(function() {
             $timeout(function() {
                 $scope.tableRows = tableRows;
             });
+        };
+        $scope.transReveres = false;
+        $scope.toggleTransRowSort = function(type) {
+            $scope.transReveres = !$scope.transReveres;
+            $scope.transOrderType = '' + type;
         };
 
         $scope.exportTableAsCsv = function(tbFields, tableRows) {
@@ -146,7 +159,7 @@ define(function() {
             }
             // check ratio/percent - green/red etc
             if (_.isNumber(field.id)) {
-                if (!data[field.id]) {
+                if (data[field.id] == null) {
                     return 'empty';
                 } else {
                     // Todo -
@@ -160,6 +173,36 @@ define(function() {
                 }
             } else {
                 return 'dimension';
+            }
+        };
+
+        $scope.getTransType = function(field, data) {
+            if (data[field.id] == null) {
+                return 'empty';
+            }
+            if (field.name.indexOf('DIVIDE') > -1) {
+                return 'divide';
+            }
+            if (field.name.indexOf('SUBTRACT') > -1) {
+                return 'subtract';
+            }
+            return 'normal';
+        };
+
+        $scope.formatSubVal = function(val) {
+            if (val > 0) {
+                return '<b class="w-text-success">' + val + '</b>'
+            } else {
+                return '<b class="w-text-warning">' + val + '</b>'
+            }
+        };
+
+        $scope.formatDivideVal = function(val) {
+            var _val = $filter('percentage')(val);
+            if (val > 0) {
+                return '<b class="w-text-success">' + _val + '</b>'
+            } else {
+                return '<b class="w-text-warning">' + _val + '</b>'
             }
         };
 

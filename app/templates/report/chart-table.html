@@ -6,7 +6,7 @@
     <button class="btn" style="float: right;"
         ng-click="exportTableAsCsv(tbFields, tableRows)"> 导出 CSV </button>
     <!-- Todo: one-bind to save watchers -->
-    <table class="table table-bordered table-striped"
+    <table class="table table-bordered table-striped" ng-if="!state.reportDetail.transMetrics"
         infinite-scroll="loadMoreReportData()">
         <thead>
             <tr class="header-row">
@@ -34,4 +34,47 @@
         </tbody>
     </table>
     <double-bounce-spinner ng-show="state._fetchingReportTableData"></double-bounce-spinner>
+
+    <table class="table table-bordered table-striped"
+        ng-if="state.reportDetail.transMetrics" ng-show="tableRows">
+        <thead>
+            <tr class="header-row">
+                <td>Date</td>
+                <td ng-repeat="i in tbFields"
+                    ng-click="toggleTransRowSort(i.id)">{{i.name}}
+                    <i ng-class="{
+                        'icon-sort': ''+i.id !== transOrderType,
+                        'icon-arrow-up': ''+i.id == transOrderType && !transReveres,
+                        'icon-arrow-down': ''+i.id == transOrderType && transReveres}"></i>
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="row in tableRows|orderBy:transOrderType:transReveres" bindonce>
+                <td>
+                    <span bo-text="row.date|dateNumFormat"></span>
+                </td>
+                <td ng-repeat="i in tbFields" bindonce bo-switch="getTransType(i, row)">
+                    <span bo-switch-when="empty">
+                        <b class="w-text-warning">No Data</b>
+                    </span>
+                    <span bo-switch-when="divide"
+                        bo-html="formatDivideVal(row[i.id])">
+                    </span>
+                    <span bo-switch-when="subtract"
+                        bo-html="formatSubVal(row[i.id])"></span>
+                    <span bo-switch-default bo-text="row[i.id]"></span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </section>
+
+
+
+
+
+
+
+
+

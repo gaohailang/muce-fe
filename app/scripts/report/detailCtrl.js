@@ -30,7 +30,19 @@ define(['report/highchart'], function(highchart) {
             }).then(function(data) {
                 $rootScope.state._allChartData = data;
                 highchart.buildLineChart($rootScope.state.reportDetail, data);
-                if ($state.params.dimensions && ($state.params.dimensions != '[]')) {
+                // special handler for transposition fetch and process
+                if (_state.reportDetail.transMetrics) {
+                    $timeout(function() {
+                        apiHelper('getReport', $rootScope.state.report.id, {
+                            busy: 'global',
+                            params: _.extend(defaultParams, _.pick($state.params, 'period', 'startDate', 'endDate'), {
+                                trans: true
+                            })
+                        }).then(function(data) {
+                            triggerFetchDone(data);
+                        });
+                    }, 500);
+                } else if ($state.params.dimensions && ($state.params.dimensions != '[]')) {
                     // timeout to non-block ui
                     $timeout(function() {
                         apiHelper('getReport', $rootScope.state.report.id, {
@@ -39,7 +51,7 @@ define(['report/highchart'], function(highchart) {
                         }).then(function(data) {
                             triggerFetchDone(data);
                         });
-                    }, 1000);
+                    }, 500);
                 } else {
                     triggerFetchDone(data);
                 }
