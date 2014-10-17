@@ -6,7 +6,7 @@
         <span class="label label-info">{{currentTb}}</span>
     </div>
     <tabset ng-show="currentTb">
-        <tab heading="shema">
+        <tab heading="Schema">
             <table class="table table-striped">
                 <tbody>
                     <tr bindonce quick-ng-repeat="ii in tbInfo.schema track by $index"
@@ -16,7 +16,7 @@
                 </tbody>
             </table>
         </tab>
-        <tab heading="partition">
+        <tab heading="Partition">
             <table class="table table-striped">
                 <tbody>
                     <tr bindonce quick-ng-repeat="ii in tbInfo.partition track by $index"

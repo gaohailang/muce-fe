@@ -105,6 +105,7 @@ textarea {
 .CodeMirror-hints {
     overflow: scroll;
     width: 500px;
+    z-index: 9999;
     .CodeMirror-hint {
         max-width: none;
         overflow: visible;
@@ -422,24 +423,30 @@ textarea {
 .collapse-sidebar-container {
     position: relative;
     .collapse-sidebar-trigger {
-        left: 178px;
+        left: 14.1%;
         top: 5px;
     }
     .span2 {
         margin-left: 0;
+    }
+    &.mc-uamp {
+        .collapse-sidebar-trigger {
+            left: 180px;
+        }
     }
 }
 .modal-open i.collapse-sidebar-trigger {
     background-color: #000;
     border: none;
 }
+
 .sidebar-collapsed {
     &.mc-uamp {
         .main-content {
             margin-left: 0;
         }
         .sidebar {
-            margin-left: -210px;
+            margin-left: -200px;
             opacity: 0;
             background-color: #fff;
         }
@@ -449,7 +456,7 @@ textarea {
         }
     }
     .span2 {
-        margin-left: -210px;
+        margin-left: -18%;
         transition: all .5s cubic-bezier(0.25,.46,.45,.94);
     }
     .span10 {
