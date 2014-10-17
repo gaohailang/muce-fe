@@ -188,11 +188,12 @@ define([], function() {
                     }, {
                         element: '#intro-management-show_disable_report',
                         intro: '点击后查看被 Disable 掉的报表'
-                    }, {
-                        element: '#group-categories-0',
-                        intro: 'Tip: 一个报表可以从属于多个Categories 下，方便查看~'
                     }]
                 };
+                // {
+                //     element: '#group-categories-0',
+                //     intro: 'Tip: 一个报表可以从属于多个Categories 下，方便查看~'
+                // }
 
                 // search report by category/metric etc
                 // hide disable report etc

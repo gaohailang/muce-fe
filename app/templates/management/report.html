@@ -30,7 +30,7 @@
             <th>isEnable</th>
             <th>Operate</th>
         </tr>
-        <tr ng-repeat="report in reportList|filter:filterObj track by $index" id="{{mgr-report-$index}}">
+        <tr ng-repeat="report in reportList|filter:filterObj">
             <td>{{report.id}}</td>
             <td>{{report.name}}</td>
             <td>
@@ -38,7 +38,7 @@
                     {{period|transPeriod}}
                 </span>
             </td>
-            <td id="group-categories-{{$index}}">
+            <td>
                 <span ng-repeat="i in report.groupCategories">
                     {{i}}
                     <i class="icon-trash" tooltip="remove relationship"

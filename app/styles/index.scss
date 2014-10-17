@@ -193,6 +193,11 @@ textarea {
                 display: inline-block!important;
             }
         }
+        .dimension-operator {
+            & > .ng-hide {
+                display: none!important;
+            }
+        }
         .date-operator {
             .btn-group {
                 .btn {
@@ -628,6 +633,9 @@ textarea {
 }
 .w-text-warning {
     color: #f24949;
+}
+.w-text-success {
+    color: green;
 }
 .i-text-warning-nav {
     color: red!important;
