@@ -50,25 +50,22 @@ define([], function() {
         }
     }
 
-    function percentize() {
-        return function(input) {
-            var rounded = Math.round(input * 10000) / 100;
-            if (isNaN(rounded)) {
-                return '';
-            }
-            var percentage = '' + rounded + '%';
-            return percentage;
-        };
-    }
-
     angular.module('muceApp.base.filters', [])
         .filter('capitalize', capitalize)
         .filter('joinArr', joinArr)
         .filter('dateNumFormat', dateNumFormat)
         .filter('humanBytes', humanBytes)
         .filter('linizeArray', linizeArray)
-        .filter('percentize', percentize)
-        .filter('joinArrExt', joinArrExt);
+        .filter('joinArrExt', joinArrExt)
+        .filter('percentize', ['$filter',
+            function($filter) {
+                return function(input, decimals) {
+                    var decimals = decimals ? decimals : 2;
+                    if (isNaN(input)) return '';
+                    return $filter('number')(input * 100, decimals) + '%';
+                };
+            }
+        ]);
 
     angular.module('muceApp.base.filters')
         .filter('transMetricsDetail', function($filter) {

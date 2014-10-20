@@ -65,7 +65,8 @@
         <table class="table">
             <tr>
                 <td ng-if="state.isSelectMetricMode">选择</td>
-                <td ng-repeat="th in reportData.tableTitle track by $index">
+                <td ng-repeat="th in reportData.tableTitle track by $index"
+                    ng-class="{'diff-data-cell': isDiffCellTh(th)}">
                     <a ng-click="toggleRowSort($index)">
                         {{th.disp_name}}<i ng-show="state.report.order" ng-class="{
                             'icon-sort': $index !== sortType,
@@ -88,6 +89,7 @@
                 </td>
 
                 <td ng-repeat="val in metric.data track by $index"
+                    ng-class="{'diff-data-cell': isDiffCell(val, $index)}"
                     ng-bind-html="formatByType(val, $index)"></td>
             </tr>
         </table>

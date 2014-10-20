@@ -345,12 +345,19 @@ define(['base/helper'], function(helper) {
         };
 
         // data cell 根据类型显示上升下降颜色和百分百
+        $scope.isDiffCell = function(val, idx) {
+            var type = $scope.reportData.tableTitle[idx + 1];
+            return type.data_diff;
+        };
+        $scope.isDiffCellTh = function(type) {
+            return type.data_diff;
+        };
         $scope.formatByType = function(val, idx) {
             var type = $scope.reportData.tableTitle[idx + 1];
             var ret = val;
             switch (type.data_diff) {
                 case 'ratio':
-                    ret = $filter('percentize')(val);
+                    ret = $filter('percentize')(val, 2);
                 case 'minus':
                     if (val > 0) {
                         ret = '<b class="metric-minus-up">' + ret + '</b>';
