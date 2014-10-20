@@ -73,6 +73,7 @@
                 <a ng-click="editReport(report)">Edit</a>
                 <a ng-click="invokeRelationModal(report)">Relation</a>
                 <a ng-click="invokeSQLModal(report)">View SQL</a>
+                <a ng-click="delReport(report)" ng-show="$root.checkAdmin()">Delete</a>
             </td>
         </tr>
     </table>

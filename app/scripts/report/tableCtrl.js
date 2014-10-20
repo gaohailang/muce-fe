@@ -180,10 +180,10 @@ define(function() {
             if (data[field.id] == null) {
                 return 'empty';
             }
-            if (field.name.indexOf('DIVIDE') > -1) {
+            if (field.name.indexOf('Rate') > -1) {
                 return 'divide';
             }
-            if (field.name.indexOf('SUBTRACT') > -1) {
+            if (field.name.indexOf('Diff') > -1) {
                 return 'subtract';
             }
             return 'normal';

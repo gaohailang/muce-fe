@@ -404,11 +404,13 @@ define(function() {
                     // dateType, metricType
                     $scope.formlyData.chainSetting = {};
                     _.each($scope._data.transposition, function(i) {
-                        if (!$scope.formlyData.chainSetting[i.dateType]) {
-                            $scope.formlyData.chainSetting[i.dateType] = {};
+                        var _key = _.keys(i)[0];
+                        var _val = _.values(i)[0];
+                        if (!$scope.formlyData.chainSetting[_key]) {
+                            $scope.formlyData.chainSetting[_key] = {};
                         }
-                        $scope.formlyData.chainSetting[i.dateType].enable = true;
-                        $scope.formlyData.chainSetting[i.dateType][i.metricType] = true;
+                        $scope.formlyData.chainSetting[_key].enable = true;
+                        $scope.formlyData.chainSetting[_key][_val] = true;
                     });
                 }
                 // Todo~~
@@ -585,9 +587,9 @@ define(function() {
     _.each(fieldsDict, function(formFields, key) {
         resModalModule.controller(key + 'ModalCtrl', ['$scope', 'apiHelper', '$notice', '$rootScope', '$filter', '$timeout',
             function($scope, apiHelper, $notice, $rootScope, $filter, $timeout) {
-                var prefix = $scope._data ? '(TEMP) - Edit ' : 'Add ';
+                var prefix = $scope._data ? 'Edit ' : 'Add ';
                 $scope.modalTitle = prefix + _.capitalize(key);
-                $scope.formFields = formFields;
+                _formFields = angular.copy(formFields);
                 // Todo: check _data eidt with edit field
                 if ($scope._data) {
                     // adjust timestamp for _data
@@ -597,27 +599,28 @@ define(function() {
 
                     // case for metric(whicih has event field huge table)
                     if (key === 'metric') {
-                        $scope.formFields.splice(($scope.formFields.length - 2), 3, dataDict.ownerField, dataDict.createTimeField, dataDict.modifyTimeField);
-                        $scope.formFields = _.uniq($scope.formFields, function(f) {
+                        _formFields.splice((_formFields.length - 2), 3, dataDict.ownerField, dataDict.createTimeField, dataDict.modifyTimeField);
+                        _formFields = _.uniq(_formFields, function(f) {
                             return f.key;
                         });
                     } else {
-                        $scope.formFields = $scope.formFields.concat([dataDict.ownerField, dataDict.createTimeField, dataDict.modifyTimeField]);
+                        _formFields = _formFields.concat([dataDict.ownerField, dataDict.createTimeField, dataDict.modifyTimeField]);
                     }
 
                     if (key === 'category') {
                         // category.group readable
-                        $scope.formFields[0].attrs = {
+                        _formFields[0].attrs = {
                             disabled: true
                         };
                     }
                     if (key === 'report') {
                         // report.group, category remove
-                        $scope.formFields.splice(0, 2);
+                        _formFields.splice(0, 2);
                     }
 
                     // if metric disable tab change~~
                 }
+                $scope.formFields = _formFields;
 
                 $scope.formName = 'formly';
                 $scope.formlyData = {};

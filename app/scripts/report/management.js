@@ -181,6 +181,15 @@ define([], function() {
                     });
                 };
 
+                $scope.delReport = function(item) {
+                    if (!window.confirm(Config.delAlertPrefix + 'report ' + item.name)) return;
+                    apiHelper('delReport', item.id).then(function(data) {
+                        // remove from list
+                        // _state.reportList = _.without(_state.reportList, item);
+                        _initFetchData();
+                    });
+                };
+
                 $scope.IntroOptions = {
                     steps: [{
                         element: '#intro-management-search_type',

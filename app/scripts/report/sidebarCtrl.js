@@ -19,19 +19,6 @@ define(function() {
                 size: 'lg'
             });
         };
-
-        $scope.delReport = function(item) {
-            if (!window.confirm(Config.delAlertPrefix + 'report ' + item.name)) return;
-            apiHelper('delCategoryReportRelation', {
-                params: {
-                    categoryId: _state.category.id,
-                    reportId: item.id
-                }
-            }).then(function(data) {
-                // remove from list
-                _state.reportList = _.without(_state.reportList, item);
-            });
-        };
     }
 
     return sidebarCtrl;
