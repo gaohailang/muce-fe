@@ -105,12 +105,6 @@ define(function() {
             }, {
                 controlHtml: '<div multi-chooser choices-list="dimensionList" ng-show="!formlyData.isChainSupport"></div><span ng-show="formlyData.isChainSupport">设置行列转置后，无法选择</span>',
                 label: 'Dimension'
-            }, {
-                controlTpl: 'report/_validateDimension.html',
-                label: '',
-                wrapAttr: {
-                    style: 'margin-top: -20px'
-                }
             },
             dataDict.commentField
         ],

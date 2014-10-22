@@ -53,13 +53,14 @@ define(['report/highchart'], function(highchart) {
                 }).then(function(data) {
                     // 加入到当前的 chart anootation 中
                     console.log(data);
-                    _annotations.push(data);
+                    _state._allChartData.annotations.push(data);
                     $scope.dismissAnnotationPopover();
                 });
             }
         };
 
         $scope.delAnnotation = function(annotation) {
+            var _annotations = _state._allChartData.annotations;
             apiHelper('delAnnotation', annotation.id).then();
             _annotations.splice(_annotations.indexOf(annotation), 1);
             $scope.dismissAnnotationPopover();
@@ -68,8 +69,11 @@ define(['report/highchart'], function(highchart) {
         // watch annotation scope, emit jQuery event
         $rootScope.$watchCollection('state._allChartData.annotations', function(data) {
             console.log(arguments[0]);
-            if(!data) return;
+            if (!data) return;
             $(".chart-wrapper").trigger('updateAnnotations');
+            // Todo: fine grain to update annotations
+            // http://jsfiddle.net/gh/get/jquery/1.7.2/highslide-software/highcharts.com/tree/master/samples/highcharts/plotoptions/series-point-events-remove/
+            // http://api.highcharts.com/highcharts#Point
             highchart.buildLineChart(_state.reportDetail, _state._allChartData);
         });
         /* End */

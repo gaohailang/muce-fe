@@ -65,8 +65,6 @@
                 }
             }
         }
-
-        // 去重~~~ Todo
     }
 
     function columnCompletion(result, editor) {
@@ -199,7 +197,7 @@
         }
 
         return {
-            list: result,
+            list: _.uniq(result),
             from: Pos(cur.line, start),
             to: Pos(cur.line, end)
         };

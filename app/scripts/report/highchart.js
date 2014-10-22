@@ -21,7 +21,7 @@ define([
                 var annotation = '<br/>';
                 _.each(data.annotations, function(item) {
                     var metric = _.find(currentReport.metrics, function(m) {
-                        return m.id == item.metric;
+                        return m.id == item.metricId;
                     });
                     if (metric) {
                         var date = helper.getUTCDateByDateAndPeriod(item.xAxis + '');
@@ -73,7 +73,7 @@ define([
 
 
                     var annotationArray = _.filter(data.annotations, function(ann) {
-                        return ann.metric == item.id;
+                        return ann.metricId == item.id;
                     });
                     _.each(annotationArray, function(annotation) {
                         var annotationPoint = {};
