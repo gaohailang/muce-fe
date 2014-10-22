@@ -1,5 +1,19 @@
 <section class="chart-wrapper">
     <div class="chart-canvas" id="highcharts_wrapper"></div>
+    <div class="annotation-container alert" ng-show="annotation" ng-style="rawAnnotationInfo.style">
+        <a class="close" ng-click="dismissAnnotationPopover()">x</a>
+        <h4 class="alert-heading">
+            {{rawAnnotationInfo.metric}}
+            <!-- - {{annotation.xAxis}} -->
+        </h4>
+        <div>
+            <textarea class="textarea" ng-model="annotation.name"></textarea>
+            <a class="pull-right" style="margin-left: 10px"
+                ng-click="delAnnotation(annotation)"
+                ng-show="rawAnnotationInfo.mode == 'edit'">Delete</a>
+            <a class="pull-right" ng-click="editAnnotation(annotation)">Save</a>
+        </div>
+    </div>
 </section>
 
 <section class="table-wrapper" ng-controller="tableCtrl">
@@ -69,12 +83,3 @@
         </tbody>
     </table>
 </section>
-
-
-
-
-
-
-
-
-

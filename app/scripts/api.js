@@ -3,9 +3,9 @@ define([], function() {
     angular.module('muceApp.api', []).run(function(apiHelper) {
         // Meta
         apiHelper.configByType({
-            add: ['group', 'category', 'dimension', 'metric', 'combineMetric', 'report', 'categoryReportRelation'],
-            edit: ['group', 'category', 'dimension', 'metric', 'combineMetric', 'report'],
-            del: ['group', 'category', 'dimension', 'metric', 'categoryReportRelation', 'report'],
+            add: ['group', 'category', 'dimension', 'metric', 'combineMetric', 'report', 'categoryReportRelation', 'annotation'],
+            edit: ['group', 'category', 'dimension', 'metric', 'combineMetric', 'report', 'annotation'],
+            del: ['group', 'category', 'dimension', 'metric', 'categoryReportRelation', 'report', 'annotation'],
             list: ['group', 'category', 'report', 'event', 'field', 'fieldId', 'metric', 'dimension']
         }, {
             prefix: '/meta/'

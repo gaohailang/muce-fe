@@ -1,9 +1,78 @@
 define(['report/highchart'], function(highchart) {
     // @ngInject
     function detailCtrl($scope, $state, apiHelper, $timeout, $filter, $rootScope) {
-        var _state = $rootScope.state;
+        var _state = $rootScope.state,
+            _annotations;
         _state.isAjaxFetching = false;
         console.log('detailCtrl');
+
+        /* Annotation Related */
+        $(".chart-wrapper").on('editAnotation', function(e, d) {
+            var annotation,
+                point = d.point;
+            var rawAnnotationInfo = {
+                metric: point.series.name,
+                mode: 'add',
+                style: {
+                    left: d.offsetX,
+                    top: d.offsetY
+                }
+            };
+            if (point.annotationInfo) {
+                annotation = point.annotationInfo;
+                rawAnnotationInfo.mode = 'edit';
+            } else {
+                annotation = {
+                    xAxis: $filter('date')(point.x, 'yyyyMMdd'),
+                    metricId: findMetricByName(point.series.name).id,
+                    period: 0,
+                    name: ''
+                };
+            }
+            $scope.$apply(function() {
+                $scope.annotation = annotation;
+                $scope.rawAnnotationInfo = rawAnnotationInfo;
+            });
+        });
+
+        $scope.dismissAnnotationPopover = function() {
+            $scope.annotation = null;
+            $scope.rawAnnotationInfo = null;
+        };
+
+        $scope.editAnnotation = function(annotation) {
+            if ($scope.rawAnnotationInfo.mode === 'edit') {
+                apiHelper('editAnnotation', {
+                    data: annotation
+                }).then(function() {
+                    $scope.dismissAnnotationPopover();
+                });
+            } else {
+                apiHelper('addAnnotation', {
+                    data: $scope.annotation
+                }).then(function(data) {
+                    // 加入到当前的 chart anootation 中
+                    console.log(data);
+                    _annotations.push(data);
+                    $scope.dismissAnnotationPopover();
+                });
+            }
+        };
+
+        $scope.delAnnotation = function(annotation) {
+            apiHelper('delAnnotation', annotation.id).then();
+            _annotations.splice(_annotations.indexOf(annotation), 1);
+            $scope.dismissAnnotationPopover();
+        };
+
+        // watch annotation scope, emit jQuery event
+        $rootScope.$watchCollection('state._allChartData.annotations', function(data) {
+            console.log(arguments[0]);
+            if(!data) return;
+            $(".chart-wrapper").trigger('updateAnnotations');
+            highchart.buildLineChart(_state.reportDetail, _state._allChartData);
+        });
+        /* End */
 
         function triggerFetchDone(data) {
             $rootScope.$emit('report:renderReportData', [$rootScope.state.reportDetail, data]);
@@ -29,6 +98,7 @@ define(['report/highchart'], function(highchart) {
                 params: _.extend(defaultParams, _.pick($state.params, 'period', 'startDate', 'endDate'))
             }).then(function(data) {
                 $rootScope.state._allChartData = data;
+                _annotations = data.annotations || [];
                 highchart.buildLineChart($rootScope.state.reportDetail, data);
                 // special handler for transposition fetch and process
                 if (_state.reportDetail.transMetrics) {
@@ -66,6 +136,12 @@ define(['report/highchart'], function(highchart) {
                 highchart.buildLineChart(_state.reportDetail, _state._allChartData);
             }, 300);
         });
+
+        function findMetricByName(name) {
+            return _.find(_state.reportDetail.metrics, function(item) {
+                return item.name === name;
+            });
+        }
     }
 
     return detailCtrl;

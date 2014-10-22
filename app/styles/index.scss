@@ -168,7 +168,7 @@ textarea {
         max-height: 450px;
         text-align: center;
         vertical-align: middle;
-        line-height: 440px;
+        line-height: 420px;
         font-size: 30px;
         border: 1px solid #ccc;
         position: relative;
@@ -673,6 +673,13 @@ textarea {
     i {
         font-size: 16px;
     }
+}
+
+.annotation-container {
+    width: 200px;
+    text-align: left;
+    line-height: 20px;
+    position: absolute;
 }
 
 /* component archive */

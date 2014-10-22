@@ -2,6 +2,9 @@ define([
     'base/helper'
 ], function(helper) {
     // Fuck. date format(humanable, or timestamp etc)
+    $(".chart-wrapper").on('updateAnnotations', function() {
+
+    });
     var buildLineChart = function(currentReport, data) {
         $('#highcharts_wrapper').html('Report No Data');
         var uniqCate = _.uniq(_.pluck(currentReport.metrics, 'type'));
@@ -13,6 +16,24 @@ define([
         data.period = periodMap[data.period];
 
         function formatTip() {
+
+            function buildAnnotation(point) {
+                var annotation = '<br/>';
+                _.each(data.annotations, function(item) {
+                    var metric = _.find(currentReport.metrics, function(m) {
+                        return m.id == item.metric;
+                    });
+                    if (metric) {
+                        var date = helper.getUTCDateByDateAndPeriod(item.xAxis + '');
+                        if (point.series.name === metric.name && point.x === date) {
+                            annotation += '<p style="color: ' + point.series.color + '">' + item.owner + ': ' + item.name;
+                            // '<br/>Create Time: ' + Highcharts.dateFormat('%A %Y-%m-%e', item.createTime)
+                        }
+                    }
+                });
+                return annotation;
+            }
+
             var periodFormatMap = {
                 hour: '%A %Y-%m-%e:%H',
                 day: '%A %Y-%m-%e',
@@ -24,6 +45,8 @@ define([
             $.each(this.points, function(i, point) {
                 s += '<br/><p style="color: ' + point.series.color + '">' + point.series.name + ': ' +
                     point.y;
+
+                s += buildAnnotation(point) + '</p>';
             });
 
             return s;
@@ -32,7 +55,7 @@ define([
         function getSeries() {
             var retData = []
             if (data.result && data.result.length) {
-                // var annotationPoints = [];
+                var annotationPoints = [];
                 _.each(currentReport.metrics, function(item, index) {
                     var detailData = {};
                     detailData = {
@@ -47,12 +70,38 @@ define([
                         detailData.yAxis = 1;
                     }
                     retData.push(detailData);
+
+
+                    var annotationArray = _.filter(data.annotations, function(ann) {
+                        return ann.metric == item.id;
+                    });
+                    _.each(annotationArray, function(annotation) {
+                        var annotationPoint = {};
+                        annotationPoint.metricIndex = index;
+                        annotationPoint.index = (helper.getUTCDateByDateAndPeriod(annotation.xAxis, data.period) - detailData.pointStart) / detailData.pointInterval;
+                        annotationPoint.id = annotation.id;
+                        annotationPoints.push(annotationPoint);
+                    });
+
                 });
 
                 _.each(retData, function(item, metricIndex) {
                     var tmp = _.pluck(data.result, item.id);
                     _.each(tmp, function(num, index) {
-                        item.data.push(num);
+                        var d = num;
+                        var hasAnnotation = _.find(annotationPoints, function(annotation) {
+                            return metricIndex === annotation.metricIndex && index === annotation.index;
+                        });
+
+                        if (hasAnnotation) {
+                            var d = {};
+                            d.y = num;
+                            d.marker = {
+                                symbol: 'url(http://muce.corp.wandoujia.com/images/flag.png?id=' + hasAnnotation.id + ')'
+                            };
+                        }
+
+                        item.data.push(d);
                     });
                 });
             }
@@ -85,75 +134,17 @@ define([
             return isMutipleY ? yAxisMap[0] : yAxisMap[1];
         }
 
-        function addAnotation(event) {
-            return;
-            $('.annotation-container').remove();
-            var annotationId; // Todo: fix annotation edit(not found?!)
-            if (event.point.marker) {
-                var symbol = event.point.marker.symbol;
-                var matchAry = symbol.match(/\?id=(\d+)/);
+        function editAnotation(event) {
+            var point = event.point;
+            if (point.marker) {
+                var matchAry = point.marker.symbol.match(/\?id=(\d+)/);
                 if (matchAry) {
-                    annotationId = matchAry[1];
+                    point.annotationInfo = _.find(data.annotations, function(item) {
+                        return item.id == matchAry[1];
+                    });
                 }
             }
-
-            var container = $('<div/>').addClass('annotation-container alert fade in')
-                .css({
-                    left: event.point.pageX,
-                    top: event.point.pageY
-                });
-            var heading = $('<h4/>').addClass('alert-heading')
-                .append(this.name);
-            var closeBtn = $('<button/>').addClass('close')
-                .attr('data-dismiss', 'alert')
-                .append('x');
-
-            var textarea = $('<textarea/>').addClass('textarea');
-            var saveBtn = $('<button/>').addClass('save btn')
-                .append('Save');
-            var deleteBtn = $('<a/>')
-                .addClass('delete')
-                .append('Delete');
-
-            if (annotationId) {
-                var annotationInfo = _.find(data.annotations, function(item) {
-                    return item.id == annotationId;
-                });
-                textarea.val(annotationInfo.comment);
-                deleteBtn.show();
-            } else {
-                deleteBtn.hide();
-                textarea.val('');
-            }
-
-            container.append(closeBtn)
-                .append(heading)
-                .append(textarea)
-                .append(deleteBtn)
-                .append(saveBtn);
-
-            $(document.body).append(container);
-
-            saveBtn.on('click', function() {
-                // Todo
-                var data = {
-                    metric: _.find(currentReport.metrics, function(item) {
-                        return item.name === this.name;
-                    }.bind(this)).id,
-                    x_axis: Highcharts.dateFormat('%Y%m%d%H', event.point.x),
-                    // period: MuceCom.getCurrentPeriod(),
-                    filters: undefined, // MuceCom.stringifyObj(currentData.table_filters)
-                    // user: helper.getNameFromCookie(),
-                    comment: $('.annotation-container .textarea').val(),
-                    type: 'put'
-                };
-                if (annotationId) {
-                    data.id = annotationId;
-                    data.type = 'post';
-                }
-                // apiHelper('addAnnotation', data).then(function() {$('.annotation-container').alert('close');})
-            }.bind(this));
-
+            $(".chart-wrapper").trigger("editAnotation", event);
         }
 
         var chartOptions = {
@@ -194,7 +185,7 @@ define([
                 series: {
                     cursor: 'pointer',
                     events: {
-                        click: addAnotation
+                        click: editAnotation
                     }
                 }
             },
