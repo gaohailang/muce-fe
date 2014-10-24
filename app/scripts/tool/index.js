@@ -235,7 +235,7 @@ define(['base/helper'], function(helper) {
                 }).join('\n');
                 // http://stackoverflow.com/questions/23816005/anchor-tag-download-attribute-not-working-bug-in-chrome-35-0-1916-114
                 return URL.createObjectURL(new Blob([csvContent], {
-                    type: 'text/plain'
+                    type: 'text/csv'
                     // ty:'application\/octet-stream'
                 }));
             }

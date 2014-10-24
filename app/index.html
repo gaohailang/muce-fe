@@ -28,14 +28,21 @@
 
         <link rel="stylesheet" href="styles/index.css">
         <!-- endbuild -->
+
+        <!-- angular.js at the bottom, define "ng-cloak" css yourself  -->
+        <style type="text/css">
+          [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+              display: none !important;
+          }
+        </style>
     </head>
-    <body ng-controller="baseCtrl" ng-class="_pageClass">
+    <body ng-controller="baseCtrl" ng-class="_pageClass" ng-cloak>
         <!-- alert global - old for before code -->
         <!-- top navbar -->
-        <div muce-include="templates/partials/navbar.html"></div>
+        <div muce-include="templates/partials/navbar.html" ng-hide="minimalui"></div>
 
         <!-- page container -->
-        <div class="container-fluid container-wrapper">
+        <div class="container-fluid container-wrapper" ng-class="{'i-no-navbar': minimalui}">
             <toaster-container></toaster-container>
             <!-- toaster-options="{'position-class': 'toast-top-full-width'}" -->
             <div ui-view></div>

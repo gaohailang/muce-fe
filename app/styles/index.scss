@@ -18,6 +18,10 @@
     }
 }
 
+.i-no-navbar.container-wrapper {
+    margin-top: 0;
+}
+
 a {
     cursor: pointer;
     &.active {
