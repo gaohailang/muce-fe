@@ -17,7 +17,10 @@ define(function() {
             if (_reportDetail.transMetrics) {
                 // 行列转置
                 var tbFields = _reportDetail.transMetrics;
-                $scope.tbFields = tbFields;
+                $scope.tbFields = [{
+                    id: 'date',
+                    name: 'Date'
+                }].concat(tbFields);
                 $scope.tableRows = _allTableData.result;
             } else {
                 // 普通的处理逻辑
@@ -154,9 +157,7 @@ define(function() {
         };
 
         $scope.getTdType = function(field, data) {
-            if (field.id === 'date') {
-                return 'date';
-            }
+            if (field.id === 'date') return 'date';
             // check ratio/percent - green/red etc
             if (_.isNumber(field.id)) {
                 if (data[field.id] == null) {
@@ -177,6 +178,7 @@ define(function() {
         };
 
         $scope.getTransType = function(field, data) {
+            if (field.id === 'date') return 'date';
             if (data[field.id] == null) {
                 return 'empty';
             }

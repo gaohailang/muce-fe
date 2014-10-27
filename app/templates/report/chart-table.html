@@ -53,7 +53,6 @@
         ng-if="state.reportDetail.transMetrics" ng-show="tableRows">
         <thead>
             <tr class="header-row">
-                <td>Date</td>
                 <td ng-repeat="i in tbFields"
                     ng-click="toggleTransRowSort(i.id)">{{i.name}}
                     <i ng-class="{
@@ -65,10 +64,8 @@
         </thead>
         <tbody>
             <tr ng-repeat="row in tableRows|orderBy:transOrderType:transReveres" bindonce>
-                <td>
-                    <span bo-text="row.date|dateNumFormat"></span>
-                </td>
                 <td ng-repeat="i in tbFields" bindonce bo-switch="getTransType(i, row)">
+                    <span bo-switch-when="date" bo-text="row.date|dateNumFormat"></span>
                     <span bo-switch-when="empty">
                         <b class="w-text-warning">No Data</b>
                     </span>

@@ -51,6 +51,9 @@ define(function() {
                     _state.report = _.find(data, function(i) {
                         return i.name === $state.params.report;
                     });
+                    if (!_state.report) {
+                        _state.report = data[0];
+                    }
                 } else {
                     _state.report = data[0];
                 }
