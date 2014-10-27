@@ -10,7 +10,11 @@ define([
             // appTitle
             $rootScope.$watch('appTitle', function(val) {
                 if (!val) return;
-                document.title = val + ' - Muce 3.0 - Wandoulabs';
+                var _title = val + ' - Muce 3.0 - Wandoulabs';
+                if (val.indexOf('#NOMUCE')) {
+                    _title = _title.replace('#NOMUCE', '').replace(' - Muce 3.0', '');
+                }
+                document.title = _title;
             });
 
             // add compatible check and notice
