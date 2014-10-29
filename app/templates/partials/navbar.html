@@ -41,7 +41,7 @@
                         </a>
                     </li>
 
-                    <li ui-sref-active="active">
+                    <li ng-class="{ active: $state.includes('mq') }">
                         <a class="muce-nav-tab" ui-sref="mq.history">
                             MuceQuery
                         </a>

@@ -533,10 +533,10 @@ define(function() {
                     // Todo 找不到~ metricId1(变化过的)
                     $scope.formlyData.metricId1 = _.find(data, function(i) {
                         return i.id == $scope.formlyData.metricId1;
-                    });
+                    }).id;
                     $scope.formlyData.metricId2 = _.find(data, function(i) {
                         return i.id == $scope.formlyData.metricId2;
-                    });
+                    }).id;
                 } else {
                     $scope.formlyData.type = '0';
                 }
@@ -593,7 +593,7 @@ define(function() {
 
                     // case for metric(whicih has event field huge table)
                     if (key === 'metric') {
-                        _formFields.splice((_formFields.length - 2), 3, dataDict.ownerField, dataDict.createTimeField, dataDict.modifyTimeField);
+                        _formFields.splice((_formFields.length - 1), 2, dataDict.ownerField, dataDict.createTimeField, dataDict.modifyTimeField);
                         _formFields = _.uniq(_formFields, function(f) {
                             return f.key;
                         });
