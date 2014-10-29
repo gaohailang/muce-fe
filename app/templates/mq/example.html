@@ -1,22 +1,27 @@
 <div id="mq_user_query_example" class="span9">
     <div class="bs-docs-example">
-        <code>&lt;distinct&gt;</code> Windows Launch Users In Day 20130723
+        <code>&lt;distinct&gt;</code> Android DAU #
     </div>
-    <pre class="prettyprint linenums">select count(distinct col_guid) from windows2x.tb_application where col_status='start' and p_date='20130723'
+    <pre class="prettyprint linenums">select count(distinct id) from detail_common_package where product = 'ANDROID' and p_date='20141026'
     </pre>
     <div class="bs-docs-example">
-        <code>&lt;group by&gt;</code> 按照新老用户来看用户数
+        <code>&lt;group by&gt;</code> 按 view_url 来看用户数
     </div>
-    <pre class="prettyprint linenums">select col_is_day_new, count(distinct col_udid) from android.tb_application_start where p_date='20120812' and p_hourmin>='0000' and p_hourmin<='2300' group by col_is_day_new
+    <pre class="prettyprint linenums">select count(distinct id),view_url from detail_clickevent WHERE p_date>='20141020' and p_date<='20141023' group by view_url
     </pre>
     <div class="bs-docs-example">
-        <code>&lt;like&gt;</code> 查看入口中包含某关键字的package 在 20130710 ~ 20130712这3天的下载量
+        <code>&lt;like&gt;</code> Music DLU: 音乐 vertical 日访问用户数
     </div>
-    <pre class="prettyprint linenums">select col_pn,count(*) from app.tb_app where p_date>='20130710' and p_date<='20130712' and col_url like '%w/starter%' and col_pn='com.mt.mtxx.mtxx' group by col_pn
+    <pre class="prettyprint linenums">select count (distinct id) from detail_showevent where view_url like '％/music％' and view_url not like '%/mything%' and p_date='20141026'
     </pre>
     <div class="bs-docs-example">
-        <code>&lt;limit&gt;</code> 查询前10条 app.download 日志
+        <code>&lt;limit&gt;</code> 查询前10条 detail_taskevent 日志
     </div>
-    <pre class="prettyprint linenums">select * from windows2x.tb_app_download where p_date='20130701' and p_hourmin='0000' limit 10
+    <pre class="prettyprint linenums">select * from detail_taskevent where p_date=20141010 and p_hourmin=1200 limit 10
+    </pre>
+    <div class="bs-docs-example">
+        <code>&lt;in&gt;</code> App Consumption: 服务器接收到 App Download 和 Play请求的次数。
+    </div>
+    <pre class="prettyprint linenums">select count(*) from detail_taskevent where product = 'ANDROID' and task_action in ('DOWNLOAD', 'PLAY') and content_type= 'APP' and p_date='20141026'
     </pre>
 </div>
