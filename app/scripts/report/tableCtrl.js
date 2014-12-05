@@ -112,12 +112,13 @@ define(function() {
         };
 
         $scope.exportTableAsCsv = function(tbFields, tableRows) {
+
             function buildCsvName() {
                 return _.template(Config.csvFileNameTpl, {
                     report: _state.report.name,
                     start: $filter('date')(_state.startDate, 'yyyymmdd'),
                     end: $filter('date')(_state.endDate, 'yyyymmdd')
-                });
+                }) + '.csv';
             }
 
             function buildCsvContent() {
@@ -128,17 +129,25 @@ define(function() {
 
                 _.each(tableRows, function(row) {
                     resultArr.push(_.map(ids, function(key) {
+                        if (key === 'date') {
+                            try {
+                                return $filter('dateNumFormat')(row[key]);
+                            } catch (e) {
+                                return row[key];
+                            }
+                        }
                         return row[key];
                     }));
                 });
 
-                csvContent = _.map(resultArr, function(rowArr, idx) {
-                    return rowArr.join(',')
-                }).join('\n');
+                csvContent = '"' + _.map(resultArr, function(rowArr, idx) {
+                    return rowArr.join('","')
+                }).join('"\r\n"') + '"';
                 // http://stackoverflow.com/questions/23816005/anchor-tag-download-attribute-not-working-bug-in-chrome-35-0-1916-114
-                return URL.createObjectURL(new Blob([csvContent], {
+                /*return URL.createObjectURL(new Blob([csvContent], {
                     type: 'text/csv'
-                }));
+                }));*/
+                return 'data:application/csv;charset=utf-8,' + encodeURIComponent(csvContent);
             }
 
             function doMockLink() {
